@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Logovanje</title>
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+          <div class="text-center">
+            <h1>Prijava na sistem</h1>
+          </div>
+          <form name="form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()">
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" class="form-control" name="email" [(ngModel)]="model.email" required="true">
+            </div>
+
+            <div class="form-group">
+              <label for="lozinka">Lozinka</label>
+              <input type="password" id="lozinka" class="form-control" name="lozinka" [(ngModel)]="model.lozinka" required="true">
+            </div>
+
+            <button type="submit" class="btn btn-primary pull-left">
+              <i class="fa fa-sign-in"></i>
+              <span> Prijavi se</span>
+            </button>
+
+            <button type="button" class="btn btn-light pull-right" routerLink="/registration">
+              <i class="fa fa-user-plus"></i>
+              <span> Registrujte se</span>
+            </button>
+
+          </form>
+        </div>
+    </div>
+</body>
+</html>
