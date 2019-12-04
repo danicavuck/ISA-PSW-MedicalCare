@@ -1,0 +1,19 @@
+Prilikom logovanja unesi ove podatke (da se ne cimas da pogadjas hesirane vrednosti u bazi), ostale podatke resava obican upit
+
+Broj iteracija BCrypt-a : 10
+
+Zahtevi za registraciju:
+"petar@gmail.com" : "000"
+"dejan@gmail.com" : "123"
+
+Admin Klinickog Centra:
+"admin@gmail.com" : "admin"
+
+Pacijenti:
+"bolestansam@gmail.com" : "111"
+
+Lekari:
+"lekar@gmail.com" : "000"
+
+Medicinska Sestra:
+"sestratvoja@gmail.com" : "999"

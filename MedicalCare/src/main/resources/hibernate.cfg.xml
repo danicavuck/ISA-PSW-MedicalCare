@@ -1,0 +1,42 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <property name = "hibernate.dialect">
+            org.hibernate.dialect.MySQLDialect
+        </property>
+
+
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+
+
+        <!-- Assume test is the database name -->
+
+        <property name = "hibernate.connection.url">
+            jdbc:mysql://localhost/medical_care
+        </property>
+
+        <property name = "hibernate.connection.username">
+            root
+        </property>
+
+        <property name = "hibernate.connection.password">
+            root
+        </property>
+
+        <!-- Mapping classes -->
+<!--        <mapping class="com.groupfour.MedicalCare.Model.HibernateUtil"/>-->
+        <mapping class="com.groupfour.MedicalCare.Model.Pacijent.Pacijent"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Administrator.AdminKlinickogCentra"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Klinika.Klinika"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Osoblje.Lekar"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Klinika.Sala"/>
+
+
+    </session-factory>
+</hibernate-configuration>
