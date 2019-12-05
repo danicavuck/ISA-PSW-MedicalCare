@@ -28,7 +28,7 @@ export class RegistrationComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(){
+  async onSubmit(){
     if(this.performCheck()){
       let apiEndpoint = "http://localhost:8080/register";
 

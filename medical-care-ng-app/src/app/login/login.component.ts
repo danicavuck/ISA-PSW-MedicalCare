@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   }
 
 
-  onSubmit(){
+  async onSubmit(){
     if(this.performCheck()){
       let apiEndpoint = "http://localhost:8080/login";
 
