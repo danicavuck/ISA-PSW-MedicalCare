@@ -8,7 +8,7 @@
   <title>Registracija</title>
 </head>
   <body>
-    <div class="container">
+    <div class="container col-xs-12 col-md-8 col-md-offset-3">
       <div class="jumbotron">
         <div class="text-center">
           <h1>Napravite nalog</h1>
@@ -53,7 +53,7 @@
 
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" class="form-control" name="email" placeholder="Vaša mejl adresa" [(ngModel)]="model.email" required>
+            <input type="email" id="email" class="form-control" name="email" [(ngModel)]="model.email" required>
           </div>
 
           <div class="form-group">
@@ -66,7 +66,7 @@
             <input type="password" id="lozinkaPonovo" class="form-control" name="lozinkaPonovo" [(ngModel)]="lozinkaPonovo" required>
           </div>
 
-          <button type="submit" class="btn btn-primary pull-left">
+          <button type="submit" class="btn btn-primary pull-left" [disabled]="!f.valid">
             <i class="fa fa-user-plus"></i>
             <span> Registrujte se</span>
           </button>

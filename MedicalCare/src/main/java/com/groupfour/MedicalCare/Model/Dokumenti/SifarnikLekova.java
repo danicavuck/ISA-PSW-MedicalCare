@@ -1,49 +1,29 @@
 package com.groupfour.MedicalCare.Model.Dokumenti;
 
+
+import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
+import com.groupfour.MedicalCare.Common.db.DbTableConstants;
+import lombok.*;
+
+import javax.persistence.*;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Table(name = DbTableConstants.SIFARNIK_LEKOVA)
 public class SifarnikLekova {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = DbColumnConstants.SIFARNIK_LEKOVA_ID)
     private int id;
-    public String kodLeka;
-    public String nazivLeka;
-
-    public SifarnikLekova(){
-
-    }
-
-    public SifarnikLekova(String kodLeka, String nazivLeka) {
-        this.kodLeka = kodLeka;
-        this.nazivLeka = nazivLeka;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getKodLeka() {
-        return kodLeka;
-    }
-
-    public void setKodLeka(String kodLeka) {
-        this.kodLeka = kodLeka;
-    }
-
-    public String getNazivLeka() {
-        return nazivLeka;
-    }
-
-    public void setNazivLeka(String nazivLeka) {
-        this.nazivLeka = nazivLeka;
-    }
-
-    @Override
-    public String toString() {
-        return "SifarnikLekova{" +
-                "id=" + id +
-                ", kodLeka='" + kodLeka + '\'' +
-                ", nazivLeka='" + nazivLeka + '\'' +
-                '}';
-    }
+    @Column(name = DbColumnConstants.SIFARNIK_LEKOVA_KOD_LEKA)
+    private String kodLeka;
+    @Column(name = DbColumnConstants.SIFARNIK_LEKOVA_NAZIV_LEKA)
+    private String nazivLeka;
+    @Column(name = DbColumnConstants.SIFARNIK_LEKOVA_AKTIVAN)
+    private boolean aktivan = true;
 }

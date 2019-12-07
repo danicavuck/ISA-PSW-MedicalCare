@@ -47,8 +47,23 @@ public class Pacijent {
     private String brojOsiguranja;
 
 
-    @Transient
-    private String lozinkaPonovo;
+
+    @ManyToMany
+    @JoinTable(
+            name = DbTableConstants.LEKAR_PACIJENT,
+            joinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_PACIJENT_PACIJENT),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_PACIJENT_LEKAR)
+    )
+    private Set<Lekar> listaLekara = new HashSet<>();
+
+
+    @ManyToMany
+    @JoinTable(
+            name = DbTableConstants.MED_SESTRA_PACIJENT,
+            joinColumns = @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_PACIJENT),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_SESTRA)
+    )
+    private Set<MedicinskaSestra> listaSestara = new HashSet<>();
 
     @Transient
     private Set<Pregled> listaPregleda = new HashSet<>();
@@ -58,9 +73,14 @@ public class Pacijent {
     private Karton zdravstveniKarton;
     @Transient
     private Set<Klinika> klinika = new HashSet<>();
-    @Transient
-    private Set<Lekar> listaLekara = new HashSet<>();
-    @Transient
-    private Set<MedicinskaSestra> listaSestara = new HashSet<>();
 
+
+
+    public void dodajLekara(Lekar lekar){
+        this.listaLekara.add(lekar);
+    }
+
+    public void dodajMedicinskuSestru(MedicinskaSestra medicinskaSestra){
+        this.listaSestara.add(medicinskaSestra);
+    }
 }

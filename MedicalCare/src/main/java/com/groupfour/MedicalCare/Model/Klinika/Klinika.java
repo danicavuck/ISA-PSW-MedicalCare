@@ -10,13 +10,14 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
+@Entity
 @Table(name = DbTableConstants.KLINIKA)
 public class Klinika {
     @Id
@@ -33,13 +34,21 @@ public class Klinika {
     private float prosecnaOcena;
 
     // Za sada cemo ignorisati ostale podatke
-    @Transient
+    @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
     private Set<Lekar> listaLekara = new HashSet<>();
-    @Transient
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = DbColumnConstants.SALA_ID)
     private Set<Sala>  spisakSala = new HashSet<>();
+
     @Transient
     private OcenaKlinike oceneKlinike;
-    @Transient
+
+    @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
     private Set<AdminKlinike> adminiKlinike = new HashSet<>();
+
+    public void dodajAdminaKlinike(AdminKlinike adminKlinike){
+        this.adminiKlinike.add(adminKlinike);
+    }
 
 }

@@ -2,6 +2,7 @@ package com.groupfour.MedicalCare.Model.Osoblje;
 
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
+import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Zahtevi.Odsustvo;
@@ -36,9 +37,19 @@ public class Lekar {
     @Column(name = DbColumnConstants.LEKAR_PROSECNA_OCENA)
     private float prosecnaOcena;
 
-    // Za sada prazno
-    @Transient
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.LEKAR_KLINIKA)
+    private Klinika klinika;
+
+    @ManyToMany
+    @JoinTable(
+            name = DbTableConstants.LEKAR_PACIJENT,
+            joinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_PACIJENT_LEKAR),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_PACIJENT_PACIJENT)
+    )
     private Set<Pacijent> listaPacijenata = new HashSet<>();
+
+    // Za sada prazno
     @Transient
     private Set<Operacija> listaOperacija = new HashSet<>();
     @Transient
@@ -48,6 +59,8 @@ public class Lekar {
     @Transient
     private Set<OcenaLekara> oceneLekara = new HashSet<>();
 
-
-
+    public void dodajPacijenta(Pacijent pacijent){
+        this.listaPacijenata.add(pacijent);
+        pacijent.dodajLekara(this);
+    }
 }

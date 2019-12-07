@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  performCheck(){
+  async performCheck(){
     if(this.model.email == "" || this.model.lozinka == ""){
       alert("Polja ne smeju biti prazna");
       return false;

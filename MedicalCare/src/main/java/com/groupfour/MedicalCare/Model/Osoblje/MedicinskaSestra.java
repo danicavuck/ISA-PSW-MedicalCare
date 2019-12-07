@@ -29,8 +29,18 @@ public class MedicinskaSestra {
     private String prezime;
     @Column(name = DbColumnConstants.MEDICINSKA_SESTRA_LOZINKA)
     private String lozinka;
-    @Transient
+
+    @ManyToMany
+    @JoinTable(
+            name = DbTableConstants.MED_SESTRA_PACIJENT,
+            joinColumns = @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_SESTRA),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_PACIJENT)
+    )
     private Set<Pacijent> listaPacijenata = new HashSet<>();
 
+    public void dodajPacijenta(Pacijent pacijent){
+        this.listaPacijenata.add(pacijent);
+        pacijent.dodajMedicinskuSestru(this);
+    }
 
 }
