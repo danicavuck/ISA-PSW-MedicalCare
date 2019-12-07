@@ -2,11 +2,15 @@ package com.groupfour.MedicalCare.Model.Klinika;
 
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
+import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Zahtevi.Operacija;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,7 +33,10 @@ public class Sala {
     @Column(name = DbColumnConstants.SALA_BROJ_SALE)
     private int brojSale;
 
-    @Transient
-    private Operacija operacija;
+    @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL)
+    private Set<Operacija> operacije = new HashSet<>();
+
+    @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL)
+    private Set<Pregled> pregledi = new HashSet<>();
 
 }

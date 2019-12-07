@@ -2,6 +2,7 @@ package com.groupfour.MedicalCare.Model.Osoblje;
 
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
+import com.groupfour.MedicalCare.Model.Dokumenti.Recept;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
@@ -49,15 +50,36 @@ public class Lekar {
     )
     private Set<Pacijent> listaPacijenata = new HashSet<>();
 
-    // Za sada prazno
-    @Transient
+
+    @ManyToMany
+    @JoinTable(
+            name = DbTableConstants.LEKAR_OPERACIJA,
+            joinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.OPERACIJA_ID)
+    )
     private Set<Operacija> listaOperacija = new HashSet<>();
-    @Transient
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = DbTableConstants.LEKAR_PREGLED,
+            joinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.PREGLED_ID)
+    )
     private Set<Pregled> listaPregleda = new HashSet<>();
-    @Transient
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = DbTableConstants.LEKAR_ODSUSTVA,
+            joinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.ODSUSTVO_ID)
+    )
     private Set<Odsustvo> listaOdsusta = new HashSet<>();
-    @Transient
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lekar")
     private Set<OcenaLekara> oceneLekara = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lekar")
+    private Set<Recept> recepti = new HashSet<>();
 
     public void dodajPacijenta(Pacijent pacijent){
         this.listaPacijenata.add(pacijent);

@@ -1,68 +1,52 @@
 package com.groupfour.MedicalCare.Model.Zahtevi;
 
+import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
+import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
+import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Table(name = DbTableConstants.OPERACIJA)
 public class Operacija {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = DbColumnConstants.OPERACIJA_ID)
     private int id;
+    @Column(name = DbColumnConstants.OPERACIJA_TERMIN)
     private LocalDateTime terminOperacije;
+    @Column(name = DbColumnConstants.OPERACIJA_AKTIVNA)
+    private boolean aktivan;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.OPERACIJA_SALA)
     private Sala sala;
-    private Lekar lekar;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.OPERACIJA_PACIJENT)
     private Pacijent pacijent;
 
-    public Operacija(){}
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = DbTableConstants.LEKAR_OPERACIJA,
+            joinColumns = @JoinColumn(name = DbColumnConstants.OPERACIJA_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_ID)
+    )
+    private Set<Lekar> lekar = new HashSet<>();
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getTerminOperacije() {
-        return terminOperacije;
-    }
-
-    public void setTerminOperacije(LocalDateTime terminOperacije) {
-        this.terminOperacije = terminOperacije;
-    }
-
-    public Sala getSala() {
-        return sala;
-    }
-
-    public void setSala(Sala sala) {
-        this.sala = sala;
-    }
-
-    public Lekar getLekar() {
-        return lekar;
-    }
-
-    public void setLekar(Lekar lekar) {
-        this.lekar = lekar;
-    }
-
-    public Pacijent getPacijent() {
-        return pacijent;
-    }
-
-    public void setPacijent(Pacijent pacijent) {
-        this.pacijent = pacijent;
-    }
-
-    @Override
-    public String toString() {
-        return "Operacija{" +
-                "id=" + id +
-                ", terminOperacije=" + terminOperacije +
-                ", sala=" + sala +
-                ", lekar=" + lekar +
-                ", pacijent=" + pacijent +
-                '}';
-    }
 }

@@ -1,63 +1,47 @@
 package com.groupfour.MedicalCare.Model.Dokumenti;
 
+import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
+import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
+import lombok.*;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Entity
+@Table(name = DbTableConstants.KARTON)
 public class Karton {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = DbColumnConstants.KARTON_ID)
     private int id;
+    @Column(name = DbColumnConstants.KARTON_AKTIVAN)
+    private boolean aktivan;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "zdravstveniKarton")
     private Pacijent pacijet;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = DbTableConstants.KARTON_IZVESTAJI,
+            joinColumns = @JoinColumn(name = DbColumnConstants.KARTON_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.IZVESTAJ_O_PREGLEDU_ID)
+    )
     private Set<IzvestajOPregledu> izvestajiOPregledima = new HashSet<>();
-    private Set<SifarnikDijagnoza> istorijaBolesti= new HashSet<>();
 
-    public Karton() {}
-
-    public Karton(Pacijent pacijet, Set<IzvestajOPregledu> izvestajiOPregledima, Set<SifarnikDijagnoza> istorijaBolesti) {
-        this.pacijet = pacijet;
-        this.izvestajiOPregledima = izvestajiOPregledima;
-        this.istorijaBolesti = istorijaBolesti;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Pacijent getPacijet() {
-        return pacijet;
-    }
-
-    public void setPacijet(Pacijent pacijet) {
-        this.pacijet = pacijet;
-    }
-
-    public Set<IzvestajOPregledu> getIzvestajiOPregledima() {
-        return izvestajiOPregledima;
-    }
-
-    public void setIzvestajiOPregledima(Set<IzvestajOPregledu> izvestajiOPregledima) {
-        this.izvestajiOPregledima = izvestajiOPregledima;
-    }
-
-    public Set<SifarnikDijagnoza> getIstorijaBolesti() {
-        return istorijaBolesti;
-    }
-
-    public void setIstorijaBolesti(Set<SifarnikDijagnoza> istorijaBolesti) {
-        this.istorijaBolesti = istorijaBolesti;
-    }
-
-    @Override
-    public String toString() {
-        return "Karton{" +
-                "id=" + id +
-                ", pacijet=" + pacijet +
-                ", izvestajiOPregledima=" + izvestajiOPregledima +
-                ", istorijaBolesti=" + istorijaBolesti +
-                '}';
-    }
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = DbTableConstants.KARTON_DIJAGNOZE,
+            joinColumns = @JoinColumn(name = DbColumnConstants.KARTON_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.SIFARNIK_DIJAGNOZA_ID)
+    )
+    private Set<SifarnikDijagnoza> istorijaBolesti = new HashSet<>();
 }

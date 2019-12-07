@@ -1,73 +1,39 @@
 package com.groupfour.MedicalCare.Model.Dokumenti;
 
+import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
+import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
+import lombok.*;
 
+import javax.persistence.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Entity
+@Table(name = DbTableConstants.RECEPT)
 public class Recept {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = DbColumnConstants.RECEPT_ID)
     private int id;
-    private MedicinskaSestra medicinskaSestra;
-    private Lekar lekar;
+    @Column(name = DbColumnConstants.RECEPT_OVEREN)
     private boolean overeno = false;
+    @Column(name = DbColumnConstants.RECEPT_ID_LEKA)
     private String idLeka;
+    @Column(name = DbColumnConstants.RECEPT_AKTIVAN)
+    private boolean aktivan = true;
 
-    public Recept() {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.RECEPT_MEDICINSKA_SESTRA)
+    private MedicinskaSestra medicinskaSestra;
 
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Recept(MedicinskaSestra medicinskaSestra, Lekar lekar, String idLeka) {
-        this.medicinskaSestra = medicinskaSestra;
-        this.lekar = lekar;
-        this.idLeka = idLeka;
-    }
-
-    public String getIdLeka() {
-        return idLeka;
-    }
-
-    public void setIdLeka(String idLeka) {
-        this.idLeka = idLeka;
-    }
-
-    public MedicinskaSestra getMedicinskaSestra() {
-        return medicinskaSestra;
-    }
-
-    public void setMedicinskaSestra(MedicinskaSestra medicinskaSestra) {
-        this.medicinskaSestra = medicinskaSestra;
-    }
-
-    public Lekar getLekar() {
-        return lekar;
-    }
-
-    public void setLekar(Lekar lekar) {
-        this.lekar = lekar;
-    }
-
-    public boolean isOvereno() {
-        return overeno;
-    }
-
-    public void setOvereno(boolean overeno) {
-        this.overeno = overeno;
-    }
-
-    @Override
-    public String toString() {
-        return "Recept{" +
-                "id=" + id +
-                ", medicinskaSestra=" + medicinskaSestra +
-                ", lekar=" + lekar +
-                ", overeno=" + overeno +
-                ", idLeka='" + idLeka + '\'' +
-                '}';
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.RECEPT_LEKAR)
+    private Lekar lekar;
 }

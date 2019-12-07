@@ -4,8 +4,10 @@ import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Dokumenti.Karton;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
+import com.groupfour.MedicalCare.Model.Klinika.OcenaKlinike;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
+import com.groupfour.MedicalCare.Model.Osoblje.OcenaLekara;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Zahtevi.Operacija;
 import lombok.*;
@@ -65,16 +67,29 @@ public class Pacijent {
     )
     private Set<MedicinskaSestra> listaSestara = new HashSet<>();
 
-    @Transient
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pacijent")
     private Set<Pregled> listaPregleda = new HashSet<>();
-    @Transient
+
+    @OneToMany(mappedBy = "pacijent")
     private Set<Operacija> listaOperacija = new HashSet<>();
-    @Transient
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.PACIJENT_KARTON)
     private Karton zdravstveniKarton;
-    @Transient
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = DbTableConstants.PACIJENT_KLINIKA,
+            joinColumns = @JoinColumn(name = DbColumnConstants.PACIJENT_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID)
+    )
     private Set<Klinika> klinika = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pacijent")
+    private Set<OcenaLekara> oceneLekara = new HashSet<>();
 
+    @OneToMany(mappedBy = "pacijent")
+    private Set<OcenaKlinike> oceneKlinike = new HashSet<>();
 
     public void dodajLekara(Lekar lekar){
         this.listaLekara.add(lekar);

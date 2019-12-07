@@ -3,6 +3,7 @@ package com.groupfour.MedicalCare.Model.Osoblje;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
+import com.groupfour.MedicalCare.Model.Zahtevi.Odsustvo;
 import lombok.*;
 
 import javax.persistence.*;
@@ -37,6 +38,14 @@ public class MedicinskaSestra {
             inverseJoinColumns = @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_PACIJENT)
     )
     private Set<Pacijent> listaPacijenata = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = DbTableConstants.MED_SESTRA_ODSUSTVA,
+            joinColumns = @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.ODSUSTVO_ID)
+    )
+    private Set<Odsustvo> listaOdsustva = new HashSet<>();
 
     public void dodajPacijenta(Pacijent pacijent){
         this.listaPacijenata.add(pacijent);

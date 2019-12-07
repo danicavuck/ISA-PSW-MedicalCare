@@ -12,6 +12,7 @@ public final class DbColumnConstants {
     public static final String PACIJENT_DRZAVA = "drzava";
     public static final String PACIJENT_TELEFON = "telefon";
     public static final String PACIJENT_BROJOSIGURANJA = "broj_osiguranja";
+    public static final String PACIJENT_KARTON = "karton_id";
 
     // admin_kc
     public static final String ADMIN_KC_ID = "id_admin_kc";
@@ -101,7 +102,70 @@ public final class DbColumnConstants {
     public static final String MEDICINSKA_SESTRA_SESTRA = "med_sestra_id";
     public static final String MEDICINSKA_SESTRA_PACIJENT = "pacijent_id";
 
+    // Izvestaj o pregledu
+    public static final String IZVESTAJ_O_PREGLEDU_ID = "izvestaj_o_pregledu_id";
+    public static final String IZVESTAJ_O_PREGLEDU_INFORMACIJE = "informacije";
+    public static final String IZVESTAJ_O_PREGLEDU_AKTIVAN = "aktivan";
+    public static final String IZVESTAJ_O_PREGLEDU_DIJAGNOZA = "dijagnoza_id";
+    public static final String IZVESTAJ_O_PREGLEDU_LEK = "sifarnik_lekova_id";
 
+    // Recept
+    public static final String RECEPT_ID = "recept_id";
+    public static final String RECEPT_ID_LEKA = "id_leka";
+    public static final String RECEPT_OVEREN = "oeveren";
+    public static final String RECEPT_AKTIVAN = "recept_aktivan";
+    public static final String RECEPT_MEDICINSKA_SESTRA = "med_sestra_id";
+    public static final String RECEPT_LEKAR = "lekar_id";
+
+    // Operacija
+    public static final String OPERACIJA_ID = "id_operacija";
+    public static final String OPERACIJA_TERMIN = "termin";
+    public static final String OPERACIJA_AKTIVNA = "aktivna";
+    public static final String OPERACIJA_SALA = "sala";
+    public static final String OPERACIJA_PACIJENT = "pacijent";
+
+    // Odsustvo
+    public static final String ODSUSTVO_ID = "id_odsustva";
+    public static final String ODSUSTVO_POCETAK = "pocetak_odsustva";
+    public static final String ODSUSTVO_KRAJ = "kraj_odsustva";
+    public static final String ODSUSTVO_ODOBRRENO = "odobreno";
+    public static final String ODSUSTVO_AKTIVNO = "aktivno";
+
+    // Tip pregleda
+    public static final String TIP_PREGLEDA_ID = "tip_pregleda_id";
+    public static final String TIP_PREGLEDA_PREDEFINISAN = "predefinisan";
+    public static final String TIP_PREGLEDA_TEKST = "tip_pregleda";
+    public static final String TIP_PREGLEDA_AKTIVAN = "aktivan";
+
+    // Pregled
+    public static final String PREGLED_ID = "pregled_id";
+    public static final String PREGLED_TERMIN = "termin";
+    public static final String PREGLED_TRAJANJE = "trajanje";
+    public static final String PREGLED_CENA = "cena";
+    public static final String PREGLED_POPUST = "popust";
+    public static final String PREGLED_AKTIVAN = "aktivan";
+    public static final String PREGLED_SALA = "sala";
+    public static final String PREGLED_IZVESTAJ = "id_izvestaja";
+    public static final String PREGLED_TIP_PREGLEDA = "tip_id";
+    public static final String PREGLED_PACIJENT = "pacijent_id";
+
+    // Ocena Lekara
+    public static final String OCENA_LEKARA_ID = "ocena_id";
+    public static final String OCENA_LEKARA_OCENA = "ocena";
+    public static final String OCENA_LEKARA_AKTIVAN = "aktivna";
+    public static final String OCENA_LEKARA_ID_LEKARA = "lekar_id";
+    public static final String OCENA_LEKARA_ID_PACIJENTA = "pacijent_id";
+
+    // Ocena klinike
+    public static final String OCENA_KLINIKE_ID = "ocena_id";
+    public static final String OCENA_KLINIKE_OCENA = "ocena";
+    public static final String OCENA_KLINIKE_AKTIVAN = "aktivan";
+    public static final String OCENA_KLINIKE_KLINIKA = "klinika_id";
+    public static final String OCENA_KLINIKE_PACIJENT = "pacijent_id";
+
+    // Karton
+    public static final String KARTON_ID = "karton_id";
+    public static final String KARTON_AKTIVAN = "aktivan";
 
 
     private DbColumnConstants(){

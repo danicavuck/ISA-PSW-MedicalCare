@@ -1,38 +1,31 @@
 package com.groupfour.MedicalCare.Model.Pregled;
+import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
+import com.groupfour.MedicalCare.Common.db.DbTableConstants;
+import lombok.*;
+
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Table(name = DbTableConstants.TIP_PREGLEDA)
 public class TipPregleda {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = DbColumnConstants.TIP_PREGLEDA_ID)
     private int id;
-    private Set<String> tipoviPregleda = new HashSet<>();
-
-    public TipPregleda() {
-
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Set<String> getTipoviPregleda() {
-        return tipoviPregleda;
-    }
-
-    public void setTipoviPregleda(Set<String> tipoviPregleda) {
-        this.tipoviPregleda = tipoviPregleda;
-    }
-
-    @Override
-    public String toString() {
-        return "TipPregleda{" +
-                "id=" + id +
-                ", tipoviPregleda=" + tipoviPregleda +
-                '}';
-    }
-
+    @Column(name = DbColumnConstants.TIP_PREGLEDA_PREDEFINISAN)
+    private boolean predefinisan;
+    @Column(name = DbColumnConstants.TIP_PREGLEDA_AKTIVAN)
+    private boolean aktivan;
+    @Column(name = DbColumnConstants.TIP_PREGLEDA_TEKST)
+    private String tipPregleda;
 
 }

@@ -1,111 +1,66 @@
 package com.groupfour.MedicalCare.Model.Pregled;
 
+import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
+import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Dokumenti.IzvestajOPregledu;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
+import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
+import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
-
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Table(name = DbTableConstants.PREGLED)
 public class Pregled {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = DbColumnConstants.PREGLED_ID)
     private int id;
+    @Column(name = DbColumnConstants.PREGLED_TERMIN)
     private LocalDateTime terminPregleda;
-    private String tipPregleda;
+    @Column(name = DbColumnConstants.PREGLED_TRAJANJE)
     private String trajanjePregleda;
-    private Sala sala;
-    private Lekar lekar;
+    @Column(name = DbColumnConstants.PREGLED_CENA)
     private int cena;
-    private IzvestajOPregledu izvestajOPregledu;
+    @Column(name = DbColumnConstants.PREGLED_POPUST)
     private int popust;
+    @Column(name = DbColumnConstants.PREGLED_AKTIVAN)
+    private boolean aktivan;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.PREGLED_SALA)
+    private Sala sala;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.PREGLED_TIP_PREGLEDA)
+    private TipPregleda tipPregleda;
 
 
-    public Pregled() {
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = DbTableConstants.LEKAR_PREGLED,
+            joinColumns = @JoinColumn(name = DbColumnConstants.PREGLED_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_ID)
+    )
+    private Set<Lekar> lekari = new HashSet<>();
 
-    }
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.PREGLED_IZVESTAJ)
+    private IzvestajOPregledu izvestajOPregledu;
 
-    public int getPopust() {
-        return popust;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.PREGLED_PACIJENT)
+    private Pacijent pacijent;
 
-    public void setPopust(int popust) {
-        this.popust = popust;
-    }
-
-    public IzvestajOPregledu getIzvestajOPregledu() {
-        return izvestajOPregledu;
-    }
-
-    public void setIzvestajOPregledu(IzvestajOPregledu izvestajOPregledu) {
-        this.izvestajOPregledu = izvestajOPregledu;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTipPregleda() {
-        return tipPregleda;
-    }
-
-    public void setTipPregleda(String tipPregleda) {
-        this.tipPregleda = tipPregleda;
-    }
-
-    public String getTrajanjePregleda() {
-        return trajanjePregleda;
-    }
-
-    public void setTrajanjePregleda(String trajanjePregleda) {
-        this.trajanjePregleda = trajanjePregleda;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public LocalDateTime getTerminPregleda() {
-        return terminPregleda;
-    }
-
-    public void setTerminPregleda(LocalDateTime terminPregleda) {
-        this.terminPregleda = terminPregleda;
-    }
-
-    public Sala getSala() {
-        return sala;
-    }
-
-    public void setSala(Sala sala) {
-        this.sala = sala;
-    }
-
-    public Lekar getLekar() {
-        return lekar;
-    }
-
-    public void setLekar(Lekar lekar) {
-        this.lekar = lekar;
-    }
-
-    public int getCena() {
-        return cena;
-    }
-
-    public void setCena(int cena) {
-        this.cena = cena;
-    }
-
-    @Override
-    public String toString() {
-        return "Pregled{" +
-                "id=" + id +
-                ", terminPregleda=" + terminPregleda +
-                ", tipPregleda=" + tipPregleda +
-                ", trajanjePregleda='" + trajanjePregleda + '\'' +
-                ", sala=" + sala +
-                ", lekar=" + lekar +
-                ", cena=" + cena +
-                ", izvestajOPregledu=" + izvestajOPregledu +
-                '}';
-    }
 }

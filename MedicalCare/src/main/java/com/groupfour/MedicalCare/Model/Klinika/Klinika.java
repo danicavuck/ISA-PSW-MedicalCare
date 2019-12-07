@@ -4,6 +4,7 @@ import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
+import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,7 +34,6 @@ public class Klinika {
     @Column(name = DbColumnConstants.KLINIKA_PROSECNA_OCENA)
     private float prosecnaOcena;
 
-    // Za sada cemo ignorisati ostale podatke
     @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
     private Set<Lekar> listaLekara = new HashSet<>();
 
@@ -41,11 +41,19 @@ public class Klinika {
     @JoinColumn(name = DbColumnConstants.SALA_ID)
     private Set<Sala>  spisakSala = new HashSet<>();
 
-    @Transient
-    private OcenaKlinike oceneKlinike;
+    @OneToMany(mappedBy = "klinika")
+    private Set<OcenaKlinike> oceneKlinike;
 
     @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
     private Set<AdminKlinike> adminiKlinike = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = DbTableConstants.PACIJENT_KLINIKA,
+            joinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.PACIJENT_ID)
+    )
+    private Set<Pacijent> pacijenti = new HashSet<>();
 
     public void dodajAdminaKlinike(AdminKlinike adminKlinike){
         this.adminiKlinike.add(adminKlinike);

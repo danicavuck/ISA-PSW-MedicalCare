@@ -28,16 +28,25 @@
         </property>
 
         <!-- Mapping classes -->
-<!--        <mapping class="com.groupfour.MedicalCare.Model.HibernateUtil"/>-->
-        <mapping class="com.groupfour.MedicalCare.Model.Pacijent.Pacijent"/>
         <mapping class="com.groupfour.MedicalCare.Model.Administrator.AdminKlinickogCentra"/>
-        <mapping class="com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Administrator.AdminKlinike"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Dokumenti.IzvestajOPregledu"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Dokumenti.Karton"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Dokumenti.Recept"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Dokumenti.SifarnikDijagnoza"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Dokumenti.SifarnikLekova"/>
         <mapping class="com.groupfour.MedicalCare.Model.Klinika.Klinika"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Klinika.OcenaKlinike"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Klinika.Sala"/>
         <mapping class="com.groupfour.MedicalCare.Model.Osoblje.Lekar"/>
         <mapping class="com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra"/>
-        <mapping class="com.groupfour.MedicalCare.Model.Klinika.Sala"/>
-        <mapping class="com.groupfour.MedicalCare.Model.Administrator.AdminKlinike"/>
-
+        <mapping class="com.groupfour.MedicalCare.Model.Osoblje.OcenaLekara"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Pacijent.Pacijent"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Pregled.Pregled"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Pregled.TipPregleda"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Zahtevi.Odsustvo"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Zahtevi.Operacija"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta"/>
 
     </session-factory>
 </hibernate-configuration>
