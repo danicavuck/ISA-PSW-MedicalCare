@@ -36,13 +36,14 @@ public class IzvestajOPregledu {
     )
     private Set<Recept> recepti = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = DbColumnConstants.IZVESTAJ_O_PREGLEDU_DIJAGNOZA)
     private SifarnikDijagnoza sifarnikDijagnoza;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = DbColumnConstants.IZVESTAJ_O_PREGLEDU_LEK)
     private SifarnikLekova sifarnikLekova;
+
 
 
 }

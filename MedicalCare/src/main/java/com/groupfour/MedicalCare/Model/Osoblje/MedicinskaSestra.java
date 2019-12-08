@@ -2,6 +2,8 @@ package com.groupfour.MedicalCare.Model.Osoblje;
 
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
+import com.groupfour.MedicalCare.Model.Dokumenti.Recept;
+import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Zahtevi.Odsustvo;
 import lombok.*;
@@ -31,6 +33,10 @@ public class MedicinskaSestra {
     @Column(name = DbColumnConstants.MEDICINSKA_SESTRA_LOZINKA)
     private String lozinka;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_KLINIKA)
+    private Klinika klinika;
+
     @ManyToMany
     @JoinTable(
             name = DbTableConstants.MED_SESTRA_PACIJENT,
@@ -47,9 +53,19 @@ public class MedicinskaSestra {
     )
     private Set<Odsustvo> listaOdsustva = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "medicinskaSestra", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    private Set<Recept> recepti = new HashSet<>();
+
+
     public void dodajPacijenta(Pacijent pacijent){
         this.listaPacijenata.add(pacijent);
-        pacijent.dodajMedicinskuSestru(this);
+        pacijent.getListaSestara().add(this);
     }
+
+    public void dodajRecept(Recept recept){
+        this.recepti.add(recept);
+        recept.setMedicinskaSestra(this);
+    }
+
 
 }

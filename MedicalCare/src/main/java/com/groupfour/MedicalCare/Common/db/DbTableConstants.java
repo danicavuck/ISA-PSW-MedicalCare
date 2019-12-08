@@ -31,6 +31,7 @@ public final class DbTableConstants {
     public static final String IZVESTAJ_RECEPT = "izvestaj_recept";
     public static final String LEKAR_ODSUSTVA = "lekar_odsustva";
     public static final String MED_SESTRA_ODSUSTVA = "med_sestra_odsusutva";
+    public static final String KLINIKA_SALA = "klinika_sala";
 
     private DbTableConstants(){
 

@@ -8,6 +8,7 @@ import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
+import com.groupfour.MedicalCare.Utill.PasswordCheck;
 import org.hibernate.Session;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,12 +27,18 @@ public class MedicalCareApplication {
     }
 
     public static void testiranjeBaze() {
-        Sala sala = Sala.builder().zauzeta(false).pocetakTermina(null).krajTermina(null).brojSale(101).build();
+        //Sala sala = Sala.builder().zauzeta(false).pocetakTermina(null).krajTermina(null).brojSale(101).build();
+        AdminKlinickogCentra adminKlinickogCentra = AdminKlinickogCentra.builder().email("petar.kovacevic0088@gmail.com")
+                .ime("Nikola").prezime("Nikolic").lozinka(PasswordCheck.hash("000000")).aktivan(true).prviPutLogovan(true).build();
+
+
+
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         if (session.isOpen()) {
             session.beginTransaction();
 
-            session.save(sala);
+            session.save(adminKlinickogCentra);
+            //session.save(sala);
 
             session.getTransaction().commit();
             session.close();

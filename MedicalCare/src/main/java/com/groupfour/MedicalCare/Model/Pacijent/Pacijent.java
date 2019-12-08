@@ -67,17 +67,17 @@ public class Pacijent {
     )
     private Set<MedicinskaSestra> listaSestara = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pacijent")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pacijent", cascade = CascadeType.ALL)
     private Set<Pregled> listaPregleda = new HashSet<>();
 
-    @OneToMany(mappedBy = "pacijent")
+    @OneToMany(mappedBy = "pacijent", cascade = CascadeType.ALL)
     private Set<Operacija> listaOperacija = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = DbColumnConstants.PACIJENT_KARTON)
     private Karton zdravstveniKarton;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = DbTableConstants.PACIJENT_KLINIKA,
             joinColumns = @JoinColumn(name = DbColumnConstants.PACIJENT_ID),
@@ -88,14 +88,12 @@ public class Pacijent {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pacijent")
     private Set<OcenaLekara> oceneLekara = new HashSet<>();
 
-    @OneToMany(mappedBy = "pacijent")
+    @OneToMany(mappedBy = "pacijent", cascade = CascadeType.ALL)
     private Set<OcenaKlinike> oceneKlinike = new HashSet<>();
 
-    public void dodajLekara(Lekar lekar){
-        this.listaLekara.add(lekar);
-    }
 
-    public void dodajMedicinskuSestru(MedicinskaSestra medicinskaSestra){
-        this.listaSestara.add(medicinskaSestra);
+    public void dodajKarton(Karton karton){
+        this.zdravstveniKarton = karton;
+        karton.setPacijet(this);
     }
 }

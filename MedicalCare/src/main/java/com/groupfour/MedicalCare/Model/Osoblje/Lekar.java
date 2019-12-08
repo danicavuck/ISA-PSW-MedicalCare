@@ -38,7 +38,7 @@ public class Lekar {
     @Column(name = DbColumnConstants.LEKAR_PROSECNA_OCENA)
     private float prosecnaOcena;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = DbColumnConstants.LEKAR_KLINIKA)
     private Klinika klinika;
 
@@ -51,7 +51,7 @@ public class Lekar {
     private Set<Pacijent> listaPacijenata = new HashSet<>();
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = DbTableConstants.LEKAR_OPERACIJA,
             joinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_ID),
@@ -59,7 +59,7 @@ public class Lekar {
     )
     private Set<Operacija> listaOperacija = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = DbTableConstants.LEKAR_PREGLED,
             joinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_ID),
@@ -75,14 +75,36 @@ public class Lekar {
     )
     private Set<Odsustvo> listaOdsusta = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lekar")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lekar", cascade = CascadeType.ALL)
     private Set<OcenaLekara> oceneLekara = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lekar")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lekar", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Recept> recepti = new HashSet<>();
 
     public void dodajPacijenta(Pacijent pacijent){
         this.listaPacijenata.add(pacijent);
-        pacijent.dodajLekara(this);
+        pacijent.getListaLekara().add(this);
     }
+
+    public void dodajRecept(Recept recept){
+        this.recepti.add(recept);
+        recept.setLekar(this);
+    }
+
+    public void dodajOperaciju(Operacija operacija){
+        this.listaOperacija.add(operacija);
+        operacija.getLekar().add(this);
+    }
+
+    public void dodajPregled(Pregled pregled){
+        this.listaPregleda.add(pregled);
+        pregled.getLekari().add(this);
+    }
+
+    public void dodajOcenuLekara(OcenaLekara ocenaLekara){
+        this.oceneLekara.add(ocenaLekara);
+        ocenaLekara.setLekar(this);
+    }
+
+
 }

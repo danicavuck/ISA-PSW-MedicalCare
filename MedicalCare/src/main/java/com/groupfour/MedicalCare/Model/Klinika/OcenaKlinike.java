@@ -26,11 +26,11 @@ public class OcenaKlinike {
     @Column(name = DbColumnConstants.OCENA_KLINIKE_AKTIVAN)
     private boolean aktivan;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = DbColumnConstants.OCENA_KLINIKE_KLINIKA)
     private Klinika klinika;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = DbColumnConstants.OCENA_KLINIKE_PACIJENT)
     private Pacijent pacijent;
 

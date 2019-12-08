@@ -26,10 +26,10 @@ public class Karton {
     @Column(name = DbColumnConstants.KARTON_AKTIVAN)
     private boolean aktivan;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "zdravstveniKarton")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "zdravstveniKarton", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private Pacijent pacijet;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             name = DbTableConstants.KARTON_IZVESTAJI,
             joinColumns = @JoinColumn(name = DbColumnConstants.KARTON_ID),
@@ -37,7 +37,7 @@ public class Karton {
     )
     private Set<IzvestajOPregledu> izvestajiOPregledima = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             name = DbTableConstants.KARTON_DIJAGNOZE,
             joinColumns = @JoinColumn(name = DbColumnConstants.KARTON_ID),

@@ -29,11 +29,11 @@ public class Recept {
     @Column(name = DbColumnConstants.RECEPT_AKTIVAN)
     private boolean aktivan = true;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = DbColumnConstants.RECEPT_MEDICINSKA_SESTRA)
     private MedicinskaSestra medicinskaSestra;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = DbColumnConstants.RECEPT_LEKAR)
     private Lekar lekar;
 }

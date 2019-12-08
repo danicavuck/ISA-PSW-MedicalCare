@@ -34,13 +34,13 @@ public class AdminKlinike {
     @Column(name = DbColumnConstants.ADMIN_KLINIKE_PRVO_LOGOVANJE)
     private boolean prviPutLogovan = true;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = DbColumnConstants.ADMIN_KLINIKE_KLINIKA)
     private Klinika klinika;
 
     public void dodajKliniku(Klinika k){
         this.klinika = k;
-        k.dodajAdminaKlinike(this);
+        k.getAdminiKlinike().add(this);
     }
 
 }

@@ -55,11 +55,11 @@ public class Pregled {
     )
     private Set<Lekar> lekari = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = DbColumnConstants.PREGLED_IZVESTAJ)
     private IzvestajOPregledu izvestajOPregledu;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = DbColumnConstants.PREGLED_PACIJENT)
     private Pacijent pacijent;
 

@@ -2,6 +2,7 @@ package com.groupfour.MedicalCare.Common.db;
 
 public final class DbColumnConstants {
     // pacijent
+    // karton se dodaje iz pacijenta, ne obratno
     public static final String PACIJENT_ID = "id_pacijent";
     public static final String PACIJENT_EMAIL = "email";
     public static final String PACIJENT_LOZINKA = "lozinka";
@@ -48,6 +49,7 @@ public final class DbColumnConstants {
     public static final String KLINIKA_ADMINI_KLINIKE = "admin_klinike";
 
     // Lekar
+    // Recept se dodaje iz lekara
     public static final String LEKAR_ID = "id_lekar";
     public static final String LEKAR_IME = "ime";
     public static final String LEKAR_PREZIME = "prezime";
@@ -62,6 +64,7 @@ public final class DbColumnConstants {
     public static final String MEDICINSKA_SESTRA_PREZIME = "prezime";
     public static final String MEDICINSKA_SESTRA_EMAIL = "email";
     public static final String MEDICINSKA_SESTRA_LOZINKA = "lozinka";
+    public static final String MEDICINSKA_SESTRA_KLINIKA = "id_klinike";
 
     // Sala
     public static final String SALA_ID = "id_sala";

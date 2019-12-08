@@ -4,6 +4,7 @@ import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
+import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import lombok.*;
 
@@ -37,17 +38,24 @@ public class Klinika {
     @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
     private Set<Lekar> listaLekara = new HashSet<>();
 
+    @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
+    private Set<MedicinskaSestra> listaSestara = new HashSet<>();
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = DbColumnConstants.SALA_ID)
+    @JoinTable(
+            name = DbTableConstants.KLINIKA_SALA,
+            joinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.SALA_ID)
+    )
     private Set<Sala>  spisakSala = new HashSet<>();
 
-    @OneToMany(mappedBy = "klinika")
+    @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
     private Set<OcenaKlinike> oceneKlinike;
 
     @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
     private Set<AdminKlinike> adminiKlinike = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinTable(
             name = DbTableConstants.PACIJENT_KLINIKA,
             joinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID),
@@ -55,8 +63,29 @@ public class Klinika {
     )
     private Set<Pacijent> pacijenti = new HashSet<>();
 
-    public void dodajAdminaKlinike(AdminKlinike adminKlinike){
-        this.adminiKlinike.add(adminKlinike);
+    public void dodajLekara(Lekar lekar){
+        this.listaLekara.add(lekar);
+        lekar.setKlinika(this);
+    }
+
+    public void dodajMedicinskuSestru(MedicinskaSestra sestra){
+        this.listaSestara.add(sestra);
+        sestra.setKlinika(this);
+    }
+
+    public void dodajSalu(Sala sala){
+        this.spisakSala.add(sala);
+        sala.setKlinika(this);
+    }
+
+    public void dodajOcenuKlinike(OcenaKlinike ocenaKlinike){
+        this.oceneKlinike.add(ocenaKlinike);
+        ocenaKlinike.setKlinika(this);
+    }
+
+    public void dodajPacijenta(Pacijent p){
+        this.getPacijenti().add(p);
+        p.getKlinika().add(this);
     }
 
 }

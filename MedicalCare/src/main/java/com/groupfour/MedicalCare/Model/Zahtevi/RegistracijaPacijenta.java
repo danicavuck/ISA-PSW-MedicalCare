@@ -50,10 +50,4 @@ public class RegistracijaPacijenta {
     @JoinColumn(name = DbColumnConstants.REGISTRACIJA_ADMIN_KC)
     private AdminKlinickogCentra adminKlinickogCentra;
 
-
-
-    public void setAdminKlinickogCentra(AdminKlinickogCentra adminKlinickogCentra) {
-        this.adminKlinickogCentra = adminKlinickogCentra;
-    }
-
 }
