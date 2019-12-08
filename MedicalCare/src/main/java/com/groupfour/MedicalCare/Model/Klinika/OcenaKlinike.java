@@ -1,62 +1,37 @@
 package com.groupfour.MedicalCare.Model.Klinika;
 
+import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
+import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
+import lombok.*;
 
+import javax.persistence.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Entity
+@Table(name = DbTableConstants.OCENA_KLINIKE)
 public class OcenaKlinike {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = DbColumnConstants.OCENA_KLINIKE_ID)
     private int id;
-    private Klinika klinika;
-    private Pacijent pacijent;
+    @Column(name = DbColumnConstants.OCENA_KLINIKE_OCENA)
     private int ocena;
+    @Column(name = DbColumnConstants.OCENA_KLINIKE_AKTIVAN)
+    private boolean aktivan;
 
-    public OcenaKlinike(){
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = DbColumnConstants.OCENA_KLINIKE_KLINIKA)
+    private Klinika klinika;
 
-    }
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = DbColumnConstants.OCENA_KLINIKE_PACIJENT)
+    private Pacijent pacijent;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public OcenaKlinike(Klinika klinika, Pacijent pacijent, int ocena) {
-        this.klinika = klinika;
-        this.pacijent = pacijent;
-        this.ocena = ocena;
-    }
-
-    public Klinika getKlinika() {
-        return klinika;
-    }
-
-    public void setKlinika(Klinika klinika) {
-        this.klinika = klinika;
-    }
-
-    public Pacijent getPacijent() {
-        return pacijent;
-    }
-
-    public void setPacijent(Pacijent pacijent) {
-        this.pacijent = pacijent;
-    }
-
-    public int getOcena() {
-        return ocena;
-    }
-
-    public void setOcena(int ocena) {
-        this.ocena = ocena;
-    }
-
-    @Override
-    public String toString() {
-        return "OcenaKlinike{" +
-                "id=" + id +
-                ", klinika=" + klinika +
-                ", pacijent=" + pacijent +
-                ", ocena=" + ocena +
-                '}';
-    }
 }

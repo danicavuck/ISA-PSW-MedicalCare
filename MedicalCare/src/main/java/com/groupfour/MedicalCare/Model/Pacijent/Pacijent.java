@@ -4,8 +4,10 @@ import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Dokumenti.Karton;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
+import com.groupfour.MedicalCare.Model.Klinika.OcenaKlinike;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
+import com.groupfour.MedicalCare.Model.Osoblje.OcenaLekara;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Zahtevi.Operacija;
 import lombok.*;
@@ -47,20 +49,51 @@ public class Pacijent {
     private String brojOsiguranja;
 
 
-    @Transient
-    private String lozinkaPonovo;
 
-    @Transient
-    private Set<Pregled> listaPregleda = new HashSet<>();
-    @Transient
-    private Set<Operacija> listaOperacija = new HashSet<>();
-    @Transient
-    private Karton zdravstveniKarton;
-    @Transient
-    private Set<Klinika> klinika = new HashSet<>();
-    @Transient
+    @ManyToMany
+    @JoinTable(
+            name = DbTableConstants.LEKAR_PACIJENT,
+            joinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_PACIJENT_PACIJENT),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_PACIJENT_LEKAR)
+    )
     private Set<Lekar> listaLekara = new HashSet<>();
-    @Transient
+
+
+    @ManyToMany
+    @JoinTable(
+            name = DbTableConstants.MED_SESTRA_PACIJENT,
+            joinColumns = @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_PACIJENT),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_SESTRA)
+    )
     private Set<MedicinskaSestra> listaSestara = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pacijent", cascade = CascadeType.ALL)
+    private Set<Pregled> listaPregleda = new HashSet<>();
+
+    @OneToMany(mappedBy = "pacijent", cascade = CascadeType.ALL)
+    private Set<Operacija> listaOperacija = new HashSet<>();
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = DbColumnConstants.PACIJENT_KARTON)
+    private Karton zdravstveniKarton;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = DbTableConstants.PACIJENT_KLINIKA,
+            joinColumns = @JoinColumn(name = DbColumnConstants.PACIJENT_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID)
+    )
+    private Set<Klinika> klinika = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pacijent")
+    private Set<OcenaLekara> oceneLekara = new HashSet<>();
+
+    @OneToMany(mappedBy = "pacijent", cascade = CascadeType.ALL)
+    private Set<OcenaKlinike> oceneKlinike = new HashSet<>();
+
+
+    public void dodajKarton(Karton karton){
+        this.zdravstveniKarton = karton;
+        karton.setPacijet(this);
+    }
 }

@@ -1,61 +1,38 @@
 package com.groupfour.MedicalCare.Model.Osoblje;
 
+import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
+import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
+import lombok.*;
 
+import javax.persistence.*;
+
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Table(name = DbTableConstants.OCENA_LEKARA)
 public class OcenaLekara {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = DbColumnConstants.OCENA_LEKARA_ID)
     private int id;
-    private Lekar lekar;
-    private Pacijent pacijent;
+    @Column(name = DbColumnConstants.OCENA_LEKARA_OCENA)
     private int ocena;
+    @Column(name = DbColumnConstants.OCENA_LEKARA_AKTIVAN)
+    private boolean aktivan;
 
-    public OcenaLekara() {
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.OCENA_LEKARA_ID_LEKARA)
+    private Lekar lekar;
 
-    public OcenaLekara(Lekar lekar, Pacijent pacijent, int ocena) {
-        this.lekar = lekar;
-        this.pacijent = pacijent;
-        this.ocena = ocena;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.OCENA_LEKARA_ID_PACIJENTA)
+    private Pacijent pacijent;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Lekar getLekar() {
-        return lekar;
-    }
-
-    public void setLekar(Lekar lekar) {
-        this.lekar = lekar;
-    }
-
-    public Pacijent getPacijent() {
-        return pacijent;
-    }
-
-    public void setPacijent(Pacijent pacijent) {
-        this.pacijent = pacijent;
-    }
-
-    public int getOcena() {
-        return ocena;
-    }
-
-    public void setOcena(int ocena) {
-        this.ocena = ocena;
-    }
-
-    @Override
-    public String toString() {
-        return "OcenaLekara{" +
-                "id=" + id +
-                ", lekar=" + lekar +
-                ", pacijent=" + pacijent +
-                ", ocena=" + ocena +
-                '}';
-    }
 }

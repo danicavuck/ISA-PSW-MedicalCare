@@ -4,19 +4,22 @@ import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
+import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
+import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
+@Entity
 @Table(name = DbTableConstants.KLINIKA)
 public class Klinika {
     @Id
@@ -32,14 +35,57 @@ public class Klinika {
     @Column(name = DbColumnConstants.KLINIKA_PROSECNA_OCENA)
     private float prosecnaOcena;
 
-    // Za sada cemo ignorisati ostale podatke
-    @Transient
+    @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
     private Set<Lekar> listaLekara = new HashSet<>();
-    @Transient
+
+    @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
+    private Set<MedicinskaSestra> listaSestara = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = DbTableConstants.KLINIKA_SALA,
+            joinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.SALA_ID)
+    )
     private Set<Sala>  spisakSala = new HashSet<>();
-    @Transient
-    private OcenaKlinike oceneKlinike;
-    @Transient
+
+    @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
+    private Set<OcenaKlinike> oceneKlinike;
+
+    @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
     private Set<AdminKlinike> adminiKlinike = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
+    @JoinTable(
+            name = DbTableConstants.PACIJENT_KLINIKA,
+            joinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID),
+            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.PACIJENT_ID)
+    )
+    private Set<Pacijent> pacijenti = new HashSet<>();
+
+    public void dodajLekara(Lekar lekar){
+        this.listaLekara.add(lekar);
+        lekar.setKlinika(this);
+    }
+
+    public void dodajMedicinskuSestru(MedicinskaSestra sestra){
+        this.listaSestara.add(sestra);
+        sestra.setKlinika(this);
+    }
+
+    public void dodajSalu(Sala sala){
+        this.spisakSala.add(sala);
+        sala.setKlinika(this);
+    }
+
+    public void dodajOcenuKlinike(OcenaKlinike ocenaKlinike){
+        this.oceneKlinike.add(ocenaKlinike);
+        ocenaKlinike.setKlinika(this);
+    }
+
+    public void dodajPacijenta(Pacijent p){
+        this.getPacijenti().add(p);
+        p.getKlinika().add(this);
+    }
 
 }

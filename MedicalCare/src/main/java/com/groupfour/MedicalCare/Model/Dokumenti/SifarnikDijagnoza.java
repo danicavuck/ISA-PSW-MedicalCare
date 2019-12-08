@@ -1,50 +1,31 @@
 package com.groupfour.MedicalCare.Model.Dokumenti;
 
+
+import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
+import com.groupfour.MedicalCare.Common.db.DbTableConstants;
+import lombok.*;
+
+import javax.persistence.*;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Table(name = DbTableConstants.SIFARNIK_DIJAGNOZA)
 public class SifarnikDijagnoza {
 
-    int id;
-    String kodBolesti;
-    String nazivBolesti;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = DbColumnConstants.SIFARNIK_DIJAGNOZA_ID)
+    private int id;
+    @Column(name = DbColumnConstants.SIFARNIK_DIJAGNOZA_KOD_BOLESTI)
+    private String kodBolesti;
+    @Column(name = DbColumnConstants.SIFARNIK_DIJAGNOZA_NAZIV_BOLESTI)
+    private String nazivBolesti;
+    @Column(name = DbColumnConstants.SIFARNIK_DIJAGNOZA_AKTIVAN)
+    private boolean aktivan = true;
 
-    public SifarnikDijagnoza(){
-
-    }
-
-    public SifarnikDijagnoza(String kodBolesti, String nazivBolesti) {
-        this.kodBolesti = kodBolesti;
-        this.nazivBolesti = nazivBolesti;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getKodBolesti() {
-        return kodBolesti;
-    }
-
-    public void setKodBolesti(String kodBolesti) {
-        this.kodBolesti = kodBolesti;
-    }
-
-    public String getNazivBolesti() {
-        return nazivBolesti;
-    }
-
-    public void setNazivBolesti(String nazivBolesti) {
-        this.nazivBolesti = nazivBolesti;
-    }
-
-    @Override
-    public String toString() {
-        return "SifarnikDijagnoza{" +
-                "id=" + id +
-                ", kodBolesti='" + kodBolesti + '\'' +
-                ", nazivBolesti='" + nazivBolesti + '\'' +
-                '}';
-    }
 }

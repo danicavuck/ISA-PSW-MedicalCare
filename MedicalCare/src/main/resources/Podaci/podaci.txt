@@ -11,6 +11,7 @@ Admin Klinickog Centra:
 
 Pacijenti:
 "bolestansam@gmail.com" : "111"
+"milance@gmail.com" : 000
 
 Lekari:
 "lekar@gmail.com" : "000"

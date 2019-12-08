@@ -1,73 +1,46 @@
 package com.groupfour.MedicalCare.Model.Administrator;
 
+import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
+import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
+import lombok.*;
 
+import javax.persistence.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Entity
+@Table(name = DbTableConstants.ADMIN_KLINIKE)
 public class AdminKlinike {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = DbColumnConstants.ADMIN_KLINIKE_ID)
+    private int id;
+    @Column(name = DbColumnConstants.ADMIN_KLINIKE_MEJL)
     private String email;
+    @Column(name = DbColumnConstants.ADMIN_KLINIKE_LOZINKA)
     private String lozinka;
+    @Column(name = DbColumnConstants.ADMIN_KLINIKE_IME)
     private String ime;
+    @Column(name = DbColumnConstants.ADMIN_KLINIKE_PREZIME)
     private String prezime;
+    @Column(name = DbColumnConstants.ADMIN_KLINIKE_AKTIVAN)
+    private boolean aktivan = true;
+    @Column(name = DbColumnConstants.ADMIN_KLINIKE_PRVO_LOGOVANJE)
+    private boolean prviPutLogovan = true;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = DbColumnConstants.ADMIN_KLINIKE_KLINIKA)
     private Klinika klinika;
 
-    public AdminKlinike() {
+    public void dodajKliniku(Klinika k){
+        this.klinika = k;
+        k.getAdminiKlinike().add(this);
     }
 
-    public AdminKlinike(String email, String lozinka, String ime, String prezime, Klinika klinika) {
-        this.email = email;
-        this.lozinka = lozinka;
-        this.ime = ime;
-        this.prezime = prezime;
-        this.klinika = klinika;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getLozinka() {
-        return lozinka;
-    }
-
-    public void setLozinka(String lozinka) {
-        this.lozinka = lozinka;
-    }
-
-    public String getIme() {
-        return ime;
-    }
-
-    public void setIme(String ime) {
-        this.ime = ime;
-    }
-
-    public String getPrezime() {
-        return prezime;
-    }
-
-    public void setPrezime(String prezime) {
-        this.prezime = prezime;
-    }
-
-    public Klinika getKlinika() {
-        return klinika;
-    }
-
-    public void setKlinika(Klinika klinika) {
-        this.klinika = klinika;
-    }
-
-    @Override
-    public String toString() {
-        return "AdminKlinike{" +
-                "email='" + email + '\'' +
-                ", lozinka='" + lozinka + '\'' +
-                ", ime='" + ime + '\'' +
-                ", prezime='" + prezime + '\'' +
-                ", klinika=" + klinika +
-                '}';
-    }
 }

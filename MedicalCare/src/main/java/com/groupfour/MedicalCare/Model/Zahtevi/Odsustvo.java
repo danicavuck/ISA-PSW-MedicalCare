@@ -1,53 +1,32 @@
 package com.groupfour.MedicalCare.Model.Zahtevi;
+import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
+import com.groupfour.MedicalCare.Common.db.DbTableConstants;
+import lombok.*;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Table(name = DbTableConstants.ODSUSTVO)
 public class Odsustvo {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = DbColumnConstants.ODSUSTVO_ID)
     private int id;
+    @Column(name = DbColumnConstants.ODSUSTVO_POCETAK)
     private LocalDateTime pocetakOdsustva;
+    @Column(name = DbColumnConstants.ODSUSTVO_KRAJ)
     private LocalDateTime krajOdsustva;
+    @Column(name = DbColumnConstants.ODSUSTVO_ODOBRRENO)
     private boolean odobren;
-
-    public Odsustvo(){}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getPocetakOdsustva() {
-        return pocetakOdsustva;
-    }
-
-    public void setPocetakOdsustva(LocalDateTime pocetakOdsustva) {
-        this.pocetakOdsustva = pocetakOdsustva;
-    }
-
-    public LocalDateTime getKrajOdsustva() {
-        return krajOdsustva;
-    }
-
-    public void setKrajOdsustva(LocalDateTime krajOdsustva) {
-        this.krajOdsustva = krajOdsustva;
-    }
-
-    public boolean isOdobren() {
-        return odobren;
-    }
-
-    public void setOdobren(boolean odobren) {
-        this.odobren = odobren;
-    }
-
-    @Override
-    public String toString() {
-        return "Odsustvo{" +
-                "id=" + id +
-                ", pocetakOdsustva=" + pocetakOdsustva +
-                ", krajOdsustva=" + krajOdsustva +
-                ", odobren=" + odobren +
-                '}';
-    }
+    @Column(name = DbColumnConstants.ODSUSTVO_AKTIVNO)
+    private boolean aktivno = true;
 }
