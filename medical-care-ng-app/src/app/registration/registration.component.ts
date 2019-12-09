@@ -10,6 +10,8 @@ import {Router} from "@angular/router";
 export class RegistrationComponent implements OnInit {
 
   lozinkaPonovo : string = "";
+  isLoading : boolean = false;
+  errorStatus : string = null;
 
   model : RegistrationViewModel = {
     email : '',
@@ -29,12 +31,31 @@ export class RegistrationComponent implements OnInit {
   }
 
   async onSubmit(){
+    this.isLoading = true;
     if(this.performCheck()){
       let apiEndpoint = "http://localhost:8080/register";
 
       this.http.post(apiEndpoint, this.model,
         {responseType: 'text'}).subscribe( data => {
-        this.router.navigateByUrl("/login");
+        setTimeout(() =>
+        {
+          this.router.navigateByUrl('/login');
+          this.isLoading = false;
+        },2000);
+      }, err =>{
+        setTimeout(()=>{
+          this.isLoading = false;
+          switch (err.error) {
+            case 'Email address already taken':
+              this.errorStatus = "E-mail adresa je vec zauzeta";
+              break;
+            case 'Internal server error':
+              this.errorStatus = "Greska na serverskoj strani";
+              break;
+            default: this.errorStatus = "Greska pri registraciji";
+          }
+        },1000);
+
       });
     }
   }

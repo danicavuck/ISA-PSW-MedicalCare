@@ -10,6 +10,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { PacijentHomepageComponent } from './pacijent-homepage/pacijent-homepage.component';
+import {LoadingSpinnerComponent} from "../../shared/loading-spinner/loading-spinner.component";
 
 const appRouts : Routes = [
   { path: 'login', component : LoginComponent },
@@ -26,7 +27,8 @@ const appRouts : Routes = [
     LoginComponent,
     RegistrationComponent,
     PageNotFoundComponent,
-    PacijentHomepageComponent
+    PacijentHomepageComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
