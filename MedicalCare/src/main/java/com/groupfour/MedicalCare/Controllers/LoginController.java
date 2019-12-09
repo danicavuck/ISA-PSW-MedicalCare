@@ -2,7 +2,7 @@ package com.groupfour.MedicalCare.Controllers;
 
 
 import com.groupfour.MedicalCare.Model.DTO.LoginDTO;
-import com.groupfour.MedicalCare.Service.PacijentService;
+import com.groupfour.MedicalCare.Service.LoginService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,6 +21,6 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO){
-        return PacijentService.loginPacijent(loginDTO);
+        return LoginService.loginPacijent(loginDTO);
     }
 }

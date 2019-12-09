@@ -170,6 +170,11 @@ public final class DbColumnConstants {
     public static final String KARTON_ID = "karton_id";
     public static final String KARTON_AKTIVAN = "aktivan";
 
+    // Role
+    public static final String ROLE_ID = "role_id";
+    public static final String ROLE_USER = "user_email";
+    public static final String ROLE_DESCRIPTION = "role";
+
 
     private DbColumnConstants(){
 

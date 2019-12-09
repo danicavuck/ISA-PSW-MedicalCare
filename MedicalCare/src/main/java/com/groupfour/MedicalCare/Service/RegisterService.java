@@ -1,7 +1,7 @@
 package com.groupfour.MedicalCare.Service;
 
-import com.groupfour.MedicalCare.Model.DTO.LoginDTO;
 import com.groupfour.MedicalCare.Model.DTO.PacijentDTO;
+import com.groupfour.MedicalCare.Model.DTO.UserRole;
 import com.groupfour.MedicalCare.Model.HibernateUtil;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Repository.PacijentRepository;
@@ -13,27 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Service
-public class PacijentService {
 
+@Service
+public class RegisterService {
     private static PacijentRepository pacijentRepository;
 
     @Autowired
-    public PacijentService(PacijentRepository pRepository){
-        pacijentRepository = pRepository;
-    }
-
-    public static ResponseEntity<String> loginPacijent(@RequestBody LoginDTO loginDTO){
-        Pacijent pacijent = pacijentRepository.findUserByEmail(loginDTO.getEmail());
-        if(pacijent == null){
-            return new ResponseEntity<>("Not authorized", HttpStatus.FORBIDDEN);
-        }
-
-        if(!PasswordCheck.verifyHash(loginDTO.getLozinka(), pacijent.getLozinka())){
-            return new ResponseEntity<>("Incorrect credentials", HttpStatus.FORBIDDEN);
-        }
-
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+    public RegisterService(PacijentRepository pRepo){
+        pacijentRepository = pRepo;
     }
 
     public static ResponseEntity<String> registerPacijent(@RequestBody PacijentDTO pacijentDTO){
@@ -41,12 +28,16 @@ public class PacijentService {
         if(pacijent == null){
             pacijent = Pacijent.builder().email(pacijentDTO.getEmail()).lozinka(PasswordCheck.hash(pacijentDTO.getLozinka())).ime(pacijentDTO.getIme()).prezime(pacijentDTO.getPrezime()).adresa(pacijentDTO.getAdresaPrebivalista()).grad(pacijentDTO.getGrad()).drzava(pacijentDTO.getDrzava()).brojTelefona(pacijentDTO.getTelefon()).brojOsiguranja(pacijentDTO.getBrojOsiguranja()).build();
 
+            // Dodavanje Role i cuvanje u bazu podataka
+            UserRole userRole = UserRole.builder().user_email(pacijentDTO.getEmail()).role("pacijent").build();
 
             Session session = HibernateUtil.getSessionFactory().getCurrentSession();
             if(session.isOpen()){
                 session.beginTransaction();
                 //session.save(adminKC);
+                session.save(userRole);
                 session.save(pacijent);
+
 
                 session.getTransaction().commit();
                 session.close();
