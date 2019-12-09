@@ -2,8 +2,6 @@ package com.groupfour.MedicalCare.Model.Administrator;
 
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
-import com.groupfour.MedicalCare.Model.Dokumenti.SifarnikDijagnoza;
-import com.groupfour.MedicalCare.Model.Dokumenti.SifarnikLekova;
 import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
 import lombok.*;
 

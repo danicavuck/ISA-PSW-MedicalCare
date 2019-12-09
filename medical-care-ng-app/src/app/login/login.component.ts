@@ -9,6 +9,9 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
+  isLoading : boolean = false;
+  errorStatus : string = null;
+
   model : LoginViewModel = {
     email : '',
     lozinka : ''
@@ -23,14 +26,32 @@ export class LoginComponent implements OnInit {
 
 
   async onSubmit(){
+    this.isLoading = true;
+
     if(this.performCheck()){
       let apiEndpoint = "http://localhost:8080/login";
 
       this.http.post(apiEndpoint, this.model,
         {responseType: 'text'}).subscribe( data => {
-        this.router.navigateByUrl("/home");
+        //this.router.navigateByUrl("/home");
+        setTimeout(() =>
+        {
+          this.router.navigateByUrl('/home');
+          this.isLoading = false;
+        },1500);
+
       }, err =>{
-          alert("Neispravni kredencijali");
+          this.isLoading = false;
+          switch (err.error) {
+            case 'Not authorized':
+              this.errorStatus = "Nepostojeca e-mail adresa";
+              break;
+            case 'Incorrect credentials':
+              this.errorStatus = "Neispravni kredencijali";
+              break;
+            default:
+              this.errorStatus = "Greska pri prijavljivanju na sistem"
+          }
       });
     }
   }
