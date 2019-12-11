@@ -9,15 +9,21 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
-  isLoading : boolean = false;
-  errorStatus : string = null;
+  isLoading = false;
+  errorStatus = null;
 
-  model : LoginViewModel = {
+  model: LoginViewModel = {
     email : '',
     lozinka : ''
   };
 
-  constructor( private http : HttpClient, private router : Router ) {
+  userDTO: UserDTO = {
+    id : 0,
+    user_email : '',
+    role : ''
+  };
+
+  constructor( private http: HttpClient, private router : Router ) {
 
   }
 
@@ -25,22 +31,22 @@ export class LoginComponent implements OnInit {
   }
 
 
-  async onSubmit(){
+  async onSubmit() {
     this.isLoading = true;
 
-    if(this.performCheck()){
-      let apiEndpoint = "http://localhost:8080/login";
+    if (this.performCheck()) {
+      const apiEndpoint = 'http://localhost:8080/login';
 
       this.http.post(apiEndpoint, this.model,
-        {responseType: 'text'}).subscribe( data => {
-        //this.router.navigateByUrl("/home");
+        {responseType: 'json'}).subscribe( data => {
         setTimeout(() =>
         {
-          switch (data) {
+          this.userDTO = data as UserDTO;
+          switch (this.userDTO.role) {
             case 'admin_klinike' : this.router.navigateByUrl('/adminklinike');
-              break;
+            break;
             case 'lekar' : this.router.navigateByUrl('/lekar');
-              break;
+            break;
             case 'med_sestra' : this.router.navigateByUrl('/medsestra');
               break;
             case 'pacijent' : this.router.navigateByUrl('/home');
@@ -48,7 +54,7 @@ export class LoginComponent implements OnInit {
             default: console.log(data);
           }
           this.isLoading = false;
-        },1500);
+        }, 1500);
 
       }, err =>{
           this.isLoading = false;
@@ -76,7 +82,13 @@ export class LoginComponent implements OnInit {
 
 }
 
-export interface LoginViewModel{
-  email:string;
-  lozinka:string;
+export interface LoginViewModel {
+  email: string;
+  lozinka: string;
+}
+
+export interface UserDTO{
+  id: number;
+  user_email: string;
+  role: string;
 }
