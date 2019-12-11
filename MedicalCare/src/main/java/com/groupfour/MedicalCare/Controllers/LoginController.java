@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Controller
 @CrossOrigin
 @RequestMapping("/login")
@@ -22,7 +20,7 @@ public class LoginController {
     }
 
     @PostMapping
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request){
-        return LoginService.loginPacijent(loginDTO, request);
+    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO){
+        return LoginService.loginPacijent(loginDTO);
     }
 }

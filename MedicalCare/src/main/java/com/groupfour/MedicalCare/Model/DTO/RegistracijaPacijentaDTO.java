@@ -10,8 +10,11 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Builder
 @ToString
-public class LoginDTO {
+public class RegistracijaPacijentaDTO {
+    private String ime;
+    private String prezime;
     private String email;
-    private String lozinka;
+    private boolean aktivan;
+    private boolean odobren = false;
 
 }

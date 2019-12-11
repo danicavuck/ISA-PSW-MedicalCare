@@ -15,6 +15,7 @@ import { AdminKlinikeHomepageComponent } from './admin-klinike-homepage/admin-kl
 import { LekarComponent } from './lekar/lekar.component';
 import { MedicinskaSestraComponent } from './medicinska-sestra/medicinska-sestra.component';
 import { KlinikaIzmenaComponent } from './klinika/klinika-izmena/klinika-izmena.component';
+import { AdminKcComponent } from './admin-kc/admin-kc.component';
 
 const appRouts : Routes = [
   { path: 'login', component : LoginComponent },
@@ -24,8 +25,10 @@ const appRouts : Routes = [
   { path: 'izmenaklinike', component: KlinikaIzmenaComponent },
   { path: 'lekar', component: LekarComponent },
   { path: 'medsestra', component: MedicinskaSestraComponent },
+  { path: 'adminkc', component : AdminKcComponent},
   { path: '', redirectTo : '/login', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent },
+  
 
 ];
 
@@ -40,7 +43,8 @@ const appRouts : Routes = [
     AdminKlinikeHomepageComponent,
     LekarComponent,
     MedicinskaSestraComponent,
-    KlinikaIzmenaComponent
+    KlinikaIzmenaComponent,
+    AdminKcComponent
   ],
   imports: [
     BrowserModule,

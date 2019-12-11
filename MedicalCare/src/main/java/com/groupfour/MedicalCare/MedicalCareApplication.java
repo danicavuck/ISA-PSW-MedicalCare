@@ -4,9 +4,9 @@ import com.groupfour.MedicalCare.Model.Administrator.AdminKlinickogCentra;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.UserRole;
 import com.groupfour.MedicalCare.Model.HibernateUtil;
-import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
+import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
 import com.groupfour.MedicalCare.Utill.PasswordCheck;
 import org.hibernate.Session;
 import org.springframework.boot.SpringApplication;
@@ -18,24 +18,35 @@ public class MedicalCareApplication {
     public static void main(String[] args) {
         SpringApplication.run(MedicalCareApplication.class, args);
 
-        //testiranjeBaze();
-        //citanjePodataka();
+
+
+
+        // testiranjeBaze();
+       // citanjePodataka();
     }
 
     public static void testiranjeBaze() {
-        Klinika klinika1 = Klinika.builder().naziv("Laza").adresa("Adresa BB").opis("Lep opis").build();
-        Klinika klinika2 = Klinika.builder().naziv("Infektivna").adresa("Adresa 121").opis("Nista posebno").build();
-        Klinika klinika3 = Klinika.builder().naziv("Klinika Lepa").adresa("Adresa 101").opis("Opis na pretek").build();
-        Klinika klinika4 = Klinika.builder().naziv("Klinika Ruzna").adresa("Adresa 510").opis("Bas ruzna").build();
+        Lekar lekar = Lekar.builder().email("lekar@gmail.com").ime("Milos").prezime("Petrovic").lozinka(PasswordCheck.hash("lekarlekar")).build();
+        UserRole lekarRole = UserRole.builder().user_email("lekar@gmail.com").role("lekar").build();
+
+        MedicinskaSestra medicinskaSestra = MedicinskaSestra.builder().email("sestra@gmail.com").ime("Marija").prezime("Kovacevic").lozinka(PasswordCheck.hash("sestrasestra")).build();
+        UserRole sestraRole = UserRole.builder().user_email("sestra@gmail.com").role("med_sestra").build();
+
+        AdminKlinike adminKlinike = AdminKlinike.builder().ime("Zoran").prezime("Premovic").aktivan(true).email("adminKlinike@gmail.com").lozinka(PasswordCheck.hash("adminklinike")).prviPutLogovan(true).build();
+        UserRole adminRole = UserRole.builder().user_email("adminKlinike@gmail.com").role("admin_klinike").build();
 
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         if (session.isOpen()) {
             session.beginTransaction();
 
-            session.save(klinika1);
-            session.save(klinika2);
-            session.save(klinika3);
-            session.save(klinika4);
+            session.save(lekarRole);
+            session.save(lekar);
+            session.save(sestraRole);
+            session.save(medicinskaSestra);
+            session.save(adminRole);
+            session.save(adminKlinike);
+
+
 
             session.getTransaction().commit();
             session.close();

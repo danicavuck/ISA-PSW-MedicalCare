@@ -16,8 +16,8 @@ public class LogoutController {
 
     }
 
-    @GetMapping
-    public ResponseEntity<String> logout(){
-        return LoginService.logoutPacijent();
-    }
+//    @GetMapping
+//    public ResponseEntity<String> logout(){
+//        return LoginService.logoutPacijent();
+//    }
 }

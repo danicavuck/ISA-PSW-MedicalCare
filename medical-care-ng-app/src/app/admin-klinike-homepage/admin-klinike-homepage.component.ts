@@ -37,7 +37,7 @@ export class AdminKlinikeHomepageComponent implements OnInit {
 
   async getLogout() {
     const apiEndpoint = 'http://localhost:8080/logout';
-
+    
     this.http.get(apiEndpoint).subscribe(() => {
         console.log('Uspesno odjavljivanje');
         this.router.navigate(['/login']);

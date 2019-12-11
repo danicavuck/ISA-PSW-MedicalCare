@@ -37,6 +37,8 @@ export class LoginComponent implements OnInit {
         setTimeout(() =>
         {
           switch (data) {
+            case 'admin_kc' : this.router.navigateByUrl('/adminkc')
+              break;
             case 'admin_klinike' : this.router.navigateByUrl('/adminklinike');
               break;
             case 'lekar' : this.router.navigateByUrl('/lekar');
