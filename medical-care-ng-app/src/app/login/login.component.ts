@@ -36,7 +36,17 @@ export class LoginComponent implements OnInit {
         //this.router.navigateByUrl("/home");
         setTimeout(() =>
         {
-          this.router.navigateByUrl('/home');
+          switch (data) {
+            case 'admin_klinike' : this.router.navigateByUrl('/adminklinike');
+              break;
+            case 'lekar' : this.router.navigateByUrl('/lekar');
+              break;
+            case 'med_sestra' : this.router.navigateByUrl('/medsestra');
+              break;
+            case 'pacijent' : this.router.navigateByUrl('/home');
+              break;
+            default: console.log(data);
+          }
           this.isLoading = false;
         },1500);
 
