@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +17,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/adminkc")
 public class AdminKCController {
+
     @Autowired
     private AdminKCService adminKCService;
     @Autowired
@@ -37,14 +35,26 @@ public class AdminKCController {
     @RequestMapping(value = "/zahtevi", method = RequestMethod.GET)
     public ResponseEntity<?> getZahteviZaRegistraciju(){
         List<RegistracijaPacijenta> temp = registracijaPacijentaService.getAllActive();
-        System.out.println("uslo");
-        for(int i = 0 ; i < temp.size() ; i++){
-
-            System.out.println(temp.get(i).getIme());
-
-        }
 
         return new ResponseEntity<>(registracijaPacijentaService.getAllActive(), HttpStatus.OK);
     }
+
+
+    @RequestMapping(value="/prihvatiZahtev", method=RequestMethod.PUT)
+    public ResponseEntity<?> prihvatiZahtev(@RequestParam("id") Integer id){
+        adminKCService.prihvatiZahtev(id);
+        System.out.println("prihvacen");
+            return new ResponseEntity<String>("Zahtev je prihvacen!",HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value="/odbijZahtev", method=RequestMethod.PUT)
+    public ResponseEntity<?> odbijZahtev(@RequestParam("id") Integer id){
+        System.out.println("odbijen");
+        adminKCService.odbijZahtev(id);
+        return new ResponseEntity<String>("Zahtev je odbijen!",HttpStatus.OK);
+
+    }
+
 
 }

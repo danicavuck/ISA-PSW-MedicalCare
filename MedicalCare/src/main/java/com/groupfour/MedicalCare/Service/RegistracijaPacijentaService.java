@@ -21,10 +21,10 @@ public class RegistracijaPacijentaService {
     public List<RegistracijaPacijenta> getAllActive(){
         List<RegistracijaPacijenta> temp = new ArrayList<>();
         List<RegistracijaPacijenta> all = registracijaPacijentaRepository.findAll();
-        System.out.println(all.size());
+        //System.out.println(all.size());
         for(int i = 0 ; i < all.size() ; i++){
             if(all.get(i).isAktivan()){
-                System.out.println(all.get(i).getIme());
+                //System.out.println(all.get(i).getIme());
                 temp.add(all.get(i));
             }
         }

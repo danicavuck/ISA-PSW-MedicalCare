@@ -5,31 +5,59 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+
+<title>Admin</title>
 </head>
 <body>
-
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">ADMINISTRATOR KLICKOG CENTRA</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button> 
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link active "  href="#">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link" href="#">Registruj Kliniku</a>
+      <a class="nav-item nav-link" href="#">Registruj Administratora</a>
+      <a class="nav-item nav-link disabled" href="#">Sifarnik Dijagnoza</a>
+    </div>
+  </div>
+</nav>
   <div class="container">
     <div class="jumbotron">
       <div class="text-center">
-        <h4>Lista zahteva za registraciju:</h4>
+        <div class = "header">Lista zahteva za registraciju:</div>
 
-        <table class="table" style="margin-top: 20px" *ngIf="postojiModel">
-          <thead class = "thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Naziv</th>
-            <th scope="col">Adresa</th>
-            <th scope="col">Opis</th>
-            <th scope="col">Akcije</th>
-          </tr>
+        <table class="table table-bordered" *ngIf="postojiModel">
+          
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Ime</th>
+              <th scope="col">Prezime</th>
+              <th scope="col">Email</th>
+            </tr>
           </thead>
           <tbody>
             <tr *ngFor="let zahtev of models; let i = index">
-                <th scope="row">{{i + 1}}</th>
-                <td> {{zahtev.ime}} </td>
-                <td>{{zahtev.prezime}}</td>
-                <td>{{zahtev.email}}</td>
+            <ng-container *ngIf="zahtev.aktivan">
+              <th scope="row">{{i + 1}}</th>
+              <td> {{zahtev.ime}} </td>
+              <td>{{zahtev.prezime}}</td>
+              <td>{{zahtev.email}}</td>
+              <td>
+                  <button type="button" class="btn btn-success" (click) = "prihvatiZahtev(zahtev,i-1)">Prihvati</button>
+              </td>
+              <td>
+                  <button type="button" class="btn btn-danger"  (click) = "odbijZahtev(zahtev,i-1)">Odbij</button>
+              </td>
+            </ng-container>
             </tr>
           </tbody>
         </table>
@@ -37,7 +65,7 @@
       </div>
     </div>
     <div class="container">
-      <button class="btn btn-primary pull-left" (click)="getTest()"> Dobavi klinike</button>
+      <button class="btn btn-primary pull-left" (click)="getTest()"> Napravi sifarnik dijagnoza</button>
       <button class="btn btn-primary pull-right" [routerLink]="['/login']">Odjavite se</button>
     </div>
 

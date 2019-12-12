@@ -17,6 +17,7 @@ import { MedicinskaSestraComponent } from './medicinska-sestra/medicinska-sestra
 import { KlinikaIzmenaComponent } from './klinika/klinika-izmena/klinika-izmena.component';
 import { AdminKcComponent } from './admin-kc/admin-kc.component';
 
+
 const appRouts : Routes = [
   { path: 'login', component : LoginComponent },
   { path: 'registration', component : RegistrationComponent },
@@ -44,7 +45,8 @@ const appRouts : Routes = [
     LekarComponent,
     MedicinskaSestraComponent,
     KlinikaIzmenaComponent,
-    AdminKcComponent
+    AdminKcComponent,
+   
   ],
   imports: [
     BrowserModule,

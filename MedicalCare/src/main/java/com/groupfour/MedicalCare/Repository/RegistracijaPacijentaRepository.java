@@ -13,4 +13,6 @@ public interface RegistracijaPacijentaRepository extends JpaRepository<Registrac
     @Override
     List<RegistracijaPacijenta> findAll();
 
+    //RegistracijaPacijenta findById();
+
 }

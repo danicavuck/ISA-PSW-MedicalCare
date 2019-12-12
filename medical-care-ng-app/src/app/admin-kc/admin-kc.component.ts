@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
+
 
 @Component({
   selector: 'app-admin-kc',
@@ -10,6 +11,9 @@ import { HttpClient } from "@angular/common/http";
 export class AdminKcComponent implements OnInit {
 
   private models : Array<RegistracijaPacijentaDTO>;
+  private model : RegistracijaPacijentaDTO;
+  
+  private temp : RegistracijaPacijentaDTO
   private postojiModel = false;
   private admin : LoginViewModel;
 
@@ -18,6 +22,7 @@ export class AdminKcComponent implements OnInit {
   ngOnInit() {
     this.getZahtevi();
   }
+
 
 
   async getAdminKC(){
@@ -47,9 +52,39 @@ export class AdminKcComponent implements OnInit {
      console.log(err);
    });
   
+}
+
+
+async prihvatiZahtev(model:RegistracijaPacijentaDTO,i:number){
+  const url = 'http://localhost:8080/adminkc/prihvatiZahtev';
+  
+  this.temp = this.models[i];
+  console.log('prihvacen')
+  model.aktivan = false;
+
+  const params = new HttpParams()
+                    .set('id', model.id.toString() );
+
+  model.aktivan = false;
+    return this.http.put(url, {params} )
+ 
+}
+
+async odbijZahtev(model:RegistracijaPacijentaDTO,i:number){
+  const url = 'http://localhost:8080/adminkc/odbijZahtev';
+  
+  const params = new HttpParams()
+                    .set('id', model.id.toString());
+
+  model.aktivan = false;
+    return this.http.put(url,null, {params} )
 
 }
+
 }
+
+
+
 
 export interface LoginViewModel{
   email:string;
@@ -58,8 +93,9 @@ export interface LoginViewModel{
 
 
 export interface RegistracijaPacijentaDTO{
+  id : number;
   ime : string;
   prezime : string;
   email : string;
-
+  aktivan : boolean;
 }
