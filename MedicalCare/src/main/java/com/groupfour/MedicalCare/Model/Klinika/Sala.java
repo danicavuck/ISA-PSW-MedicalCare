@@ -49,4 +49,7 @@ public class Sala {
     @JsonIgnoreProperties("spisakSala")
     private Klinika klinika;
 
+    @Column(name = DbColumnConstants.SALA_AKTIVNA)
+    private boolean aktivna;
+
 }

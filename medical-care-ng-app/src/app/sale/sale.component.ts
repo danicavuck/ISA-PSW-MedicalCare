@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-sale',
@@ -9,6 +9,11 @@ import { HttpClient } from '@angular/common/http';
 export class SaleComponent implements OnInit {
 
   sale: Array<SalePretraga>;
+  sala: SalePretraga = {
+    brojSale: 0,
+    pocetakTermina: null,
+    krajTermina: null
+  };
   constructor(private http: HttpClient) {
     this.getSaleInitialy();
    }
@@ -20,7 +25,7 @@ export class SaleComponent implements OnInit {
     console.log('Click');
   }
 
-  async getSaleInitialy(){
+  async getSaleInitialy() {
     const apiEndpoint = 'http://localhost:8080/sale';
 
     this.http.get(apiEndpoint,
@@ -33,11 +38,16 @@ export class SaleComponent implements OnInit {
       });
   }
 
+  async obrisiSalu(sala) {
+    const apiEndpoint = 'http://localhost:8080/sale';
+    const params = new HttpParams().set('brojSale', sala.brojSale);
+    console.log(sala);
+  }
+
 }
 
 export interface SalePretraga {
   brojSale: number;
-  datum: Date;
   pocetakTermina: Date;
   krajTermina: Date;
 }

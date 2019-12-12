@@ -10,7 +10,6 @@ import {HttpClient} from '@angular/common/http';
 export class AdminKlinikeHomepageComponent implements OnInit {
 
   private models: Array<KlinikaDTO>;
-  private postojiModel = false;
 
   constructor(private router: Router, private http: HttpClient) { }
 
@@ -28,7 +27,6 @@ export class AdminKlinikeHomepageComponent implements OnInit {
 
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
-        this.postojiModel = true;
         this.models = data as Array<KlinikaDTO>;
         console.log(this.models);
       }, err => {

@@ -20,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TimepickerModule } from 'ngx-bootstrap';
 import { KlinikaDetaljnijeComponent } from './klinika/klinika-detaljnije/klinika-detaljnije.component';
 import { SaleComponent } from './sale/sale.component';
+import { DodajSaluComponent } from './sale/dodaj-salu/dodaj-salu.component';
 
 
 
@@ -31,6 +32,7 @@ const appRouts: Routes = [
   { path: 'adminklinike/defpregleda', component: DefinisanjePregledaComponent},
   { path: 'adminklinike/klinika', component: KlinikaDetaljnijeComponent},
   { path: 'adminklinike/sale', component: SaleComponent},
+  { path: 'adminklinike/dodajsalu', component: DodajSaluComponent},
   { path: 'lekar', component: LekarComponent },
   { path: 'medsestra', component: MedicinskaSestraComponent },
   { path: '', redirectTo : '/login', pathMatch : 'full' },
@@ -51,7 +53,8 @@ const appRouts: Routes = [
     MedicinskaSestraComponent,
     DefinisanjePregledaComponent,
     KlinikaDetaljnijeComponent,
-    SaleComponent
+    SaleComponent,
+    DodajSaluComponent
   ],
   imports: [
     BrowserModule,

@@ -36,7 +36,7 @@
         
         <div class="text-center">
             
-            <form name="form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()" class="form-inline">
+            <form name="form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()" class="form-inline" style="margin: -30px 0 20px 0;">
                 <div class="form-row">
                     <div class="col" style="margin-left: 30px;">
                         <input type="text" id="naziv" class="form-control" name="naziv" placeholder="Naziv/Broj sale" required>
@@ -45,7 +45,7 @@
                         <input type="text" bsDatepicker id="datum" class="form-control" name="datum" placeholder="Datum zauzeca" required readonly style="background: #fff;">
                     </div>
                     <div class="col">
-                        <button type="submit" class="btn btn-success pull-right" [disabled]="!f.valid">
+                        <button type="submit" class="btn btn-outline-success pull-right" [disabled]="!f.valid">
                             <i class="fa fa-search" aria-hidden="true"></i>
                             <span> Pretrazi</span>
                         </button>
@@ -54,7 +54,9 @@
             </form>
 
             <div style="text-align: center;">
-                <h3>Sale</h3>
+                <div class="container" style="margin: 0 0 30px 0;">
+                        <h3 style="display: inline; margin-right: 20px; text-align:center;">Sale</h3>
+                </div>
                 <table class="table">
                     <thead class = "thead-dark">
                     <tr>
@@ -72,7 +74,7 @@
                             <td>{{sala.pocetakTermina}}</td>
                             <td>{{sala.krajTermina}}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm">
+                                <button class="btn btn-danger btn-sm" (click)="obrisiSalu(sala)">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                         <span> Obrisi</span>
                                 </button>
@@ -80,6 +82,10 @@
                         </tr>
                     </tbody>
                 </table>
+                <button class="btn btn-outline-success btn-sm" style="width: 100%;" [routerLink]="['/adminklinike/dodajsalu']">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        <span> Dodaj salu</span>
+                </button>
             </div>
                 
     
@@ -87,7 +93,7 @@
         </div>
         <div class="container" style="margin-bottom: 10%;">
         <button type="button" class="btn btn-outline-info pull-left" [routerLink]="['/adminklinike']">Nazad</button>
-        <button class="btn btn-primary pull-right" [routerLink]="['/login']">Odjavite se</button>
+        <button class="btn btn-outline-info pull-right" [routerLink]="['/login']">Odjavite se</button>
         </div>
     
     </div>

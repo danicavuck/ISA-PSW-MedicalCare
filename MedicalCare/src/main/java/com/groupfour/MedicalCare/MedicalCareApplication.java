@@ -27,14 +27,14 @@ public class MedicalCareApplication {
 
     public static void testiranjeBaze() {
         Sala sala1 =
-                Sala.builder().brojSale(101).zauzeta(false).pocetakTermina(LocalDateTime.of(2019, 12,20,12,0)).krajTermina(LocalDateTime.of(2019,12,20,12,30)).build();
+                Sala.builder().brojSale(101).zauzeta(false).pocetakTermina(LocalDateTime.of(2019, 12,20,12,0)).krajTermina(LocalDateTime.of(2019,12,20,12,30)).aktivna(true).build();
         Sala sala2 =
-                Sala.builder().brojSale(102).zauzeta(false).pocetakTermina(LocalDateTime.of(2019, 12,21,12,0)).krajTermina(LocalDateTime.of(2019,12,21,12,30)).build();
+                Sala.builder().brojSale(102).zauzeta(false).pocetakTermina(LocalDateTime.of(2019, 12,21,12,0)).krajTermina(LocalDateTime.of(2019,12,21,12,30)).aktivna(true).build();
         Sala sala3 =
-                Sala.builder().brojSale(103).zauzeta(false).pocetakTermina(LocalDateTime.of(2019, 12,22,12,0)).krajTermina(LocalDateTime.of(2019,12,22,13,30)).build();
+                Sala.builder().brojSale(103).zauzeta(false).pocetakTermina(LocalDateTime.of(2019, 12,22,12,0)).krajTermina(LocalDateTime.of(2019,12,22,13,30)).aktivna(true).build();
 
         Sala sala44 =
-                Sala.builder().brojSale(201).zauzeta(true).pocetakTermina(LocalDateTime.of(2019, 12,23,15,0)).krajTermina(LocalDateTime.of(2019,12,23,16,30)).build();
+                Sala.builder().brojSale(201).zauzeta(true).pocetakTermina(LocalDateTime.of(2019, 12,23,15,0)).krajTermina(LocalDateTime.of(2019,12,23,16,30)).aktivna(true).build();
 
 
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -48,8 +48,8 @@ public class MedicalCareApplication {
             klinika1.dodajSalu(sala3);
             klinika2.dodajSalu(sala44);
 
-            session.update(klinika1);
-            session.update(klinika2);
+            session.saveOrUpdate(klinika1);
+            session.saveOrUpdate(klinika2);
 
 
 

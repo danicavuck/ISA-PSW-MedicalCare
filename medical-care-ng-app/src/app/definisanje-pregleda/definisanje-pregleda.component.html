@@ -61,37 +61,27 @@
       
             <div class="form-group">
               <label for="trajanje">Trajanje pregleda (min) </label>
-              <input type="number" name="trajanje" id="trajanje" class="form-control" required>
+              <input type="number" name="trajanje" id="trajanje" class="form-control" required min="0" max="120">
             </div>
 
 
             <div class="form-group">
                 <label for="sala">Sala </label>
                 <select class="form-control" name="sala" id="sala" required>
-                    <option value="1">Sala 101</option>
-                    <option value="2">Sala 102</option>
-                    <option value="3">Sala 103</option>
-                    <option value="4">Sala 104</option>
-                    <option value="5">Sala 105</option>
-                    <option value="6">Sala 106</option>
+                    <option *ngFor="let sala of sale; let i = index" value="{{i}}">{{sala.brojSale}}</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="lekar">Lekar </label>
                 <select class="form-control" name="lekar" id="lekar" required>
-                    <option value="1">Petar Petrovic</option>
-                    <option value="2">Milos Milosevic</option>
-                    <option value="3">Vojin Vojinovic</option>
-                    <option value="4">Tesa Tesanovic</option>
-                    <option value="5">Zivko Zivkovic</option>
-                    <option value="6">Marko Markovic</option>
+                    <option *ngFor="let lekar of lekari; let i = index" value="{{i}}">{{lekar.ime}} {{lekar.prezime}} </option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="cena">Cena pregleda </label>
-                <input type="number" name="cena" id="cena" class="form-control" required>
+                <input type="number" name="cena" id="cena" class="form-control" required min="0" max="5" inputmode="numeric">
             </div>
 
       

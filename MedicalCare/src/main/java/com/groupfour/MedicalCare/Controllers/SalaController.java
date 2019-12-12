@@ -1,13 +1,12 @@
 package com.groupfour.MedicalCare.Controllers;
 
+import com.groupfour.MedicalCare.Model.DTO.SalaDodavanjeDTO;
 import com.groupfour.MedicalCare.Model.DTO.SalaPretragaDTO;
 import com.groupfour.MedicalCare.Service.SalaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -27,5 +26,19 @@ public class SalaController {
         }
 
         return new ResponseEntity<>(sale, HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteSala(@RequestBody SalaPretragaDTO salaPretragaDTO){
+        SalaService.deleteSala(salaPretragaDTO);
+
+        return new ResponseEntity<String>("Uspesno izvrseno brisanje", HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> addSala(@RequestBody SalaDodavanjeDTO salaDodavanjeDTO){
+        SalaService.addSala(salaDodavanjeDTO);
+
+        return new ResponseEntity<String>("Uspesno dodavanje sale", HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Controllers;
 
+import com.groupfour.MedicalCare.Model.DTO.KlinikaDTO;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Service.KlinikaService;
 import org.springframework.http.HttpStatus;
@@ -28,10 +29,8 @@ public class AdminKlinikeController {
     }
 
     @GetMapping("/klinike")
-    public ResponseEntity<List<Klinika>> getKlinike(){
-        ArrayList<Klinika> klinike = KlinikaService.getKlinike();
-
-        System.out.println(klinike);
+    public ResponseEntity<List<KlinikaDTO>> getKlinike(){
+        ArrayList<KlinikaDTO> klinike = KlinikaService.getKlinike();
 
         return new ResponseEntity<>(klinike, HttpStatus.OK);
     }
