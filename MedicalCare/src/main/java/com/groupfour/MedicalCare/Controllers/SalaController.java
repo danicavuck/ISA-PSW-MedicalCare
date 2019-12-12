@@ -1,6 +1,6 @@
 package com.groupfour.MedicalCare.Controllers;
 
-import com.groupfour.MedicalCare.Model.Klinika.Sala;
+import com.groupfour.MedicalCare.Model.DTO.SalaPretragaDTO;
 import com.groupfour.MedicalCare.Service.SalaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class SalaController {
     public SalaController(){}
 
     @GetMapping
-    public ResponseEntity<ArrayList<Sala>> getSale(){
-        ArrayList<Sala> sale =  SalaService.getSale();
+    public ResponseEntity<ArrayList<SalaPretragaDTO>> getSale(){
+        ArrayList<SalaPretragaDTO> sale =  SalaService.getSale();
         if(sale == null){
             System.out.println("Sale nisu nadjene");
             return new ResponseEntity<>(null, HttpStatus.OK);

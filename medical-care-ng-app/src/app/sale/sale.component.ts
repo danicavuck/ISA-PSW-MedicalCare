@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-sale',
@@ -7,23 +8,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SaleComponent implements OnInit {
 
-  sala: SalePretraga = {
-    naziv: '',
-    datum: null
-  };
-  constructor() { }
+  sale: Array<SalePretraga>;
+  constructor(private http: HttpClient) {
+    this.getSaleInitialy();
+   }
 
   ngOnInit() {
   }
 
   async onSubmit() {
-    console.log(this.sala.naziv);
-    console.log(this.sala.datum);
+    console.log('Click');
+  }
+
+  async getSaleInitialy(){
+    const apiEndpoint = 'http://localhost:8080/sale';
+
+    this.http.get(apiEndpoint,
+      {responseType: 'json'}).subscribe((data) => {
+        this.sale = data as Array<SalePretraga>;
+        console.log(this.sale);
+      }, err => {
+        console.log('Greska pri pribavljanju sala: ');
+        console.log(err);
+      });
   }
 
 }
 
 export interface SalePretraga {
-  naziv: string;
+  brojSale: number;
   datum: Date;
+  pocetakTermina: Date;
+  krajTermina: Date;
 }

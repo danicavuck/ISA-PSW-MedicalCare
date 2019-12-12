@@ -2,6 +2,7 @@ package com.groupfour.MedicalCare.Model.DTO;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -11,6 +12,8 @@ import java.util.Date;
 @Builder
 @ToString
 public class SalaPretragaDTO {
-    private String naziv;
+    private int brojSale;
     private Date datum;
+    private LocalDateTime pocetakTermina;
+    private LocalDateTime krajTermina;
 }

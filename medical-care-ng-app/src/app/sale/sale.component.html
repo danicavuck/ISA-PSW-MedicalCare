@@ -39,10 +39,10 @@
             <form name="form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()" class="form-inline">
                 <div class="form-row">
                     <div class="col" style="margin-left: 30px;">
-                        <input type="text" id="naziv" class="form-control" name="naziv" placeholder="Naziv/Broj sale" required [(ngModel)]="sala.naziv">
+                        <input type="text" id="naziv" class="form-control" name="naziv" placeholder="Naziv/Broj sale" required>
                     </div>
                     <div class="col">
-                        <input type="text" bsDatepicker id="datum" class="form-control" name="datum" placeholder="Datum zauzeca" required readonly style="background: #fff;" [(ngModel)]="sala.datum">
+                        <input type="text" bsDatepicker id="datum" class="form-control" name="datum" placeholder="Datum zauzeca" required readonly style="background: #fff;">
                     </div>
                     <div class="col">
                         <button type="submit" class="btn btn-success pull-right" [disabled]="!f.valid">
@@ -66,11 +66,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>101</td>
-                            <td>01/01/2019</td>
-                            <td>02/01/2019</td>
+                        <tr *ngFor="let sala of sale; let i = index">
+                            <th scope="row">{{i + 1}}</th>
+                            <td>{{sala.brojSale}}</td>
+                            <td>{{sala.pocetakTermina}}</td>
+                            <td>{{sala.krajTermina}}</td>
                             <td>
                                 <button class="btn btn-danger btn-sm">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
