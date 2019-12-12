@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Model.Klinika;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
@@ -45,6 +46,7 @@ public class Sala {
             joinColumns = @JoinColumn(name = DbColumnConstants.SALA_ID),
             inverseJoinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID)
     )
+    @JsonIgnoreProperties("spisakSala")
     private Klinika klinika;
 
 }

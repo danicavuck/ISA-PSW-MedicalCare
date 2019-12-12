@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title></title>
+</head>
+<body>
+
+  <div class="container">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+                <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/adminklinike']">Pocetna strana</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/adminklinike/defpregleda']">Pregledi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/adminklinike/sale']">Sale</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/adminklinike/izvestaj']">Izvestaj</a>
+                </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/adminklinike/home']">Home</a>
+                </li>
+                </ul>
+        </nav>
+    <div class="jumbotron">
+      <div class="text-center">
+        <h4>Definisanje pregleda</h4>
+
+        <form name="form" #f="ngForm" novalidate class="pregledi-form" (ngSubmit)="onSubmit()" style="text-align: left;">
+
+            <div class="form-group">
+              <label for="datum">Datum pregleda </label>
+              <input type="text" bsDatepicker id="datum" class="form-control" name="datum" required readonly style="background: #fff;">
+            </div>
+
+            <div class="form-group">
+                <label for="vreme">Vreme pregleda </label>
+                <timepicker></timepicker>
+            </div>
+      
+            <div class="form-group">
+              <label for="lekar">Tip pregleda </label>
+              <select class="form-control" name="lekar" id="lekar" required>
+                  <option value="1">Upala pluca</option>
+                  <option value="2">Kijavica</option>
+                  <option value="3">Stomatoloski pregled</option>
+                  <option value="4">Nefroloski pregled</option>
+                  <option value="5">Kardioloski pregled</option>
+                  <option value="6">Kontorla</option>
+              </select>
+            </div>
+      
+            <div class="form-group">
+              <label for="trajanje">Trajanje pregleda (min) </label>
+              <input type="number" name="trajanje" id="trajanje" class="form-control" required>
+            </div>
+
+
+            <div class="form-group">
+                <label for="sala">Sala </label>
+                <select class="form-control" name="sala" id="sala" required>
+                    <option value="1">Sala 101</option>
+                    <option value="2">Sala 102</option>
+                    <option value="3">Sala 103</option>
+                    <option value="4">Sala 104</option>
+                    <option value="5">Sala 105</option>
+                    <option value="6">Sala 106</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="lekar">Lekar </label>
+                <select class="form-control" name="lekar" id="lekar" required>
+                    <option value="1">Petar Petrovic</option>
+                    <option value="2">Milos Milosevic</option>
+                    <option value="3">Vojin Vojinovic</option>
+                    <option value="4">Tesa Tesanovic</option>
+                    <option value="5">Zivko Zivkovic</option>
+                    <option value="6">Marko Markovic</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cena">Cena pregleda </label>
+                <input type="number" name="cena" id="cena" class="form-control" required>
+            </div>
+
+      
+            <div style="margin-bottom: 30px;">
+              <button type="button" class="btn btn-outline-info pull-left" [routerLink]="['/adminklinike']">Nazad</button>
+              <button type="submit" class="btn btn-success pull-right" [disabled]="!f.valid">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                <span> Dodaj pregled</span>
+              </button>
+            </div>
+            
+          </form>
+
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
+

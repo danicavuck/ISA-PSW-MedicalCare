@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Model.Klinika;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
@@ -7,6 +8,8 @@ import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import lombok.*;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -18,7 +21,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Entity
 @Table(name = DbTableConstants.KLINIKA)
 public class Klinika {
@@ -36,6 +38,7 @@ public class Klinika {
     private float prosecnaOcena;
 
     @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("klinika")
     private Set<Lekar> listaLekara = new HashSet<>();
 
     @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
@@ -47,6 +50,7 @@ public class Klinika {
             joinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID),
             inverseJoinColumns = @JoinColumn(name = DbColumnConstants.SALA_ID)
     )
+    @JsonIgnoreProperties("klinika")
     private Set<Sala>  spisakSala = new HashSet<>();
 
     @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
@@ -88,4 +92,8 @@ public class Klinika {
         p.getKlinika().add(this);
     }
 
+    @Override
+    public String toString() {
+        return "Naziv:" + this.naziv+ " Adresa:"+ this.adresa +" Opis:" + this.opis + " Prosecna ocena:"+ this.prosecnaOcena +" Lekari: " + this.listaLekara;
+    }
 }

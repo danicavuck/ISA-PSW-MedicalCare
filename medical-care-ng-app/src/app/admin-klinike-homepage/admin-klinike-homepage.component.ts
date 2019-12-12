@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
+import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-klinike-homepage',
@@ -15,6 +15,7 @@ export class AdminKlinikeHomepageComponent implements OnInit {
   constructor(private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
+    this.getTestKlinike();
   }
 
   async onDodajKliniku() {
@@ -22,13 +23,14 @@ export class AdminKlinikeHomepageComponent implements OnInit {
     console.log('click');
   }
 
-  async getTest() {
+  async getTestKlinike() {
     const apiEndpoint = 'http://localhost:8080/adminklinike/klinike';
 
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
         this.postojiModel = true;
         this.models = data as Array<KlinikaDTO>;
+        console.log(this.models);
       }, err => {
         console.log('Greska admin_klinike: ');
         console.log(err);

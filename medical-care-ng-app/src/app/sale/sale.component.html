@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sale</title>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+                <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/adminklinike']">Pocetna strana</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/adminklinike/defpregleda']">Pregledi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/adminklinike/sale']">Sale</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/adminklinike/izvestaj']">Izvestaj</a>
+                </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/adminklinike/home']">Home</a>
+                </li>
+                </ul>
+        </nav>
+
+        <!-- Actual page -->
+        <div class="jumbotron">
+        
+        <div class="text-center">
+            
+            <form name="form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()" class="form-inline">
+                <div class="form-row">
+                    <div class="col" style="margin-left: 30px;">
+                        <input type="text" id="naziv" class="form-control" name="naziv" placeholder="Naziv/Broj sale" required [(ngModel)]="sala.naziv">
+                    </div>
+                    <div class="col">
+                        <input type="text" bsDatepicker id="datum" class="form-control" name="datum" placeholder="Datum zauzeca" required readonly style="background: #fff;" [(ngModel)]="sala.datum">
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-success pull-right" [disabled]="!f.valid">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                            <span> Pretrazi</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div style="text-align: center;">
+                <h3>Sale</h3>
+                <table class="table">
+                    <thead class = "thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Broj sale</th>
+                        <th scope="col">Pocetak Termina</th>
+                        <th scope="col">Kraj Termina</th>
+                        <th scope="col">Akcije</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>101</td>
+                            <td>01/01/2019</td>
+                            <td>02/01/2019</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                        <span> Obrisi</span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+                
+    
+        </div>
+        </div>
+        <div class="container" style="margin-bottom: 10%;">
+        <button type="button" class="btn btn-outline-info pull-left" [routerLink]="['/adminklinike']">Nazad</button>
+        <button class="btn btn-primary pull-right" [routerLink]="['/login']">Odjavite se</button>
+        </div>
+    
+    </div>
+      
+      </body>
+</html>
