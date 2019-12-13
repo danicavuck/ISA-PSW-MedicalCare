@@ -23,7 +23,14 @@ export class DodajSaluComponent implements OnInit {
   }
 
   async onSubmit() {
-    console.log(this.sala);
+    const apiEndpoint = 'http://localhost:8080/sale';
+    this.http.post(apiEndpoint, this.sala,
+      {responseType: 'text'}).subscribe( data => {
+        console.log(this.sala);
+        console.log(data);
+    }, err => {
+        console.log(err);
+    });
   }
 
   async getKlinike() {
@@ -38,8 +45,8 @@ export class DodajSaluComponent implements OnInit {
         console.log(err);
       });
   }
-
 }
+
 
 export interface KlinikaDTO {
   id: number;

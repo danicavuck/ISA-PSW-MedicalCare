@@ -11,7 +11,6 @@ import com.groupfour.MedicalCare.Model.Zahtevi.Odsustvo;
 import com.groupfour.MedicalCare.Model.Zahtevi.Operacija;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.persistence.*;
 import java.util.HashSet;

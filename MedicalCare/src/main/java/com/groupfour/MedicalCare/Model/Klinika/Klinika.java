@@ -8,13 +8,10 @@ import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import lombok.*;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
 
 @Getter
 @Setter
@@ -50,7 +47,6 @@ public class Klinika {
             joinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID),
             inverseJoinColumns = @JoinColumn(name = DbColumnConstants.SALA_ID)
     )
-    @JsonIgnoreProperties("klinika")
     private Set<Sala>  spisakSala = new HashSet<>();
 
     @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)

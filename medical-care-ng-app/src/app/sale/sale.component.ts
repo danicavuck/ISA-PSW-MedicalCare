@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-sale',
@@ -9,8 +10,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 export class SaleComponent implements OnInit {
 
   sale: Array<SalePretraga>;
-  sala: SalePretraga = {
+  sala: BrisanjeSale = {
     brojSale: 0,
+    datum: null,
     pocetakTermina: null,
     krajTermina: null
   };
@@ -39,15 +41,34 @@ export class SaleComponent implements OnInit {
   }
 
   async obrisiSalu(sala) {
-    const apiEndpoint = 'http://localhost:8080/sale';
-    const params = new HttpParams().set('brojSale', sala.brojSale);
     console.log(sala);
+
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: sala,
+    };
+    const apiEndpoint = 'http://localhost:8080/sale';
+    this.http.delete(apiEndpoint, options).subscribe((data) => {
+      console.log('Uspenso brisanje klinike');
+      this.getSaleInitialy();
+    }, err => {
+      console.log(err);
+    });
   }
 
 }
 
 export interface SalePretraga {
   brojSale: number;
+  pocetakTermina: Date;
+  krajTermina: Date;
+}
+
+export interface BrisanjeSale {
+  brojSale: number;
+  datum: Date;
   pocetakTermina: Date;
   krajTermina: Date;
 }

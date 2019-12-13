@@ -8,4 +8,5 @@ import java.util.ArrayList;
 public interface KlinikaRepository extends JpaRepository<Klinika, Integer> {
     ArrayList<Klinika> findAll();
     Klinika findById(int id);
+
 }

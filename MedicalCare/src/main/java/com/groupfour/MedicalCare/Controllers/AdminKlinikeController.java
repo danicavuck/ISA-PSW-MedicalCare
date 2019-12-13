@@ -1,7 +1,6 @@
 package com.groupfour.MedicalCare.Controllers;
 
 import com.groupfour.MedicalCare.Model.DTO.KlinikaDTO;
-import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Service.KlinikaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

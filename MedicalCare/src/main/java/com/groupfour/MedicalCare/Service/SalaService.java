@@ -2,16 +2,12 @@ package com.groupfour.MedicalCare.Service;
 
 import com.groupfour.MedicalCare.Model.DTO.SalaDodavanjeDTO;
 import com.groupfour.MedicalCare.Model.DTO.SalaPretragaDTO;
-import com.groupfour.MedicalCare.Model.HibernateUtil;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Repository.KlinikaRepository;
 import com.groupfour.MedicalCare.Repository.SalaRepository;
-import org.hibernate.Session;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,7 +29,9 @@ public class SalaService {
         ModelMapper mapper = new ModelMapper();
 
         for(Sala s : sale){
-            saleDTO.add(mapper.map(s, SalaPretragaDTO.class));
+            if(s.isAktivna()) {
+                saleDTO.add(mapper.map(s, SalaPretragaDTO.class));
+            }
         }
 
         return saleDTO;
@@ -51,12 +49,7 @@ public class SalaService {
         } catch (Exception e){
             System.out.println("Neuspesno setovanje aktivnosti na 0");
         }
-        // cuvanje promenjene vrednosti
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-        session.update(sala);
-        session.getTransaction().commit();
-        session.close();
+        salaRepository.save(sala);
     }
 
     public static void addSala(SalaDodavanjeDTO salaDodavanjeDTO){
@@ -67,12 +60,11 @@ public class SalaService {
         }
         Sala sala = Sala.builder().brojSale(salaDodavanjeDTO.getBrojSale()).aktivna(true).build();
 
-        klinika.dodajSalu(sala);
+        System.out.println("Dodata sala " + sala.getBrojSale() + " u kliniku " + klinika.getNaziv());
 
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-        session.update(klinika);
-        session.getTransaction().commit();
-        session.close();
+        klinika.dodajSalu(sala);
+        klinikaRepository.save(klinika);
+
+
     }
 }

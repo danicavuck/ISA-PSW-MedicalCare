@@ -73,6 +73,7 @@ public final class DbColumnConstants {
     public static final String SALA_ZAVRSETAK_TERMINA = "zavrsetak_termina";
     public static final String SALA_BROJ_SALE = "broj_sale";
     public static final String SALA_AKTIVNA = "aktivna";
+    public static final String SALA_KLINIKA = "klinika_id";
 
     // Sifarnik lekova
     public static final String SIFARNIK_LEKOVA_ID = "id_lek";
