@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
+import { KlinikaServiceComponent } from '../services/klinika-service/klinika-service.component';
 
 @Component({
   selector: 'app-admin-klinike-homepage',
   templateUrl: './admin-klinike-homepage.component.html',
-  styleUrls: ['./admin-klinike-homepage.component.css']
+  styleUrls: ['./admin-klinike-homepage.component.css'],
 })
 export class AdminKlinikeHomepageComponent implements OnInit {
 
   private models: Array<KlinikaDTO>;
-
-  constructor(private router: Router, private http: HttpClient) { }
+  private klinika: KlinikaDTO;
+  constructor(private router: Router, private http: HttpClient, private dataService: KlinikaServiceComponent) { }
 
   ngOnInit() {
     this.getTestKlinike();
@@ -20,6 +21,13 @@ export class AdminKlinikeHomepageComponent implements OnInit {
   async onDodajKliniku() {
     this.router.navigateByUrl('/dodavanjeklinike');
     console.log('click');
+  }
+
+  async onDetaljnije(klinika) {
+    this.klinika = klinika;
+    console.log('Prosledjena klinika: ');
+    console.log(this.klinika);
+    this.dataService.setData(this.klinika);
   }
 
   async getTestKlinike() {
@@ -54,3 +62,5 @@ export interface KlinikaDTO {
   opis: string;
   adresa: string;
 }
+
+

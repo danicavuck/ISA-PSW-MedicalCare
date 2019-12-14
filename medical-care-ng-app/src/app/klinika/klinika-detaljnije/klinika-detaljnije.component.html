@@ -39,17 +39,17 @@
 
                 <div class="form-group">
                     <label for="naziv">Naziv</label>
-                    <input type="text" id="naziv" class="form-control" name="naziv" required>
+                    <input type="text" id="naziv" class="form-control" name="naziv" required [(ngModel)]="klinika.naziv">
                 </div>
             
                 <div class="form-group">
                     <label for="adresa">Adresa</label>
-                    <input type="text" id="adresa" class="form-control" name="adresa" required>
+                    <input type="text" id="adresa" class="form-control" name="adresa" required [(ngModel)]="klinika.adresa">
                 </div>
             
                 <div class="form-group">
                     <label for="opis">Opis</label>
-                    <textarea type="text" id="opis" class="form-control" name="opis" required></textarea>
+                    <textarea type="text" id="opis" class="form-control" name="opis" required [(ngModel)]="klinika.opis"></textarea>
                 </div>
                 
             
@@ -76,11 +76,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Petar</td>
-                            <td>Petrovic</td>
-                            <td>petarpetrovic@gmail.com</td>
+                        <tr *ngFor="let lekar of lekari; let i = index">
+                            <th scope="row">{{i + 1}}</th>
+                            <td>{{lekar.ime}}</td>
+                            <td>{{lekar.prezime}}</td>
+                            <td>{{lekar.email}}</td>
                             <td>
                                 <button class="btn btn-danger btn-sm">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
@@ -106,13 +106,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>101</td>
-                                <td>01/01/2019</td>
-                                <td>02/01/2019</td>
+                            <tr *ngFor="let sala of sale; let i=index">
+                                <th scope="row">{{i + 1}}</th>
+                                <td>{{sala.brojSale}}</td>
+                                <td>{{sala.pocetakTermina}}</td>
+                                <td>{{sala.krajTermina}}</td>
                                 <td>
-                                    <button class="btn btn-danger btn-sm">
+                                    <button class="btn btn-danger btn-sm" (click)="obrisiSalu(sala)">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                             <span> Obrisi</span>
                                     </button>
@@ -132,5 +132,5 @@
     
     </div>
       
-      </body>
+</body>
 </html>

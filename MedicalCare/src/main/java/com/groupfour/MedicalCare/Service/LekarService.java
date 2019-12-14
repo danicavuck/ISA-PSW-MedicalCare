@@ -18,15 +18,24 @@ public class LekarService {
         lekarRepository = lRepository;
     }
 
-    public static ArrayList<LekarDTO> getLekareDTO(){
+    public static ArrayList<LekarDTO> getLekareDTO(Integer klinikaId){
         ArrayList<Lekar> lekari = lekarRepository.findAll();
         ArrayList<LekarDTO> lekariDTO = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
 
-        for(Lekar lekar : lekari) {
-            lekariDTO.add(mapper.map(lekar, LekarDTO.class));
+        if(klinikaId == 0){
+            for(Lekar lekar : lekari) {
+                lekariDTO.add(mapper.map(lekar, LekarDTO.class));
+            }
+            return lekariDTO;
+        } else{
+            for(Lekar lekar : lekari) {
+                if(lekar.getKlinika().getId() == klinikaId) {
+                    lekariDTO.add(mapper.map(lekar, LekarDTO.class));
+                }
+            }
+            return lekariDTO;
         }
 
-        return lekariDTO;
     }
 }

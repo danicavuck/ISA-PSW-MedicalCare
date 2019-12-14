@@ -23,18 +23,26 @@ public class SalaService {
         klinikaRepository = kRepository;
     }
 
-    public static ArrayList<SalaPretragaDTO> getSale(){
+    public static ArrayList<SalaPretragaDTO> getSale(Integer klinikaId){
         ArrayList<Sala> sale = salaRepository.findAll();
         ArrayList<SalaPretragaDTO> saleDTO = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
-
-        for(Sala s : sale){
-            if(s.isAktivna()) {
-                saleDTO.add(mapper.map(s, SalaPretragaDTO.class));
+        System.out.println("ID Klinike: " + klinikaId);
+        if(klinikaId == 0){
+            for(Sala s : sale){
+                if(s.isAktivna()) {
+                    saleDTO.add(mapper.map(s, SalaPretragaDTO.class));
+                }
             }
+            return saleDTO;
+        } else{
+            for(Sala s : sale){
+                if(s.isAktivna() && s.getKlinika().getId() == klinikaId) {
+                    saleDTO.add(mapper.map(s, SalaPretragaDTO.class));
+                }
+            }
+            return saleDTO;
         }
-
-        return saleDTO;
     }
 
     public static void deleteSala(SalaPretragaDTO salaPretragaDTO){

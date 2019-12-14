@@ -22,6 +22,7 @@ import { KlinikaDetaljnijeComponent } from './klinika/klinika-detaljnije/klinika
 import { SaleComponent } from './sale/sale.component';
 import { DodajSaluComponent } from './sale/dodaj-salu/dodaj-salu.component';
 import { DodavanjeTipaPregledaComponent } from './definisanje-pregleda/dodavanje-tipa-pregleda/dodavanje-tipa-pregleda.component';
+import { KlinikaServiceComponent } from './services/klinika-service/klinika-service.component';
 
 
 
@@ -57,7 +58,8 @@ const appRouts: Routes = [
     KlinikaDetaljnijeComponent,
     SaleComponent,
     DodajSaluComponent,
-    DodavanjeTipaPregledaComponent
+    DodavanjeTipaPregledaComponent,
+    KlinikaServiceComponent
   ],
   imports: [
     BrowserModule,

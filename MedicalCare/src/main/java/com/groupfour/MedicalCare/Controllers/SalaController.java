@@ -16,10 +16,20 @@ import java.util.ArrayList;
 public class SalaController {
 
     public SalaController(){}
-
     @GetMapping
-    public ResponseEntity<ArrayList<SalaPretragaDTO>> getSale(){
-        ArrayList<SalaPretragaDTO> sale =  SalaService.getSale();
+    public ResponseEntity<ArrayList<SalaPretragaDTO>> getSaleSve(){
+        ArrayList<SalaPretragaDTO> sale =  SalaService.getSale(0);
+        if(sale == null){
+            System.out.println("Sale nisu nadjene");
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(sale, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{klinikaId}")
+    public ResponseEntity<ArrayList<SalaPretragaDTO>> getSaleZaKliniku(@PathVariable(value = "klinikaId") Integer klinikaId){
+        ArrayList<SalaPretragaDTO> sale =  SalaService.getSale(klinikaId);
         if(sale == null){
             System.out.println("Sale nisu nadjene");
             return new ResponseEntity<>(null, HttpStatus.OK);

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Time } from '@angular/common';
 
 @Component({
   selector: 'app-definisanje-pregleda',
@@ -8,6 +9,15 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DefinisanjePregledaComponent implements OnInit {
   tipPregleda: Array<TipPregleda>;
+  pregled: Pregled = {
+    datumPregleda: '',
+    tipPregleda: '',
+    vremePregleda: null,
+    trajanjePregleda: 0,
+    sala: 0,
+    lekar: '',
+    cena: 0
+  };
   sale: Array<SalePretraga>;
   sala: SalePretraga = {
     brojSale: 0,
@@ -59,7 +69,7 @@ export class DefinisanjePregledaComponent implements OnInit {
         this.lekari = data as Array<Lekar>;
         console.log(this.lekari);
       }, err => {
-        console.log('Greska pri pribavljanju sala: ');
+        console.log('Greska pri pribavljanju lekara: ');
         console.log(err);
       });
   }
@@ -75,8 +85,19 @@ export interface Lekar {
   id: number;
   ime: string;
   prezime: string;
+  email: string;
 }
 
 export interface TipPregleda {
   tipPregleda: string;
+}
+
+export interface Pregled {
+  datumPregleda: string;
+  vremePregleda: Time;
+  tipPregleda: string;
+  trajanjePregleda: number;
+  sala: number;
+  lekar: string;
+  cena: number;
 }
