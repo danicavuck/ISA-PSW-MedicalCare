@@ -67,4 +67,14 @@ public class SalaService {
 
 
     }
+
+    public static SalaPretragaDTO salaSearch(SalaPretragaDTO salaPretragaDTO){
+        Sala sala = salaRepository.findByBrojSale(salaPretragaDTO.getBrojSale());
+        ArrayList<SalaPretragaDTO> salaPretrage = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+        if(sala != null){
+            return modelMapper.map(sala, SalaPretragaDTO.class);
+        }
+        return null;
+    }
 }

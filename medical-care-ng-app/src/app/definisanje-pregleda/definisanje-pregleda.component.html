@@ -50,13 +50,9 @@
             <div class="form-group">
               <label for="tippregleda">Tip pregleda </label>
               <select class="form-control" name="tippregleda" id="tipptegleda" required>
-                  <option value="1">Upala pluca</option>
-                  <option value="2">Kijavica</option>
-                  <option value="3">Stomatoloski pregled</option>
-                  <option value="4">Nefroloski pregled</option>
-                  <option value="5">Kardioloski pregled</option>
-                  <option value="6">Kontorla</option>
+                <option *ngFor="let tip of tipPregleda; let i = index" value="{{i}}">{{tip.tipPregleda}} </option>
               </select>
+              <button type="button" class="btn btn-success" [routerLink]="['/adminklinike/dodavanjetipa']" style="width: 100%; margin: 10px 0 10px 0;">Dodajte novi tip pregleda</button>
             </div>
       
             <div class="form-group">

@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./definisanje-pregleda.component.css']
 })
 export class DefinisanjePregledaComponent implements OnInit {
-
+  tipPregleda: Array<TipPregleda>;
   sale: Array<SalePretraga>;
   sala: SalePretraga = {
     brojSale: 0,
@@ -21,6 +21,7 @@ export class DefinisanjePregledaComponent implements OnInit {
   constructor(private http: HttpClient) {
     this.getSaleInitialy();
     this.getLekareInitialy();
+    this.getTipInitialy();
   }
 
   ngOnInit() {
@@ -34,6 +35,18 @@ export class DefinisanjePregledaComponent implements OnInit {
         console.log(this.sale);
       }, err => {
         console.log('Greska pri pribavljanju sala: ');
+        console.log(err);
+      });
+  }
+  async getTipInitialy() {
+    const apiEndpoint = 'http://localhost:8080/tippregleda';
+
+    this.http.get(apiEndpoint,
+      {responseType: 'json'}).subscribe((data) => {
+        this.tipPregleda = data as Array<TipPregleda>;
+        console.log(this.tipPregleda);
+      }, err => {
+        console.log('Greska pri pribavljanju tipova pregeda: ');
         console.log(err);
       });
   }
@@ -62,4 +75,8 @@ export interface Lekar {
   id: number;
   ime: string;
   prezime: string;
+}
+
+export interface TipPregleda {
+  tipPregleda: string;
 }

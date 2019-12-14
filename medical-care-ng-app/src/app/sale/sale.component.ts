@@ -9,14 +9,23 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 })
 export class SaleComponent implements OnInit {
 
+  filtriraj = false;
   sale: Array<SalePretraga>;
-  sala: BrisanjeSale = {
+  nadjenaSala: SalePretraga;
+  sala: SalaDTO = {
     brojSale: 0,
     datum: null,
     pocetakTermina: null,
     krajTermina: null
   };
+  salaPretraga: SalaDTO = {
+    brojSale: 101,
+    datum: null,
+    pocetakTermina: null,
+    krajTermina: null
+  };
   constructor(private http: HttpClient) {
+    this.filtriraj = false;
     this.getSaleInitialy();
    }
 
@@ -27,8 +36,23 @@ export class SaleComponent implements OnInit {
     console.log('Click');
   }
 
+  async pretraziSale() {
+    const apiEndpoint = 'http://localhost:8080/sale/pretraga';
+
+    this.http.post(apiEndpoint, this.salaPretraga, {responseType: 'json'}).subscribe((data) => {
+        this.nadjenaSala = data as SalePretraga;
+        this.filtriraj = true;
+        console.log(this.filtriraj);
+      }, err => {
+        console.log('Greska pri pribavljanju sala: ');
+        console.log(err);
+        console.log(this.salaPretraga);
+      });
+  }
+
   async getSaleInitialy() {
     const apiEndpoint = 'http://localhost:8080/sale';
+    this.filtriraj = false;
 
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
@@ -66,7 +90,7 @@ export interface SalePretraga {
   krajTermina: Date;
 }
 
-export interface BrisanjeSale {
+export interface SalaDTO {
   brojSale: number;
   datum: Date;
   pocetakTermina: Date;

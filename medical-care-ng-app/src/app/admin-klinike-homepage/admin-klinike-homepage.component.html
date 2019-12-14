@@ -48,7 +48,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let klinika of models; let i = index">
-                <th scope="row">{{i + 1}}</th>
+                <th scope="row">{{klinika.id}}</th>
                 <td>{{klinika.naziv}}</td>
                 <td>{{klinika.adresa}}</td>
                 <td>{{klinika.opis}}</td>

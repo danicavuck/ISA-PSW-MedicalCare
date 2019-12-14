@@ -36,13 +36,13 @@
         
         <div class="text-center">
             
-            <form name="form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()" class="form-inline" style="margin: -30px 0 20px 0;">
+            <form name="form" #f="ngForm" novalidate class="login-form" (ngSubmit)="pretraziSale()" class="form-inline" style="margin: -30px 0 20px 0;">
                 <div class="form-row">
                     <div class="col" style="margin-left: 30px;">
-                        <input type="text" id="naziv" class="form-control" name="naziv" placeholder="Naziv/Broj sale" required>
+                        <input type="text" id="naziv" class="form-control" name="naziv" placeholder="Naziv/Broj sale" [(ngModel)]="salaPretraga.brojSale" required>
                     </div>
                     <div class="col">
-                        <input type="text" bsDatepicker id="datum" class="form-control" name="datum" placeholder="Datum zauzeca" required readonly style="background: #fff;">
+                        <input type="text" bsDatepicker id="datum" class="form-control" name="datum" placeholder="Datum zauzeca" required readonly style="background: #fff;" [(ngModel)]="salaPretraga.datum">
                     </div>
                     <div class="col">
                         <button type="submit" class="btn btn-outline-success pull-right" [disabled]="!f.valid">
@@ -57,31 +57,60 @@
                 <div class="container" style="margin: 0 0 30px 0;">
                         <h3 style="display: inline; margin-right: 20px; text-align:center;">Sale</h3>
                 </div>
-                <table class="table">
-                    <thead class = "thead-dark">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Broj sale</th>
-                        <th scope="col">Pocetak Termina</th>
-                        <th scope="col">Kraj Termina</th>
-                        <th scope="col">Akcije</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let sala of sale; let i = index">
-                            <th scope="row">{{i + 1}}</th>
-                            <td>{{sala.brojSale}}</td>
-                            <td>{{sala.pocetakTermina}}</td>
-                            <td>{{sala.krajTermina}}</td>
-                            <td>
-                                <button class="btn btn-danger btn-sm" (click)="obrisiSalu(sala)">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                        <span> Obrisi</span>
-                                </button>
-                            </td>
+                <div class="primarna-tabela" *ngIf="!filtriraj">
+                    <table class="table">
+                        <thead class = "thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Broj sale</th>
+                            <th scope="col">Pocetak Termina</th>
+                            <th scope="col">Kraj Termina</th>
+                            <th scope="col">Akcije</th>
                         </tr>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let sala of sale; let i = index">
+                                <th scope="row">{{i + 1}}</th>
+                                <td>{{sala.brojSale}}</td>
+                                <td>{{sala.pocetakTermina}}</td>
+                                <td>{{sala.krajTermina}}</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" (click)="obrisiSalu(sala)">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                            <span> Obrisi</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sekundarna-tabela" *ngIf="filtriraj">
+                    <table class="table" *ngIf="filtriraj">
+                        <thead class = "thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Broj sale</th>
+                            <th scope="col">Pocetak Termina</th>
+                            <th scope="col">Kraj Termina</th>
+                            <th scope="col">Akcije</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>{{nadjenaSala.brojSale}}</td>
+                                <td>{{nadjenaSala.pocetakTermina}}</td>
+                                <td>{{nadjenaSala.krajTermina}}</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" (click)="obrisiSalu(nadjenaSala)">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                            <span> Obrisi</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <button class="btn btn-outline-success btn-sm" style="width: 100%;" [routerLink]="['/adminklinike/dodajsalu']">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         <span> Dodaj salu</span>

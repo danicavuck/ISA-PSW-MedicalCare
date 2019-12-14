@@ -21,6 +21,7 @@ import { TimepickerModule } from 'ngx-bootstrap';
 import { KlinikaDetaljnijeComponent } from './klinika/klinika-detaljnije/klinika-detaljnije.component';
 import { SaleComponent } from './sale/sale.component';
 import { DodajSaluComponent } from './sale/dodaj-salu/dodaj-salu.component';
+import { DodavanjeTipaPregledaComponent } from './definisanje-pregleda/dodavanje-tipa-pregleda/dodavanje-tipa-pregleda.component';
 
 
 
@@ -32,6 +33,7 @@ const appRouts: Routes = [
   { path: 'adminklinike/defpregleda', component: DefinisanjePregledaComponent},
   { path: 'adminklinike/klinika', component: KlinikaDetaljnijeComponent},
   { path: 'adminklinike/sale', component: SaleComponent},
+  { path: 'adminklinike/dodavanjetipa', component: DodavanjeTipaPregledaComponent},
   { path: 'adminklinike/dodajsalu', component: DodajSaluComponent},
   { path: 'lekar', component: LekarComponent },
   { path: 'medsestra', component: MedicinskaSestraComponent },
@@ -54,7 +56,8 @@ const appRouts: Routes = [
     DefinisanjePregledaComponent,
     KlinikaDetaljnijeComponent,
     SaleComponent,
-    DodajSaluComponent
+    DodajSaluComponent,
+    DodavanjeTipaPregledaComponent
   ],
   imports: [
     BrowserModule,

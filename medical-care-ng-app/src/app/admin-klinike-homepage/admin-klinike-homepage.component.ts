@@ -49,6 +49,7 @@ export class AdminKlinikeHomepageComponent implements OnInit {
 }
 
 export interface KlinikaDTO {
+  id: number;
   naziv: string;
   opis: string;
   adresa: string;
