@@ -50,4 +50,6 @@ public class RegistracijaPacijenta {
     @JoinColumn(name = DbColumnConstants.REGISTRACIJA_ADMIN_KC)
     private AdminKlinickogCentra adminKlinickogCentra;
 
+   // @Version
+   // private Long version;
 }

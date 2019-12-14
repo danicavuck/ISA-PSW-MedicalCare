@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Builder
 @ToString
 public class RegistracijaPacijentaDTO {
+    private int id;
     private String ime;
     private String prezime;
     private String email;

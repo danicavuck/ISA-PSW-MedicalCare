@@ -55,29 +55,34 @@ export class AdminKcComponent implements OnInit {
 }
 
 
-async prihvatiZahtev(model:RegistracijaPacijentaDTO,i:number){
+async prihvatiZahtev(model:RegistracijaPacijentaDTO){
   const url = 'http://localhost:8080/adminkc/prihvatiZahtev';
   
-  this.temp = this.models[i];
+
   console.log('prihvacen')
   model.aktivan = false;
 
-  const params = new HttpParams()
-                    .set('id', model.id.toString() );
-
-  model.aktivan = false;
-    return this.http.put(url, {params} )
+  
+  this.http.put(url,model.id)
+  .subscribe((data) => {
+ 
+  },err => {
+    console.log('greska pri prihvatanju');
+    console.log(err);
+  });
  
 }
 
-async odbijZahtev(model:RegistracijaPacijentaDTO,i:number){
+async odbijZahtev(model:RegistracijaPacijentaDTO){
   const url = 'http://localhost:8080/adminkc/odbijZahtev';
-  
-  const params = new HttpParams()
-                    .set('id', model.id.toString());
-
   model.aktivan = false;
-    return this.http.put(url,null, {params} )
+  this.http.put(url,model.id)
+  .subscribe((data) => {
+ 
+  },err => {
+    console.log('greska pri odbijanju');
+    console.log(err);
+  });
 
 }
 

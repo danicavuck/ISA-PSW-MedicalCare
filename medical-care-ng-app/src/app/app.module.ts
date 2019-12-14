@@ -16,6 +16,8 @@ import { LekarComponent } from './lekar/lekar.component';
 import { MedicinskaSestraComponent } from './medicinska-sestra/medicinska-sestra.component';
 import { KlinikaIzmenaComponent } from './klinika/klinika-izmena/klinika-izmena.component';
 import { AdminKcComponent } from './admin-kc/admin-kc.component';
+import { RegistracijaAdminaKlinikeComponent } from './registracija-admina-klinike/registracija-admina-klinike.component';
+import { RegistracijaKlinikeComponent } from './registracija-klinike/registracija-klinike.component';
 
 
 const appRouts : Routes = [
@@ -27,6 +29,8 @@ const appRouts : Routes = [
   { path: 'lekar', component: LekarComponent },
   { path: 'medsestra', component: MedicinskaSestraComponent },
   { path: 'adminkc', component : AdminKcComponent},
+  { path: 'registracija-admina', component : RegistracijaAdminaKlinikeComponent},
+  { path: 'registracija-klinike', component : RegistracijaKlinikeComponent},
   { path: '', redirectTo : '/login', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent },
   
@@ -46,6 +50,8 @@ const appRouts : Routes = [
     MedicinskaSestraComponent,
     KlinikaIzmenaComponent,
     AdminKcComponent,
+    RegistracijaAdminaKlinikeComponent,
+    RegistracijaKlinikeComponent,
    
   ],
   imports: [

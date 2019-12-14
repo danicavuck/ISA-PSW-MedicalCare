@@ -41,7 +41,7 @@ public class AdminKCController {
 
 
     @RequestMapping(value="/prihvatiZahtev", method=RequestMethod.PUT)
-    public ResponseEntity<?> prihvatiZahtev(@RequestParam("id") Integer id){
+    public ResponseEntity<?> prihvatiZahtev(@RequestBody Integer id){
         adminKCService.prihvatiZahtev(id);
         System.out.println("prihvacen");
             return new ResponseEntity<String>("Zahtev je prihvacen!",HttpStatus.OK);
@@ -49,7 +49,7 @@ public class AdminKCController {
     }
 
     @RequestMapping(value="/odbijZahtev", method=RequestMethod.PUT)
-    public ResponseEntity<?> odbijZahtev(@RequestParam("id") Integer id){
+    public ResponseEntity<?> odbijZahtev(@RequestBody Integer id){
         System.out.println("odbijen");
         adminKCService.odbijZahtev(id);
         return new ResponseEntity<String>("Zahtev je odbijen!",HttpStatus.OK);

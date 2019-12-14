@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.OptimisticLockException;
+
 @Service
 public class AdminKCService {
     @Autowired
@@ -35,18 +37,30 @@ public class AdminKCService {
 
     @Transactional(readOnly = false)
     public void prihvatiZahtev(Integer id) {
-        RegistracijaPacijenta registracijaPacijenta = registracijaPacijentaRepository.getOne(id);
-        registracijaPacijenta.setOdobren(true);
-        registracijaPacijenta.setAktivan(false);
-        registracijaPacijentaRepository.save(registracijaPacijenta);
+
+      try {
+          RegistracijaPacijenta registracijaPacijenta = registracijaPacijentaRepository.getOne(id);
+          registracijaPacijenta.setOdobren(true);
+          registracijaPacijenta.setAktivan(false);
+          System.out.println("u servisu");
+          registracijaPacijentaRepository.save(registracijaPacijenta);
+      }catch(OptimisticLockException e){
+          System.out.println("exception");
+      }
     }
 
     @Transactional(readOnly = false)
     public void odbijZahtev(Integer id) {
-        RegistracijaPacijenta registracijaPacijenta = registracijaPacijentaRepository.getOne(id);
-        registracijaPacijenta.setOdobren(false);
-        registracijaPacijenta.setAktivan(false);
-        registracijaPacijentaRepository.save(registracijaPacijenta);
+          try{
+                RegistracijaPacijenta registracijaPacijenta = registracijaPacijentaRepository.getOne(id);
+            registracijaPacijenta.setOdobren(false);
+            registracijaPacijenta.setAktivan(false);
+            registracijaPacijentaRepository.save(registracijaPacijenta);
+        } catch (OptimisticLockException e) {
+              System.out.println("exception");
+            // osvesi sajt
+        }
+
     }
 
 

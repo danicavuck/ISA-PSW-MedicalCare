@@ -22,9 +22,8 @@
   </button> 
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-      <a class="nav-item nav-link active "  href="#">Home <span class="sr-only">(current)</span></a>
-      <a class="nav-item nav-link" href="#">Registruj Kliniku</a>
-      <a class="nav-item nav-link" href="#">Registruj Administratora</a>
+      <a class="nav-item nav-link" [routerLink]="['/registracija-klinike']">Registruj Kliniku</a>
+      <a class="nav-item nav-link" [routerLink]="['/registracija-admina']">Registruj Administratora</a>
       <a class="nav-item nav-link disabled" href="#">Sifarnik Dijagnoza</a>
     </div>
   </div>
@@ -52,10 +51,10 @@
               <td>{{zahtev.prezime}}</td>
               <td>{{zahtev.email}}</td>
               <td>
-                  <button type="button" class="btn btn-success" (click) = "prihvatiZahtev(zahtev,i-1)">Prihvati</button>
+                  <button type="button" class="btn btn-success" (click) = "prihvatiZahtev(zahtev)">Prihvati</button>
               </td>
               <td>
-                  <button type="button" class="btn btn-danger"  (click) = "odbijZahtev(zahtev,i-1)">Odbij</button>
+                  <button type="button" class="btn btn-danger"  (click) = "odbijZahtev(zahtev)">Odbij</button>
               </td>
             </ng-container>
             </tr>
