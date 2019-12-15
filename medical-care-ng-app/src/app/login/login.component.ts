@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,15 +9,21 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
-  isLoading : boolean = false;
-  errorStatus : string = null;
+  isLoading = false;
+  errorStatus = null;
 
-  model : LoginViewModel = {
+  model: LoginViewModel = {
     email : '',
     lozinka : ''
   };
 
-  constructor( private http : HttpClient, private router : Router ) {
+  userDTO: UserDTO = {
+    id : 0,
+    user_email : '',
+    role : ''
+  };
+
+  constructor( private http: HttpClient, private router: Router ) {
 
   }
 
@@ -25,40 +31,49 @@ export class LoginComponent implements OnInit {
   }
 
 
-  async onSubmit(){
+  async onSubmit() {
     this.isLoading = true;
 
-    if(this.performCheck()){
-      let apiEndpoint = "http://localhost:8080/login";
+    if (this.performCheck()) {
+      const apiEndpoint = 'http://localhost:8080/login';
 
       this.http.post(apiEndpoint, this.model,
-        {responseType: 'text'}).subscribe( data => {
-        //this.router.navigateByUrl("/home");
-        setTimeout(() =>
-        {
-          this.router.navigateByUrl('/home');
+        {responseType: 'json'}).subscribe( data => {
+        setTimeout(() => {
+          this.userDTO = data as UserDTO;
+          switch (this.userDTO.role) {
+            case 'admin_klinike' : this.router.navigateByUrl('/adminklinike');
+                                   break;
+            case 'lekar' : this.router.navigateByUrl('/lekar');
+                           break;
+            case 'med_sestra' : this.router.navigateByUrl('/medsestra');
+                                break;
+            case 'pacijent' : this.router.navigateByUrl('/home');
+                              break;
+            default: console.log(data);
+          }
           this.isLoading = false;
-        },1500);
+        }, 1500);
 
-      }, err =>{
+      }, err => {
           this.isLoading = false;
           switch (err.error) {
             case 'Not authorized':
-              this.errorStatus = "Nepostojeca e-mail adresa";
+              this.errorStatus = 'Nepostojeca e-mail adresa';
               break;
             case 'Incorrect credentials':
-              this.errorStatus = "Neispravni kredencijali";
+              this.errorStatus = 'Neispravni kredencijali';
               break;
             default:
-              this.errorStatus = "Greska pri prijavljivanju na sistem"
+              this.errorStatus = 'Greska pri prijavljivanju na sistem';
           }
       });
     }
   }
 
-  async performCheck(){
-    if(this.model.email == "" || this.model.lozinka == ""){
-      alert("Polja ne smeju biti prazna");
+  async performCheck() {
+    if (this.model.email == '' || this.model.lozinka == '') {
+      alert('Polja ne smeju biti prazna');
       return false;
     }
     return true;
@@ -66,7 +81,13 @@ export class LoginComponent implements OnInit {
 
 }
 
-export interface LoginViewModel{
-  email:string;
-  lozinka:string;
+export interface LoginViewModel {
+  email: string;
+  lozinka: string;
+}
+
+export interface UserDTO {
+  id: number;
+  user_email: string;
+  role: string;
 }

@@ -2,6 +2,7 @@ package com.groupfour.MedicalCare.Controllers;
 
 
 import com.groupfour.MedicalCare.Model.DTO.LoginDTO;
+import com.groupfour.MedicalCare.Model.DTO.UserRole;
 import com.groupfour.MedicalCare.Service.LoginService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,7 @@ public class LoginController {
     }
 
     @PostMapping
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO){
+    public ResponseEntity<UserRole> login(@RequestBody LoginDTO loginDTO){
         return LoginService.loginPacijent(loginDTO);
     }
 }
