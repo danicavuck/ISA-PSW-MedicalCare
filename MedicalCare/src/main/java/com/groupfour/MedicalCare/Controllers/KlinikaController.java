@@ -3,6 +3,8 @@ package com.groupfour.MedicalCare.Controllers;
 
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.KlinikaDTO;
+import com.groupfour.MedicalCare.Model.DTO.LekarDTO;
+import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
@@ -25,15 +27,17 @@ public class KlinikaController {
     @Autowired
     private KlinikaService klinikaService;
 
-    @PostMapping("/dodajKliniku")
-    public ResponseEntity<String> register(@RequestBody KlinikaDTO klinikaDTO){
-        return klinikaService.registerKlinika(klinikaDTO);
+    @GetMapping("/klinike")
+    public ResponseEntity<?> getKlinike(){
+        List<Klinika> klinike = klinikaService.getKlinike();
+
+        return new ResponseEntity<>(klinike,HttpStatus.OK);
     }
 
 
     @GetMapping("/lekari")
     public ResponseEntity<?> getLekari(){
-        List<Lekar> lekari = klinikaService.getLekari();
+        List<LekarDTO> lekari = klinikaService.getLekari();
 
         return new ResponseEntity<>(lekari, HttpStatus.OK);
     }

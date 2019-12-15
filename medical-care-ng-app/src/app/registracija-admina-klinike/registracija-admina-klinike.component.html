@@ -46,8 +46,13 @@
             <label for="lozinkaPonovo">Potvrdite unetu lozinku</label>
             <input type="password" id="lozinkaPonovo" class="form-control" name="lozinkaPonovo" required>
           </div>
-
-          <button type="submit" class="btn btn-primary pull-left" [disabled]="!f.valid">
+          <div class="form-group">
+            <label for="sel1">Odaberite kliniku</label>
+            <select class="form-control" id="sel1">
+              <option *ngFor="let klinika of klinike">{{klinika.naziv}}</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary pull-left" [disabled]="!f.valid"  routerLink="/adminkc">
             <i class="fa fa-user-plus"></i>
             <span> Registrujte Admina klinike</span>
           </button>

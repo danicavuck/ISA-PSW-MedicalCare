@@ -40,32 +40,32 @@
           
           <div class = "form-group">
           <label for="lekari">Odaberite lekare</label>
-          <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" >
+          <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" [(ngModel)] = "model.selLekari" >
           <option *ngFor="let lekar of lekari; let i = index">{{lekar.ime}} {{lekar.prezime}}</option>
           </select><!-- End -->
         </div>
            <div class = "form-group">
             <label for="sestre">Odaberite medicinske sestre</label>
             <!-- Multiselect dropdown -->
-            <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100">
+            <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" [(ngModel)] = "model.selSestre">
              <option *ngFor="let sestra of sestre; let i = index">{{sestra.ime}} {{sestra.prezime}}</option>
              </select><!-- End -->
            </div>
            <div class = "form-group">
               <label for="sale">Odaberite sale</label>
               <!-- Multiselect dropdown -->
-              <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" >
-               <option *ngFor="let sala of sale; let i = index">{{sala.id}}</option>   
+              <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" [(ngModel)] = "model.selSale" >
+               <option *ngFor="let sala of sale; let i = index">{{sala.brojSale}}</option>   
                </select><!-- End -->
              </div>
              <div class = "form-group">
               <label for="admini">Odaberite admine klinike</label>
               <!-- Multiselect dropdown -->
-              <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100">
+              <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" [(ngModel)] = "model.selAdmini">
                <option *ngFor="let admin of admini; let i = index">{{admin.ime}} {{admin.prezime}}</option>
               </select><!-- End -->
                </div>
-          <button type="submit" class="btn btn-primary pull-left" [disabled]="!f.valid">
+          <button type="submit" class="btn btn-primary pull-left" [disabled]="!f.valid" routerLink="/adminkc">
             <i class="fa fa-user-plus"></i>
             <span> Registrujte kliniku</span>
           </button>

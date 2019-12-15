@@ -27,12 +27,5 @@ public class AdminKlinikeController {
         return new ResponseEntity<>("OK Admine", HttpStatus.OK);
     }
 
-    @GetMapping("/klinike")
-    public ResponseEntity<List<Klinika>> getKlinike(){
-        ArrayList<Klinika> klinike = KlinikaService.getKlinike();
 
-        System.out.println(klinike);
-
-        return new ResponseEntity<>(klinike, HttpStatus.OK);
-    }
 }

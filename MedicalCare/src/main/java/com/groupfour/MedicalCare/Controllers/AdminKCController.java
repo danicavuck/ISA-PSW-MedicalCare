@@ -1,6 +1,7 @@
 package com.groupfour.MedicalCare.Controllers;
 
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinickogCentra;
+import com.groupfour.MedicalCare.Model.DTO.KlinikaDTO;
 import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
 import com.groupfour.MedicalCare.Repository.AdminKCRepository;
 import com.groupfour.MedicalCare.Service.AdminKCService;
@@ -32,6 +33,7 @@ public class AdminKCController {
 
 
 
+
     @RequestMapping(value = "/zahtevi", method = RequestMethod.GET)
     public ResponseEntity<?> getZahteviZaRegistraciju(){
         List<RegistracijaPacijenta> temp = registracijaPacijentaService.getAllActive();
@@ -55,6 +57,12 @@ public class AdminKCController {
         return new ResponseEntity<String>("Zahtev je odbijen!",HttpStatus.OK);
 
     }
+
+    @PostMapping("/dodajKliniku")
+    public ResponseEntity<String> register(@RequestBody KlinikaDTO klinikaDTO){
+        return adminKCService.dodajKliniku(klinikaDTO);
+    }
+
 
 
 }

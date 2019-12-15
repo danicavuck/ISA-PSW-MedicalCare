@@ -13,8 +13,10 @@ export class RegistracijaKlinikeComponent implements OnInit {
     naziv : "",
     adresa : "",
     opis : "",
-    
-
+    selLekari : "",
+    selSestre : "",
+    selSale : "",
+    selAdmini: ""
   };
 
   lekari : Set<LekarDTO>;
@@ -35,31 +37,32 @@ export class RegistracijaKlinikeComponent implements OnInit {
 
   async onSubmit(){
     this.isLoading = true;
-   
-      let apiEndpoint = "http://localhost:8080/klinika/dodajKliniku";
+    console.log(this.model);
 
-      this.http.post(apiEndpoint, this.model,
-        {responseType: 'text'}).subscribe( data => {
-        setTimeout(() =>
-        {
-          this.router.navigateByUrl('/adminkc');
-          this.isLoading = false;
-        },2000);
-      }, err =>{
-        setTimeout(()=>{
-          this.isLoading = false;
-          switch (err.error) {
-            case 'Klinika sa tim nazivom vec postoji':
-              this.errorStatus = "Klinika s tim nazivom vec postoji";
-              break;
-            case 'Internal server error':
-              this.errorStatus = "Greska na serverskoj strani";
-              break;
-            default: this.errorStatus = "Greska pri registraciji";
-          }
-        },1000);
+      // let apiEndpoint = "http://localhost:8080/adminkc/dodajKliniku";
+      
+      // this.http.post(apiEndpoint, this.model,
+      //   {responseType: 'text'}).subscribe( data => {
+      //   setTimeout(() =>
+      //   {
+      //     this.router.navigateByUrl('/adminkc');
+      //     this.isLoading = false;
+      //   },2000);
+      // }, err =>{
+      //   setTimeout(()=>{
+      //     this.isLoading = false;
+      //     switch (err.error) {
+      //       case 'Klinika sa tim nazivom vec postoji':
+      //         this.errorStatus = "Klinika s tim nazivom vec postoji";
+      //         break;
+      //       case 'Internal server error':
+      //         this.errorStatus = "Greska na serverskoj strani";
+      //         break;
+      //       default: this.errorStatus = "Greska pri registraciji";
+      //     }
+      //   },1000);
 
-      });
+      // });
     
   }
 
@@ -126,7 +129,7 @@ export interface MedicinskaSestraDTO{
 }
 
 export interface SalaDTO{
- id : number;
+ brojSale: number;
 }
 export interface AdminKlinikeDTO{
   ime : string,
@@ -137,8 +140,8 @@ export interface KlinikaDTO{
   naziv : string;
   adresa : string;
   opis : string;
-  lekari : LekarDTO;
-  sestre : MedicinskaSestraDTO;
-  sale : SalaDTO;
-  admini : AdminKlinikeDTO;
+  selLekari : string;
+  selSestre : string;
+  selSale : string;
+  selAdmini : string;
 }
