@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @Service
@@ -28,17 +29,20 @@ public class SalaService {
         ArrayList<SalaPretragaDTO> saleDTO = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
         System.out.println("ID Klinike: " + klinikaId);
+        SalaPretragaDTO sDTO = new SalaPretragaDTO();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         if(klinikaId == 0){
             for(Sala s : sale){
                 if(s.isAktivna()) {
-                    saleDTO.add(mapper.map(s, SalaPretragaDTO.class));
+                    saleDTO.add(SalaPretragaDTO.builder().brojSale(s.getBrojSale()).krajTermina(s.getKrajTermina().format(formatter)).pocetakTermina(s.getPocetakTermina().format(formatter)).build());
                 }
             }
             return saleDTO;
         } else{
             for(Sala s : sale){
                 if(s.isAktivna() && s.getKlinika().getId() == klinikaId) {
-                    saleDTO.add(mapper.map(s, SalaPretragaDTO.class));
+                    saleDTO.add(SalaPretragaDTO.builder().brojSale(s.getBrojSale()).krajTermina(s.getKrajTermina().format(formatter)).pocetakTermina(s.getPocetakTermina().format(formatter)).build());
                 }
             }
             return saleDTO;

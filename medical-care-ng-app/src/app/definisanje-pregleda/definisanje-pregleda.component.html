@@ -39,7 +39,7 @@
 
             <div class="form-group">
               <label for="datum">Datum pregleda </label>
-              <input type="text" bsDatepicker id="datum" class="form-control" name="datum" required readonly style="background: #fff;">
+              <input type="text" bsDatepicker id="datum" class="form-control" name="datum" required readonly style="background: #fff;" [(ngModel)]="pregled.datumPregleda">
             </div>
 
             <div class="form-group">
@@ -49,7 +49,7 @@
       
             <div class="form-group">
               <label for="tippregleda">Tip pregleda </label>
-              <select class="form-control" name="tippregleda" id="tipptegleda" required>
+              <select class="form-control" name="tippregleda" id="tipptegleda" required [(ngModel)]="pregled.tipPregleda">
                 <option *ngFor="let tip of tipPregleda; let i = index" value="{{i}}">{{tip.tipPregleda}} </option>
               </select>
               <button type="button" class="btn btn-success" [routerLink]="['/adminklinike/dodavanjetipa']" style="width: 100%; margin: 10px 0 10px 0;">Dodajte novi tip pregleda</button>
@@ -57,27 +57,27 @@
       
             <div class="form-group">
               <label for="trajanje">Trajanje pregleda (min) </label>
-              <input type="number" name="trajanje" id="trajanje" class="form-control" required min="0" max="120">
+              <input type="number" name="trajanje" id="trajanje" class="form-control" required min="0" max="120" [(ngModel)]="pregled.trajanje">
             </div>
 
 
             <div class="form-group">
                 <label for="sala">Sala </label>
-                <select class="form-control" name="sala" id="sala" required>
+                <select class="form-control" name="sala" id="sala" required [(ngModel)]="pregled.sala">
                     <option *ngFor="let sala of sale; let i = index" value="{{i}}">{{sala.brojSale}}</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="lekar">Lekar </label>
-                <select class="form-control" name="lekar" id="lekar" required>
+                <select class="form-control" name="lekar" id="lekar" required [(ngModel)]="pregled.lekar">
                     <option *ngFor="let lekar of lekari; let i = index" value="{{i}}">{{lekar.ime}} {{lekar.prezime}} </option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="cena">Cena pregleda </label>
-                <input type="number" name="cena" id="cena" class="form-control" required min="0" max="5" inputmode="numeric">
+                <input type="number" name="cena" id="cena" class="form-control" required min="0" max="5" inputmode="numeric" [(ngModel)]="pregled.cena">
             </div>
 
       

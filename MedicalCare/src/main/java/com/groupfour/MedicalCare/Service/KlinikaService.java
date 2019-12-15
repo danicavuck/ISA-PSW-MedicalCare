@@ -24,9 +24,25 @@ public class KlinikaService {
         ModelMapper mapper = new ModelMapper();
 
         for(Klinika k : klinike){
-            klinikeDTO.add(mapper.map(k, KlinikaDTO.class));
+            // Samo jednu kliniku vraca
+            if(k.getId() == 5)
+                klinikeDTO.add(mapper.map(k, KlinikaDTO.class));
         }
 
         return klinikeDTO;
+    }
+
+    public static boolean updateKlinika(KlinikaDTO klinikaDTO){
+        Klinika klinika = klinikaRepository.findById(klinikaDTO.getId());
+        if(klinika == null){
+            return false;
+        }
+
+        klinika.setNaziv(klinikaDTO.getNaziv());
+        klinika.setAdresa(klinikaDTO.getAdresa());
+        klinika.setOpis(klinikaDTO.getOpis());
+
+        klinikaRepository.save(klinika);
+        return true;
     }
 }

@@ -50,6 +50,9 @@ export class KlinikaDetaljnijeComponent implements OnInit {
         console.log(err);
       });
   }
+
+
+
   async getSaleInitialy() {
     const apiEndpoint = 'http://localhost:8080/sale/' + this.klinika.id;
     console.log(apiEndpoint);
@@ -62,6 +65,19 @@ export class KlinikaDetaljnijeComponent implements OnInit {
         console.log('Greska pri pribavljanju sala: ');
         console.log(err);
       });
+  }
+
+  async onSubmit() {
+    const apiEndpoint = 'http://localhost:8080/klinika';
+
+    this.http.put(apiEndpoint, this.klinika, {responseType: 'text'}).subscribe((data) => {
+      console.log('Uspeh');
+    }, err => {
+      console.log('Greska');
+      console.log(err);
+    });
+
+    console.log(this.klinika);
   }
 
   async obrisiSalu(sala) {
@@ -99,6 +115,6 @@ export interface Lekar {
 
 export interface SalePretraga {
   brojSale: number;
-  pocetakTermina: Date;
-  krajTermina: Date;
+  pocetakTermina: string;
+  krajTermina: string;
 }

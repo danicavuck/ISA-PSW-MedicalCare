@@ -42,7 +42,7 @@ public class Pregled {
     @JoinColumn(name = DbColumnConstants.PREGLED_SALA)
     private Sala sala;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = DbColumnConstants.PREGLED_TIP_PREGLEDA)
     private TipPregleda tipPregleda;
 

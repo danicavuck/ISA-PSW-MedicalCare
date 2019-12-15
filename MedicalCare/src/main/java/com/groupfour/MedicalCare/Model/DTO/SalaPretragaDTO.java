@@ -14,6 +14,6 @@ import java.util.Date;
 public class SalaPretragaDTO {
     private int brojSale;
     private Date datum;
-    private LocalDateTime pocetakTermina;
-    private LocalDateTime krajTermina;
+    private String pocetakTermina;
+    private String krajTermina;
 }

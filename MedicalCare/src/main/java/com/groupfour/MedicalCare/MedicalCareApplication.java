@@ -21,32 +21,15 @@ public class MedicalCareApplication {
     }
 
     public static void testiranjeBaze() {
-        Sala sala1 =
-                Sala.builder().brojSale(101).zauzeta(false).pocetakTermina(LocalDateTime.of(2019, 12,20,12,0)).krajTermina(LocalDateTime.of(2019,12,20,12,30)).aktivna(true).build();
-        Sala sala2 =
-                Sala.builder().brojSale(102).zauzeta(false).pocetakTermina(LocalDateTime.of(2019, 12,21,12,0)).krajTermina(LocalDateTime.of(2019,12,21,12,30)).aktivna(true).build();
-        Sala sala3 =
-                Sala.builder().brojSale(103).zauzeta(false).pocetakTermina(LocalDateTime.of(2019, 12,22,12,0)).krajTermina(LocalDateTime.of(2019,12,22,13,30)).aktivna(true).build();
-
-        Sala sala44 =
-                Sala.builder().brojSale(201).zauzeta(true).pocetakTermina(LocalDateTime.of(2019, 12,23,15,0)).krajTermina(LocalDateTime.of(2019,12,23,16,30)).aktivna(true).build();
+        Klinika klinika = Klinika.builder().naziv("Klinicki centar").adresa("Hajduk Veljkova 1").opis("Pruza visok " +
+                "kvalitet usluga velikom broju pacijenata").build();
 
 
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         if (session.isOpen()) {
             session.beginTransaction();
-            Klinika klinika1 = session.load(Klinika.class, 1);
-            Klinika klinika2 = session.load(Klinika.class, 2);
 
-            klinika1.dodajSalu(sala1);
-            klinika1.dodajSalu(sala2);
-            klinika1.dodajSalu(sala3);
-            klinika2.dodajSalu(sala44);
-
-            session.saveOrUpdate(klinika1);
-            session.saveOrUpdate(klinika2);
-
-
+            session.saveOrUpdate(klinika);
 
             session.getTransaction().commit();
             session.close();

@@ -10,9 +10,9 @@ import { Time } from '@angular/common';
 export class DefinisanjePregledaComponent implements OnInit {
   tipPregleda: Array<TipPregleda>;
   pregled: Pregled = {
-    datumPregleda: '',
+    datumPregleda: new Date(),
     tipPregleda: '',
-    vremePregleda: null,
+    vremePregleda: new Date().getTime(),
     trajanjePregleda: 0,
     sala: 0,
     lekar: '',
@@ -73,6 +73,11 @@ export class DefinisanjePregledaComponent implements OnInit {
         console.log(err);
       });
   }
+
+  async onSubmit() {
+    console.log(this.pregled);
+  }
+
 }
 
 export interface SalePretraga {
@@ -93,8 +98,8 @@ export interface TipPregleda {
 }
 
 export interface Pregled {
-  datumPregleda: string;
-  vremePregleda: Time;
+  datumPregleda: Date;
+  vremePregleda: number;
   tipPregleda: string;
   trajanjePregleda: number;
   sala: number;
