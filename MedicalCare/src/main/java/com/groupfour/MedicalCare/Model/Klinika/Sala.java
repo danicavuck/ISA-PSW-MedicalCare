@@ -39,12 +39,11 @@ public class Sala {
     @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL)
     private Set<Pregled> pregledi = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(
-            name = DbTableConstants.KLINIKA_SALA,
-            joinColumns = @JoinColumn(name = DbColumnConstants.SALA_ID),
-            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID)
-    )
+    @ManyToOne
+    @JoinColumn(name = DbColumnConstants.SALA_KLINIKA)
     private Klinika klinika;
+
+    @Column(name = DbColumnConstants.SALA_AKTIVNA)
+    private boolean aktivna;
 
 }

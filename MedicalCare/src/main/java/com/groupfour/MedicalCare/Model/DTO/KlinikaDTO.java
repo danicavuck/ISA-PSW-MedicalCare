@@ -18,6 +18,7 @@ import java.util.Set;
 @Builder
 @ToString
 public class KlinikaDTO {
+    private int id;
     private String naziv;
     private String adresa;
     private String opis;

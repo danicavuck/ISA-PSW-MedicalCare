@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -9,11 +9,11 @@ import {Router} from "@angular/router";
 })
 export class RegistrationComponent implements OnInit {
 
-  lozinkaPonovo : string = "";
-  isLoading : boolean = false;
-  errorStatus : string = null;
+  lozinkaPonovo: string = '';
+  isLoading: boolean = false;
+  errorStatus: string = null;
 
-  model : RegistrationViewModel = {
+  model: RegistrationViewModel = {
     email : '',
     lozinka : '',
     ime : '',
@@ -25,54 +25,53 @@ export class RegistrationComponent implements OnInit {
     brojOsiguranja : ''
   };
 
-  constructor(private http : HttpClient, private router : Router) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
   }
 
-  async onSubmit(){
+  async onSubmit() {
     this.isLoading = true;
-    if(this.performCheck()){
-      let apiEndpoint = "http://localhost:8080/register";
+    if (this.performCheck()) {
+      const apiEndpoint = 'http://localhost:8080/register';
 
       this.http.post(apiEndpoint, this.model,
         {responseType: 'text'}).subscribe( data => {
-        setTimeout(() =>
-        {
+        setTimeout(() => {
           this.router.navigateByUrl('/login');
           this.isLoading = false;
-        },2000);
-      }, err =>{
-        setTimeout(()=>{
+        }, 2000);
+      }, err => {
+        setTimeout(() => {
           this.isLoading = false;
           switch (err.error) {
             case 'Email address already taken':
-              this.errorStatus = "E-mail adresa je vec zauzeta";
+              this.errorStatus = 'E-mail adresa je vec zauzeta';
               break;
             case 'Internal server error':
-              this.errorStatus = "Greska na serverskoj strani";
+              this.errorStatus = 'Greska na serverskoj strani';
               break;
-            default: this.errorStatus = "Greska pri registraciji";
+            default: this.errorStatus = 'Greska pri registraciji';
           }
-        },1000);
+        }, 1000);
 
       });
     }
   }
 
-  performCheck(){
-    if(this.model.ime == "" || this.model.prezime == "" || this.model.lozinka == "" || this.model.brojOsiguranja == "" || this.model.telefon == "" || this.model.drzava=="" || this.model.adresaPrebivalista == "" || this.model.email == ""){
-      alert("Polja ne smeju biti prazna");
+  performCheck() {
+    if (this.model.ime == '' || this.model.prezime == '' || this.model.lozinka == '' || this.model.brojOsiguranja == '' || this.model.telefon == '' || this.model.drzava =='' || this.model.adresaPrebivalista == '' || this.model.email == '') {
+      alert('Polja ne smeju biti prazna');
       return false;
     }
 
-    if(this.model.lozinka.length < 6){
-      alert("Lozinka mora sadrzati minimalno 6 karaktera");
+    if (this.model.lozinka.length < 6) {
+      alert('Lozinka mora sadrzati minimalno 6 karaktera');
       return false;
     }
 
-    if(this.model.lozinka != this.lozinkaPonovo){
-      alert("Lozinke se moraju podudarati!");
+    if (this.model.lozinka != this.lozinkaPonovo) {
+      alert('Lozinke se moraju podudarati!');
       return false;
     }
     return true;
@@ -80,14 +79,14 @@ export class RegistrationComponent implements OnInit {
 }
 
 
-export interface RegistrationViewModel{
-  email:string;
-  lozinka:string;
-  ime : string,
-  prezime : string,
-  adresaPrebivalista : string,
-  grad : string,
-  drzava : string,
-  telefon : string,
-  brojOsiguranja : string
+export interface RegistrationViewModel {
+  email: string;
+  lozinka: string;
+  ime: string;
+  prezime: string;
+  adresaPrebivalista: string;
+  grad: string;
+  drzava: string;
+  telefon: string;
+  brojOsiguranja: string;
 }

@@ -10,11 +10,33 @@
 <body>
 
   <div class="container">
+      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/adminklinike']">Pocetna strana</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/adminklinike/defpregleda']">Pregledi</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/adminklinike/sale']">Sale</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/adminklinike/izvestaj']">Izvestaj</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/adminklinike/home']">Home</a>
+              </li>
+            </ul>
+      </nav>
     <div class="jumbotron">
+      
       <div class="text-center">
-        <h4>Lista klinika</h4>
+        <h3 style="margin: -30px 0 20px 0;">Klinika</h3>
 
-        <table class="table" style="margin-top: 20px" *ngIf="postojiModel">
+        <table class="table">
           <thead class = "thead-dark">
           <tr>
             <th scope="col">#</th>
@@ -27,11 +49,11 @@
           <tbody>
             <tr *ngFor="let klinika of models; let i = index">
                 <th scope="row">{{i + 1}}</th>
-                <td> {{klinika.naziv}} </td>
+                <td>{{klinika.naziv}}</td>
                 <td>{{klinika.adresa}}</td>
                 <td>{{klinika.opis}}</td>
-                <td><button class="btn btn-outline-info" routerLink="/izmenaklinike"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  Izmeni</button></td>
+                <td><button class="btn btn-info" (click)="onDetaljnije(klinika)" routerLink="/adminklinike/klinika"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  Detaljnije</button></td>
             </tr>
           </tbody>
         </table>
@@ -39,12 +61,10 @@
       </div>
     </div>
     <div class="container">
-      <button class="btn btn-primary pull-left" (click)="getTest()"> Dobavi klinike</button>
-      <button class="btn btn-primary pull-right" [routerLink]="['/login']">Odjavite se</button>
+      <button class="btn btn-outline-primary pull-right" [routerLink]="['/login']">Odjavite se</button>
     </div>
 
-
   </div>
-
+  
 </body>
 </html>

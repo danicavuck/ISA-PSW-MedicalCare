@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Model.Osoblje;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Dokumenti.Recept;
@@ -9,6 +10,7 @@ import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Zahtevi.Odsustvo;
 import com.groupfour.MedicalCare.Model.Zahtevi.Operacija;
 import lombok.*;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,7 +21,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Entity
 @Table(name = DbTableConstants.LEKAR)
 public class Lekar {
@@ -34,12 +35,14 @@ public class Lekar {
     @Column(name = DbColumnConstants.LEKAR_EMAIL)
     private String email;
     @Column(name = DbColumnConstants.LEKAR_LOZINKA)
+    @JsonIgnore
     private String lozinka;
     @Column(name = DbColumnConstants.LEKAR_PROSECNA_OCENA)
     private float prosecnaOcena;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = DbColumnConstants.LEKAR_KLINIKA)
+    @JsonIgnoreProperties("listaLekara")
     private Klinika klinika;
 
     @ManyToMany
@@ -106,5 +109,13 @@ public class Lekar {
         ocenaLekara.setLekar(this);
     }
 
+    @Override
+    public String toString() {
+        return "Ime: " + this.ime + " Prezime: " + this.prezime + " Email:" + this.email + " Prosecna ocena: " + this.prosecnaOcena;
+    }
 
+    @JsonIgnore
+    public String getLozinka(){
+        return this.lozinka;
+    }
 }

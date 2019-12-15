@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     role : ''
   };
 
-  constructor( private http: HttpClient, private router : Router ) {
+  constructor( private http: HttpClient, private router: Router ) {
 
   }
 
@@ -39,44 +39,43 @@ export class LoginComponent implements OnInit {
 
       this.http.post(apiEndpoint, this.model,
         {responseType: 'json'}).subscribe( data => {
-        setTimeout(() =>
-        {
+        setTimeout(() => {
           this.userDTO = data as UserDTO;
           switch (this.userDTO.role) {
             case 'admin_kc' : this.router.navigateByUrl('/adminkc')
             break;
             case 'admin_klinike' : this.router.navigateByUrl('/adminklinike');
-            break;
+                                   break;
             case 'lekar' : this.router.navigateByUrl('/lekar');
-            break;
+                           break;
             case 'med_sestra' : this.router.navigateByUrl('/medsestra');
-              break;
+                                break;
             case 'pacijent' : this.router.navigateByUrl('/home');
-              break;
+                              break;
             default: console.log(data);
           }
           this.isLoading = false;
         }, 1500);
 
-      }, err =>{
+      }, err => {
           this.isLoading = false;
           switch (err.error) {
             case 'Not authorized':
-              this.errorStatus = "Nepostojeca e-mail adresa";
+              this.errorStatus = 'Nepostojeca e-mail adresa';
               break;
             case 'Incorrect credentials':
-              this.errorStatus = "Neispravni kredencijali";
+              this.errorStatus = 'Neispravni kredencijali';
               break;
             default:
-              this.errorStatus = "Greska pri prijavljivanju na sistem"
+              this.errorStatus = 'Greska pri prijavljivanju na sistem';
           }
       });
     }
   }
 
-  async performCheck(){
-    if(this.model.email == "" || this.model.lozinka == ""){
-      alert("Polja ne smeju biti prazna");
+  async performCheck() {
+    if (this.model.email == '' || this.model.lozinka == '') {
+      alert('Polja ne smeju biti prazna');
       return false;
     }
     return true;
@@ -89,7 +88,7 @@ export interface LoginViewModel {
   lozinka: string;
 }
 
-export interface UserDTO{
+export interface UserDTO {
   id: number;
   user_email: string;
   role: string;

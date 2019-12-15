@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
+import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import { KlinikaServiceComponent } from '../services/klinika-service/klinika-service.component';
 
 @Component({
   selector: 'app-admin-klinike-homepage',
   templateUrl: './admin-klinike-homepage.component.html',
-  styleUrls: ['./admin-klinike-homepage.component.css']
+  styleUrls: ['./admin-klinike-homepage.component.css'],
 })
 export class AdminKlinikeHomepageComponent implements OnInit {
 
   private models: Array<KlinikaDTO>;
-  private postojiModel = false;
-
-  constructor(private router: Router, private http: HttpClient) { }
+  private klinika: KlinikaDTO;
+  constructor(private router: Router, private http: HttpClient, private dataService: KlinikaServiceComponent) { }
 
   ngOnInit() {
+    this.getTestKlinike();
   }
 
   async onDodajKliniku() {
@@ -22,13 +23,20 @@ export class AdminKlinikeHomepageComponent implements OnInit {
     console.log('click');
   }
 
-  async getTest() {
+  async onDetaljnije(klinika) {
+    this.klinika = klinika;
+    console.log('Prosledjena klinika: ');
+    console.log(this.klinika);
+    this.dataService.setData(this.klinika);
+  }
+
+  async getTestKlinike() {
     const apiEndpoint = 'http://localhost:8080/adminklinike/klinike';
 
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
-        this.postojiModel = true;
         this.models = data as Array<KlinikaDTO>;
+        console.log(this.models);
       }, err => {
         console.log('Greska admin_klinike: ');
         console.log(err);
@@ -49,7 +57,10 @@ export class AdminKlinikeHomepageComponent implements OnInit {
 }
 
 export interface KlinikaDTO {
+  id: number;
   naziv: string;
   opis: string;
   adresa: string;
 }
+
+
