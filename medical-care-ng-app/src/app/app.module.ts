@@ -14,6 +14,11 @@ import { LoadingSpinnerComponent} from '../../shared/loading-spinner/loading-spi
 import { AdminKlinikeHomepageComponent } from './admin-klinike-homepage/admin-klinike-homepage.component';
 import { LekarComponent } from './lekar/lekar.component';
 import { MedicinskaSestraComponent } from './medicinska-sestra/medicinska-sestra.component';
+import { KlinikaIzmenaComponent } from './klinika/klinika-izmena/klinika-izmena.component';
+import { AdminKcComponent } from './admin-kc/admin-kc.component';
+import { RegistracijaAdminaKlinikeComponent } from './registracija-admina-klinike/registracija-admina-klinike.component';
+import { RegistracijaKlinikeComponent } from './registracija-klinike/registracija-klinike.component';
+
 import { DefinisanjePregledaComponent } from './definisanje-pregleda/definisanje-pregleda.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -38,8 +43,12 @@ const appRouts: Routes = [
   { path: 'adminklinike/dodajsalu', component: DodajSaluComponent},
   { path: 'lekar', component: LekarComponent },
   { path: 'medsestra', component: MedicinskaSestraComponent },
+  { path: 'adminkc', component : AdminKcComponent},
+  { path: 'registracija-admina', component : RegistracijaAdminaKlinikeComponent},
+  { path: 'registracija-klinike', component : RegistracijaKlinikeComponent},
   { path: '', redirectTo : '/login', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent },
+  
 
 ];
 
@@ -54,12 +63,17 @@ const appRouts: Routes = [
     AdminKlinikeHomepageComponent,
     LekarComponent,
     MedicinskaSestraComponent,
+    KlinikaIzmenaComponent,
+    AdminKcComponent,
+    RegistracijaAdminaKlinikeComponent,
+    RegistracijaKlinikeComponent,
     DefinisanjePregledaComponent,
     KlinikaDetaljnijeComponent,
     SaleComponent,
     DodajSaluComponent,
     DodavanjeTipaPregledaComponent,
     KlinikaServiceComponent
+
   ],
   imports: [
     BrowserModule,

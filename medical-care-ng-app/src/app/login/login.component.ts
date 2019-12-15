@@ -42,6 +42,8 @@ export class LoginComponent implements OnInit {
         setTimeout(() => {
           this.userDTO = data as UserDTO;
           switch (this.userDTO.role) {
+            case 'admin_kc' : this.router.navigateByUrl('/adminkc')
+            break;
             case 'admin_klinike' : this.router.navigateByUrl('/adminklinike');
                                    break;
             case 'lekar' : this.router.navigateByUrl('/lekar');

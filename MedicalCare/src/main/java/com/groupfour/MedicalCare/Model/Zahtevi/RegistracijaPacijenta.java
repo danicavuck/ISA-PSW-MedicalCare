@@ -49,5 +49,7 @@ public class RegistracijaPacijenta {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = DbColumnConstants.REGISTRACIJA_ADMIN_KC)
     private AdminKlinickogCentra adminKlinickogCentra;
-
+//
+//    @Version
+//    private Long version;
 }

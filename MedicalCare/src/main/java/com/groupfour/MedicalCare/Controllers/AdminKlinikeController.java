@@ -27,10 +27,12 @@ public class AdminKlinikeController {
         return new ResponseEntity<>("OK Admine", HttpStatus.OK);
     }
 
+
     @GetMapping("/klinike")
     public ResponseEntity<List<KlinikaDTO>> getKlinike(){
         ArrayList<KlinikaDTO> klinike = KlinikaService.getKlinike();
 
         return new ResponseEntity<>(klinike, HttpStatus.OK);
     }
+
 }

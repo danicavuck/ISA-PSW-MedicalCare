@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Registracija klinike</title>
+</head>
+  <body>
+    <div class="container col-xs-12 col-md-8 col-md-offset-3">
+      <div class="jumbotron">
+        <div class="text-center">
+          <h1>Registrujte kliniku</h1>
+        </div>
+
+        <div class="alert alert-danger" *ngIf="errorStatus" style="text-align: center">
+          <h4>{{errorStatus}}</h4>
+        </div>
+        <div *ngIf="isLoading" style="text-align: center">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+
+        <form name="form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+
+          <div class="form-group">
+            <label for="naziv">Naziv</label>
+            <input type="text" id="naziv" class="form-control" name="naziv"  [(ngModel)]="model.naziv" required>
+          </div>
+          <div class="form-group">
+            <label for="adresaPrebivalista">Adresa</label>
+            <input type="text" id="adresa" class="form-control" name="adresa"  [(ngModel)]="model.adresa" required>
+          </div>
+
+          <div class="form-group">
+            <label for="grad">Opis</label>
+            <input type="text" id="opis" class="form-control" name="opis"   [(ngModel)]="model.opis" required>
+          </div>
+          
+          <div class = "form-group">
+          <label for="lekari">Odaberite lekare</label>
+          <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" [(ngModel)] = "model.selLekari" >
+          <option *ngFor="let lekar of lekari; let i = index">{{lekar.ime}} {{lekar.prezime}}</option>
+          </select><!-- End -->
+        </div>
+           <div class = "form-group">
+            <label for="sestre">Odaberite medicinske sestre</label>
+            <!-- Multiselect dropdown -->
+            <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" [(ngModel)] = "model.selSestre">
+             <option *ngFor="let sestra of sestre; let i = index">{{sestra.ime}} {{sestra.prezime}}</option>
+             </select><!-- End -->
+           </div>
+           <div class = "form-group">
+              <label for="sale">Odaberite sale</label>
+              <!-- Multiselect dropdown -->
+              <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" [(ngModel)] = "model.selSale" >
+               <option *ngFor="let sala of sale; let i = index">{{sala.brojSale}}</option>   
+               </select><!-- End -->
+             </div>
+             <div class = "form-group">
+              <label for="admini">Odaberite admine klinike</label>
+              <!-- Multiselect dropdown -->
+              <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" [(ngModel)] = "model.selAdmini">
+               <option *ngFor="let admin of admini; let i = index">{{admin.ime}} {{admin.prezime}}</option>
+              </select><!-- End -->
+               </div>
+          <button type="submit" class="btn btn-primary pull-left" [disabled]="!f.valid" routerLink="/adminkc">
+            <i class="fa fa-user-plus"></i>
+            <span> Registrujte kliniku</span>
+          </button>
+
+
+          <button type="button" class="btn btn-light pull-right" routerLink="/adminkc">
+            <i class="fa fa-sign-in"></i>
+            <span> Vratite se</span>
+          </button>
+
+        </form>
+      </div>
+    </div>
+
+  <router-outlet></router-outlet>
+
+  </body>
+</html>
