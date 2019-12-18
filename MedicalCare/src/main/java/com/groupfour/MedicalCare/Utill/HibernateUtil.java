@@ -1,4 +1,4 @@
-package com.groupfour.MedicalCare.Model;
+package com.groupfour.MedicalCare.Utill;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;

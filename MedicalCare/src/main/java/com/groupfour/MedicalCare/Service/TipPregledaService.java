@@ -18,11 +18,14 @@ public class TipPregledaService {
         tipPregledaRepository = tRepo;
     }
 
-    public static ArrayList<TipPregledaDTO> getTipPregleda(){
+    public static ArrayList<TipPregledaDTO> vratiTipovePregleda(){
         ArrayList<TipPregleda> tipPregleda = tipPregledaRepository.findAll();
+        return mapirajTipovePregleda(tipPregleda);
+    }
+
+    public static ArrayList<TipPregledaDTO> mapirajTipovePregleda(ArrayList<TipPregleda> tipPregleda){
         ArrayList<TipPregledaDTO> tipPregledaDTO = new ArrayList<>();
         ModelMapper modelMapper = new ModelMapper();
-
         for(TipPregleda tp : tipPregleda){
             if(tp.isAktivan()){
                 tipPregledaDTO.add(modelMapper.map(tp, TipPregledaDTO.class));
@@ -31,10 +34,9 @@ public class TipPregledaService {
         return tipPregledaDTO;
     }
 
-    public static void addTipPregleda(TipPregledaDTO tipPregledaDTO){
+    public static void dodajNoviTipPregleda(TipPregledaDTO tipPregledaDTO){
         TipPregleda tipPregleda =
                 TipPregleda.builder().tipPregleda(tipPregledaDTO.getTipPregleda()).aktivan(true).predefinisan(true).build();
-        System.out.println("Dodavanje tipa pregleda: " + tipPregleda.getTipPregleda());
         tipPregledaRepository.save(tipPregleda);
     }
 }

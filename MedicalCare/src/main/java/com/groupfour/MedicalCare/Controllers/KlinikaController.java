@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.groupfour.MedicalCare.Model.DTO.KlinikaDTO;
 import com.groupfour.MedicalCare.Service.KlinikaService;
@@ -34,51 +35,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/klinika")
 public class KlinikaController {
 
+    private static KlinikaService klinikaService;
 
     @Autowired
-    private KlinikaService klinikaService;
+    public KlinikaController(KlinikaService kService){
+        klinikaService = kService;
+    }
 
     @GetMapping("/klinike")
     public ResponseEntity<?> getKlinike(){
-        List<Klinika> klinike = klinikaService.getKlinike();
-
+        ArrayList<KlinikaDTO> klinike = KlinikaService.getKlinike();
         return new ResponseEntity<>(klinike,HttpStatus.OK);
     }
 
 
     @GetMapping("/lekari")
     public ResponseEntity<?> getLekari(){
-        List<LekarDTO> lekari = klinikaService.getLekari();
+        List<LekarDTO> lekari = KlinikaService.getLekari();
 
         return new ResponseEntity<>(lekari, HttpStatus.OK);
-    }
-
-
-    @GetMapping("/medsestre")
-    public ResponseEntity<?> getMedicinskeSestre(){
-        List<MedicinskaSestra> sestre = klinikaService.getMedicinskeSestre();
-
-        return new ResponseEntity<>(sestre,HttpStatus.OK);
-    }
-
-    @GetMapping("/admini")
-    public ResponseEntity<?> getAdmini(){
-        List<AdminKlinike> admini = klinikaService.getAdminiKlinike();
-
-        return new ResponseEntity<>(admini,HttpStatus.OK);
-    }
-
-    @GetMapping("/sale")
-    public  ResponseEntity<?> getSale(){
-        List<Sala> sale = klinikaService.getSale();
-
-        return new ResponseEntity<>(sale,HttpStatus.OK);
-    }
-
-
-
-    public  KlinikaController(){
-
     }
 
     @PutMapping

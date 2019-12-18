@@ -17,24 +17,14 @@ public class SalaController {
 
     public SalaController(){}
     @GetMapping
-    public ResponseEntity<ArrayList<SalaPretragaDTO>> getSaleSve(){
+    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaSvakuKliniku(){
         ArrayList<SalaPretragaDTO> sale =  SalaService.getSale(0);
-        if(sale == null){
-            System.out.println("Sale nisu nadjene");
-            return new ResponseEntity<>(null, HttpStatus.OK);
-        }
-
         return new ResponseEntity<>(sale, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{klinikaId}")
-    public ResponseEntity<ArrayList<SalaPretragaDTO>> getSaleZaKliniku(@PathVariable(value = "klinikaId") Integer klinikaId){
+    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaOdredjenuKliniku(@PathVariable(value = "klinikaId") Integer klinikaId){
         ArrayList<SalaPretragaDTO> sale =  SalaService.getSale(klinikaId);
-        if(sale == null){
-            System.out.println("Sale nisu nadjene");
-            return new ResponseEntity<>(null, HttpStatus.OK);
-        }
-
         return new ResponseEntity<>(sale, HttpStatus.OK);
     }
 
@@ -54,6 +44,6 @@ public class SalaController {
 
     @PostMapping(value = "/pretraga")
     public ResponseEntity<SalaPretragaDTO> saleSearch(@RequestBody SalaPretragaDTO salaPretragaDTO){
-        return new ResponseEntity<>(SalaService.salaSearch(salaPretragaDTO), HttpStatus.OK);
+        return new ResponseEntity<>(SalaService.pretraziSaluPoBrojuSale(salaPretragaDTO), HttpStatus.OK);
     }
 }

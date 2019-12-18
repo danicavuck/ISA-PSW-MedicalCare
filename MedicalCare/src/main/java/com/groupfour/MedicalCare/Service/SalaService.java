@@ -26,67 +26,70 @@ public class SalaService {
 
     public static ArrayList<SalaPretragaDTO> getSale(Integer klinikaId){
         ArrayList<Sala> sale = salaRepository.findAll();
-        ArrayList<SalaPretragaDTO> saleDTO = new ArrayList<>();
-        ModelMapper mapper = new ModelMapper();
-        System.out.println("ID Klinike: " + klinikaId);
-        SalaPretragaDTO sDTO = new SalaPretragaDTO();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        if(klinikaId == 0){
-            for(Sala s : sale){
-                if(s.isAktivna()) {
-                    saleDTO.add(SalaPretragaDTO.builder().brojSale(s.getBrojSale()).krajTermina(s.getKrajTermina().format(formatter)).pocetakTermina(s.getPocetakTermina().format(formatter)).build());
-                }
-            }
-            return saleDTO;
-        } else{
-            for(Sala s : sale){
-                if(s.isAktivna() && s.getKlinika().getId() == klinikaId) {
-                    saleDTO.add(SalaPretragaDTO.builder().brojSale(s.getBrojSale()).krajTermina(s.getKrajTermina().format(formatter)).pocetakTermina(s.getPocetakTermina().format(formatter)).build());
-                }
-            }
-            return saleDTO;
-        }
+        return vratiSveSaleZaOdgovarajucuKliniku(sale, klinikaId);
     }
 
     public static void deleteSala(SalaPretragaDTO salaPretragaDTO){
         Sala sala = salaRepository.findByBrojSale(salaPretragaDTO.getBrojSale());
-        if(sala == null){
-            System.out.println(salaPretragaDTO);
-            System.out.println("Sala " + salaPretragaDTO.getBrojSale() + " nije pronadjena");
-        }
-
-        try {
-            sala.setAktivna(false);
-        } catch (Exception e){
-            System.out.println("Neuspesno setovanje aktivnosti na 0");
-        }
+        setujAktivnostSaleNaNulu(sala);
         salaRepository.save(sala);
     }
 
     public static void addSala(SalaDodavanjeDTO salaDodavanjeDTO){
         Klinika klinika = klinikaRepository.findById(salaDodavanjeDTO.getKlinika());
+        dodavanjeNoveSaleUKliniku(klinika, salaDodavanjeDTO);
+        klinikaRepository.save(klinika);
+    }
+
+    // Helper funkcije
+
+    private static void formatiranjeDatumaSala(Sala sala, SalaPretragaDTO salaDTO) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
+        salaDTO.setPocetakTermina(sala.getPocetakTermina().format(formatter));
+        salaDTO.setKrajTermina(sala.getKrajTermina().format(formatter));
+    }
+
+    public static ArrayList<SalaPretragaDTO> vratiSveSaleZaOdgovarajucuKliniku(ArrayList<Sala> sale, Integer klinikaID){
+        ArrayList<SalaPretragaDTO> saleDTO = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        for(Sala s : sale){
+            if(s.isAktivna() && ((klinikaID == 0) || (s.getKlinika().getId() == klinikaID))) {
+                saleDTO.add(mapper.map(s, SalaPretragaDTO.class));
+                formatiranjeDatumaSala(s,saleDTO.get(saleDTO.size()-1));
+            }
+        }
+        return saleDTO;
+    }
+
+    public static SalaPretragaDTO pretraziSaluPoBrojuSale(SalaPretragaDTO salaPretragaDTO){
+        Sala sala = salaRepository.findByBrojSale(salaPretragaDTO.getBrojSale());
+        return mapiranjeSaleNaSalaPretragaDTO(sala, salaPretragaDTO);
+    }
+
+    public static void dodavanjeNoveSaleUKliniku(Klinika klinika, SalaDodavanjeDTO salaDodavanjeDTO){
         if(klinika == null){
             System.out.println("Klinika nije pronadjena (id): " + salaDodavanjeDTO.getKlinika());
             return;
         }
         Sala sala = Sala.builder().brojSale(salaDodavanjeDTO.getBrojSale()).aktivna(true).build();
-
         System.out.println("Dodata sala " + sala.getBrojSale() + " u kliniku " + klinika.getNaziv());
-
         klinika.dodajSalu(sala);
-        klinikaRepository.save(klinika);
-
-
     }
 
-    public static SalaPretragaDTO salaSearch(SalaPretragaDTO salaPretragaDTO){
-        Sala sala = salaRepository.findByBrojSale(salaPretragaDTO.getBrojSale());
-        ArrayList<SalaPretragaDTO> salaPretrage = new ArrayList<>();
+    public static SalaPretragaDTO mapiranjeSaleNaSalaPretragaDTO(Sala sala, SalaPretragaDTO salaPretragaDTO){
         ModelMapper modelMapper = new ModelMapper();
-        if(sala != null){
+        if(sala != null) {
             return modelMapper.map(sala, SalaPretragaDTO.class);
         }
         return null;
+    }
+
+    public static void setujAktivnostSaleNaNulu(Sala sala){
+        try {
+            sala.setAktivna(false);
+        } catch (NullPointerException e){
+            System.out.println("Sala " + sala.getBrojSale() + " nije pronadjena");
+            System.out.println("Neuspesno setovanje aktivnosti na 0");
+        }
     }
 }

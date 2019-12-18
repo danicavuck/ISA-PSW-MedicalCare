@@ -14,7 +14,6 @@ import { LoadingSpinnerComponent} from '../../shared/loading-spinner/loading-spi
 import { AdminKlinikeHomepageComponent } from './admin-klinike-homepage/admin-klinike-homepage.component';
 import { LekarComponent } from './lekar/lekar.component';
 import { MedicinskaSestraComponent } from './medicinska-sestra/medicinska-sestra.component';
-import { KlinikaIzmenaComponent } from './klinika/klinika-izmena/klinika-izmena.component';
 import { AdminKcComponent } from './admin-kc/admin-kc.component';
 import { RegistracijaAdminaKlinikeComponent } from './registracija-admina-klinike/registracija-admina-klinike.component';
 import { RegistracijaKlinikeComponent } from './registracija-klinike/registracija-klinike.component';
@@ -63,7 +62,6 @@ const appRouts: Routes = [
     AdminKlinikeHomepageComponent,
     LekarComponent,
     MedicinskaSestraComponent,
-    KlinikaIzmenaComponent,
     AdminKcComponent,
     RegistracijaAdminaKlinikeComponent,
     RegistracijaKlinikeComponent,

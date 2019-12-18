@@ -2,7 +2,7 @@ package com.groupfour.MedicalCare.Service;
 
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinickogCentra;
 import com.groupfour.MedicalCare.Model.DTO.KlinikaDTO;
-import com.groupfour.MedicalCare.Model.HibernateUtil;
+import com.groupfour.MedicalCare.Utill.HibernateUtil;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
 import com.groupfour.MedicalCare.Repository.AdminKCRepository;
@@ -26,8 +26,11 @@ public class AdminKCService {
     @Autowired
     private KlinikaRepository klinikaRepository;
 
-    public AdminKCService(AdminKCRepository adminKCRepository) {
-        this.adminKCRepository = adminKCRepository;
+    public AdminKCService(AdminKCRepository aKCRepository, RegistracijaPacijentaRepository regRepo,
+                          KlinikaRepository kRepo) {
+        adminKCRepository = aKCRepository;
+        registracijaPacijentaRepository = regRepo;
+        klinikaRepository = kRepo;
     }
 
     public AdminKlinickogCentra getByEmail(String email, String lozinka){
