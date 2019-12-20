@@ -20,7 +20,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    public AppSecurityConfig(UserDetailsService userDetailsService){
+    public AppSecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -34,51 +34,12 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity security) throws Exception
-    {
+    protected void configure(HttpSecurity security) throws Exception {
         security.httpBasic().disable();
         security.csrf().disable();
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //package com.groupfour.MedicalCare.Configuration;

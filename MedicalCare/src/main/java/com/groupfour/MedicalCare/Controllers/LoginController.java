@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/login")
 public class LoginController {
 
-    public LoginController(){
+    public LoginController() {
 
     }
 
     @PostMapping
-    public ResponseEntity<UserRole> login(@RequestBody LoginDTO loginDTO){
+    public ResponseEntity<UserRole> login(@RequestBody LoginDTO loginDTO) {
         return LoginService.loginPacijent(loginDTO);
     }
 }

@@ -49,7 +49,6 @@ public class Pacijent {
     private String brojOsiguranja;
 
 
-
     @ManyToMany
     @JoinTable(
             name = DbTableConstants.LEKAR_PACIJENT,
@@ -92,7 +91,7 @@ public class Pacijent {
     private Set<OcenaKlinike> oceneKlinike = new HashSet<>();
 
 
-    public void dodajKarton(Karton karton){
+    public void dodajKarton(Karton karton) {
         this.zdravstveniKarton = karton;
         karton.setPacijet(this);
     }

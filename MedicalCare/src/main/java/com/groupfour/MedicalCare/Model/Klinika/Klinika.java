@@ -47,7 +47,7 @@ public class Klinika {
             joinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID),
             inverseJoinColumns = @JoinColumn(name = DbColumnConstants.SALA_ID)
     )
-    private Set<Sala>  spisakSala = new HashSet<>();
+    private Set<Sala> spisakSala = new HashSet<>();
 
     @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
     private Set<OcenaKlinike> oceneKlinike;
@@ -63,33 +63,33 @@ public class Klinika {
     )
     private Set<Pacijent> pacijenti = new HashSet<>();
 
-    public void dodajLekara(Lekar lekar){
+    public void dodajLekara(Lekar lekar) {
         this.listaLekara.add(lekar);
         lekar.setKlinika(this);
     }
 
-    public void dodajMedicinskuSestru(MedicinskaSestra sestra){
+    public void dodajMedicinskuSestru(MedicinskaSestra sestra) {
         this.listaSestara.add(sestra);
         sestra.setKlinika(this);
     }
 
-    public void dodajSalu(Sala sala){
+    public void dodajSalu(Sala sala) {
         this.spisakSala.add(sala);
         sala.setKlinika(this);
     }
 
-    public void dodajOcenuKlinike(OcenaKlinike ocenaKlinike){
+    public void dodajOcenuKlinike(OcenaKlinike ocenaKlinike) {
         this.oceneKlinike.add(ocenaKlinike);
         ocenaKlinike.setKlinika(this);
     }
 
-    public void dodajPacijenta(Pacijent p){
+    public void dodajPacijenta(Pacijent p) {
         this.getPacijenti().add(p);
         p.getKlinika().add(this);
     }
 
     @Override
     public String toString() {
-        return "Naziv:" + this.naziv+ " Adresa:"+ this.adresa +" Opis:" + this.opis + " Prosecna ocena:"+ this.prosecnaOcena +" Lekari: " + this.listaLekara;
+        return "Naziv:" + this.naziv + " Adresa:" + this.adresa + " Opis:" + this.opis + " Prosecna ocena:" + this.prosecnaOcena + " Lekari: " + this.listaLekara;
     }
 }

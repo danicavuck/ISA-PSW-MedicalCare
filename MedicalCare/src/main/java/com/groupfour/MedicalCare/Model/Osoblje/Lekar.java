@@ -62,13 +62,13 @@ public class Lekar {
     )
     private Set<Operacija> listaOperacija = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = DbTableConstants.LEKAR_PREGLED,
             joinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_ID),
             inverseJoinColumns = @JoinColumn(name = DbColumnConstants.PREGLED_ID)
     )
-    private Set<Pregled> listaPregleda = new HashSet<>();
+    private Set<Pregled> setPregleda = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -84,27 +84,27 @@ public class Lekar {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lekar", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Recept> recepti = new HashSet<>();
 
-    public void dodajPacijenta(Pacijent pacijent){
+    public void dodajPacijenta(Pacijent pacijent) {
         this.listaPacijenata.add(pacijent);
         pacijent.getListaLekara().add(this);
     }
 
-    public void dodajRecept(Recept recept){
+    public void dodajRecept(Recept recept) {
         this.recepti.add(recept);
         recept.setLekar(this);
     }
 
-    public void dodajOperaciju(Operacija operacija){
+    public void dodajOperaciju(Operacija operacija) {
         this.listaOperacija.add(operacija);
         operacija.getLekar().add(this);
     }
 
-    public void dodajPregled(Pregled pregled){
-        this.listaPregleda.add(pregled);
-        pregled.getLekari().add(this);
+    public void dodajPregled(Pregled pregled) {
+        this.setPregleda.add(pregled);
+        pregled.dodajLekara(this);
     }
 
-    public void dodajOcenuLekara(OcenaLekara ocenaLekara){
+    public void dodajOcenuLekara(OcenaLekara ocenaLekara) {
         this.oceneLekara.add(ocenaLekara);
         ocenaLekara.setLekar(this);
     }
@@ -115,7 +115,7 @@ public class Lekar {
     }
 
     @JsonIgnore
-    public String getLozinka(){
+    public String getLozinka() {
         return this.lozinka;
     }
 }

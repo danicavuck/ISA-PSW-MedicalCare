@@ -41,8 +41,8 @@ public class AdminKlinickogCentra {
     private Set<RegistracijaPacijenta> listaRegistracija = new HashSet<>();
 
 
-    public void dodajRegistraciju(RegistracijaPacijenta registracijaPacijenta){
-        if(registracijaPacijenta != null){
+    public void dodajRegistraciju(RegistracijaPacijenta registracijaPacijenta) {
+        if (registracijaPacijenta != null) {
             listaRegistracija.add(registracijaPacijenta);
             registracijaPacijenta.setAdminKlinickogCentra(this);
         }

@@ -1,17 +1,12 @@
 package com.groupfour.MedicalCare.Service;
 
 
-import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.KlinikaDTO;
 import com.groupfour.MedicalCare.Model.DTO.LekarDTO;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
-import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
-import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
-import com.groupfour.MedicalCare.Repository.*;
-
 import com.groupfour.MedicalCare.Repository.KlinikaRepository;
-
+import com.groupfour.MedicalCare.Repository.LekarRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,29 +23,29 @@ public class KlinikaService {
     private static LekarRepository lekarRepository;
 
     @Autowired
-    public KlinikaService(KlinikaRepository kRepository, LekarRepository lRepo){
+    public KlinikaService(KlinikaRepository kRepository, LekarRepository lRepo) {
         klinikaRepository = kRepository;
         lekarRepository = lRepo;
     }
 
 
-    public static ArrayList<KlinikaDTO> getKlinike(){
+    public static ArrayList<KlinikaDTO> getKlinike() {
         ArrayList<Klinika> klinike = klinikaRepository.findAll();
         ArrayList<KlinikaDTO> klinikeDTO = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
 
-        for(Klinika k : klinike){
+        for (Klinika k : klinike) {
             // Samo jednu kliniku vraca
-            if(k.getId() == 5)
+            if (k.getId() == 5)
                 klinikeDTO.add(mapper.map(k, KlinikaDTO.class));
         }
 
         return klinikeDTO;
     }
 
-    public static boolean updateKlinika(KlinikaDTO klinikaDTO){
+    public static boolean updateKlinika(KlinikaDTO klinikaDTO) {
         Klinika klinika = klinikaRepository.findById(klinikaDTO.getId());
-        if(klinika == null){
+        if (klinika == null) {
             return false;
         }
 
@@ -72,7 +67,7 @@ public class KlinikaService {
         return temp;
     }
 
-    public static LekarDTO mapiranjeLekara(Lekar lekar){
+    public static LekarDTO mapiranjeLekara(Lekar lekar) {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(lekar, LekarDTO.class);
     }

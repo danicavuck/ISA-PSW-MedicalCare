@@ -15,35 +15,37 @@ import java.util.ArrayList;
 @RequestMapping("/sale")
 public class SalaController {
 
-    public SalaController(){}
+    public SalaController() {
+    }
+
     @GetMapping
-    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaSvakuKliniku(){
-        ArrayList<SalaPretragaDTO> sale =  SalaService.getSale(0);
+    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaSvakuKliniku() {
+        ArrayList<SalaPretragaDTO> sale = SalaService.getSale(0);
         return new ResponseEntity<>(sale, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{klinikaId}")
-    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaOdredjenuKliniku(@PathVariable(value = "klinikaId") Integer klinikaId){
-        ArrayList<SalaPretragaDTO> sale =  SalaService.getSale(klinikaId);
+    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaOdredjenuKliniku(@PathVariable(value = "klinikaId") Integer klinikaId) {
+        ArrayList<SalaPretragaDTO> sale = SalaService.getSale(klinikaId);
         return new ResponseEntity<>(sale, HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteSala(@RequestBody SalaPretragaDTO salaPretragaDTO){
+    public ResponseEntity<?> deleteSala(@RequestBody SalaPretragaDTO salaPretragaDTO) {
         SalaService.deleteSala(salaPretragaDTO);
 
         return new ResponseEntity<String>("Uspesno izvrseno brisanje", HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<?> addSala(@RequestBody SalaDodavanjeDTO salaDodavanjeDTO){
+    public ResponseEntity<?> addSala(@RequestBody SalaDodavanjeDTO salaDodavanjeDTO) {
         SalaService.addSala(salaDodavanjeDTO);
 
         return new ResponseEntity<String>("Uspesno dodavanje sale", HttpStatus.OK);
     }
 
     @PostMapping(value = "/pretraga")
-    public ResponseEntity<SalaPretragaDTO> saleSearch(@RequestBody SalaPretragaDTO salaPretragaDTO){
+    public ResponseEntity<SalaPretragaDTO> saleSearch(@RequestBody SalaPretragaDTO salaPretragaDTO) {
         return new ResponseEntity<>(SalaService.pretraziSaluPoBrojuSale(salaPretragaDTO), HttpStatus.OK);
     }
 }

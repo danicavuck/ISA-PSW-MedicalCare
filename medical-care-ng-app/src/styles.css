@@ -2,3 +2,4 @@
 @import url(~bootstrap/dist/css/bootstrap.min.css);
 @import url(~ngx-bootstrap/datepicker/bs-datepicker.css);
 @import url(~font-awesome/css/font-awesome.css);
+@import url(~ng-pick-datetime/assets/style/picker.min.css);

@@ -7,7 +7,6 @@ import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
 
 @Component

@@ -14,7 +14,7 @@ public class PacijentDetailsService implements UserDetailsService {
     private PacijentRepository repository;
 
     @Autowired
-    public PacijentDetailsService(PacijentRepository repository){
+    public PacijentDetailsService(PacijentRepository repository) {
         this.repository = repository;
     }
 
@@ -22,13 +22,11 @@ public class PacijentDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Pacijent pacijent = repository.findUserByEmail(email);
-        if(pacijent == null)
+        if (pacijent == null)
             throw new UsernameNotFoundException(email);
 
         return new UserDetailsImpl(pacijent);
     }
-
-
 
 
 }

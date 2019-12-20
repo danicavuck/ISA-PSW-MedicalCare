@@ -34,7 +34,7 @@ public final class DbTableConstants {
     public static final String KLINIKA_SALA = "klinika_sala";
     public static final String USER_ROLE = "role";
 
-    private DbTableConstants(){
+    private DbTableConstants() {
 
     }
 }

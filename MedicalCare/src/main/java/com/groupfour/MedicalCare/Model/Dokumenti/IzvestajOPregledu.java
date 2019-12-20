@@ -45,5 +45,4 @@ public class IzvestajOPregledu {
     private SifarnikLekova sifarnikLekova;
 
 
-
 }

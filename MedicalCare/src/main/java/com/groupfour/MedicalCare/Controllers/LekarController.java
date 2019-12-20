@@ -5,7 +5,10 @@ import com.groupfour.MedicalCare.Service.LekarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 
@@ -13,17 +16,17 @@ import java.util.ArrayList;
 @CrossOrigin
 @RequestMapping("/lekari")
 public class LekarController {
-    public LekarController(){
+    public LekarController() {
 
     }
 
     @GetMapping
-    public ResponseEntity<ArrayList<LekarDTO>> getLekari(){
+    public ResponseEntity<ArrayList<LekarDTO>> getLekari() {
         return new ResponseEntity<>(LekarService.getLekareDTO(0), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{klinikaId}")
-    public ResponseEntity<ArrayList<LekarDTO>> getLekariZaKliniku(@PathVariable(value = "klinikaId") Integer klinikaId){
+    public ResponseEntity<ArrayList<LekarDTO>> getLekariZaKliniku(@PathVariable(value = "klinikaId") Integer klinikaId) {
         return new ResponseEntity<>(LekarService.getLekareDTO(klinikaId), HttpStatus.OK);
     }
 }

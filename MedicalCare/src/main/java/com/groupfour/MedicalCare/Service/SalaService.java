@@ -19,23 +19,23 @@ public class SalaService {
     private static KlinikaRepository klinikaRepository;
 
     @Autowired
-    public SalaService(SalaRepository sRepository, KlinikaRepository kRepository){
+    public SalaService(SalaRepository sRepository, KlinikaRepository kRepository) {
         salaRepository = sRepository;
         klinikaRepository = kRepository;
     }
 
-    public static ArrayList<SalaPretragaDTO> getSale(Integer klinikaId){
+    public static ArrayList<SalaPretragaDTO> getSale(Integer klinikaId) {
         ArrayList<Sala> sale = salaRepository.findAll();
         return vratiSveSaleZaOdgovarajucuKliniku(sale, klinikaId);
     }
 
-    public static void deleteSala(SalaPretragaDTO salaPretragaDTO){
+    public static void deleteSala(SalaPretragaDTO salaPretragaDTO) {
         Sala sala = salaRepository.findByBrojSale(salaPretragaDTO.getBrojSale());
         setujAktivnostSaleNaNulu(sala);
         salaRepository.save(sala);
     }
 
-    public static void addSala(SalaDodavanjeDTO salaDodavanjeDTO){
+    public static void addSala(SalaDodavanjeDTO salaDodavanjeDTO) {
         Klinika klinika = klinikaRepository.findById(salaDodavanjeDTO.getKlinika());
         dodavanjeNoveSaleUKliniku(klinika, salaDodavanjeDTO);
         klinikaRepository.save(klinika);
@@ -49,25 +49,25 @@ public class SalaService {
         salaDTO.setKrajTermina(sala.getKrajTermina().format(formatter));
     }
 
-    public static ArrayList<SalaPretragaDTO> vratiSveSaleZaOdgovarajucuKliniku(ArrayList<Sala> sale, Integer klinikaID){
+    public static ArrayList<SalaPretragaDTO> vratiSveSaleZaOdgovarajucuKliniku(ArrayList<Sala> sale, Integer klinikaID) {
         ArrayList<SalaPretragaDTO> saleDTO = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
-        for(Sala s : sale){
-            if(s.isAktivna() && ((klinikaID == 0) || (s.getKlinika().getId() == klinikaID))) {
+        for (Sala s : sale) {
+            if (s.isAktivna() && ((klinikaID == 0) || (s.getKlinika().getId() == klinikaID))) {
                 saleDTO.add(mapper.map(s, SalaPretragaDTO.class));
-                formatiranjeDatumaSala(s,saleDTO.get(saleDTO.size()-1));
+                formatiranjeDatumaSala(s, saleDTO.get(saleDTO.size() - 1));
             }
         }
         return saleDTO;
     }
 
-    public static SalaPretragaDTO pretraziSaluPoBrojuSale(SalaPretragaDTO salaPretragaDTO){
+    public static SalaPretragaDTO pretraziSaluPoBrojuSale(SalaPretragaDTO salaPretragaDTO) {
         Sala sala = salaRepository.findByBrojSale(salaPretragaDTO.getBrojSale());
         return mapiranjeSaleNaSalaPretragaDTO(sala, salaPretragaDTO);
     }
 
-    public static void dodavanjeNoveSaleUKliniku(Klinika klinika, SalaDodavanjeDTO salaDodavanjeDTO){
-        if(klinika == null){
+    public static void dodavanjeNoveSaleUKliniku(Klinika klinika, SalaDodavanjeDTO salaDodavanjeDTO) {
+        if (klinika == null) {
             System.out.println("Klinika nije pronadjena (id): " + salaDodavanjeDTO.getKlinika());
             return;
         }
@@ -76,18 +76,18 @@ public class SalaService {
         klinika.dodajSalu(sala);
     }
 
-    public static SalaPretragaDTO mapiranjeSaleNaSalaPretragaDTO(Sala sala, SalaPretragaDTO salaPretragaDTO){
+    public static SalaPretragaDTO mapiranjeSaleNaSalaPretragaDTO(Sala sala, SalaPretragaDTO salaPretragaDTO) {
         ModelMapper modelMapper = new ModelMapper();
-        if(sala != null) {
+        if (sala != null) {
             return modelMapper.map(sala, SalaPretragaDTO.class);
         }
         return null;
     }
 
-    public static void setujAktivnostSaleNaNulu(Sala sala){
+    public static void setujAktivnostSaleNaNulu(Sala sala) {
         try {
             sala.setAktivna(false);
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("Sala " + sala.getBrojSale() + " nije pronadjena");
             System.out.println("Neuspesno setovanje aktivnosti na 0");
         }

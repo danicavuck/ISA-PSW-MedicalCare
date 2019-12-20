@@ -27,6 +27,11 @@ import { SaleComponent } from './sale/sale.component';
 import { DodajSaluComponent } from './sale/dodaj-salu/dodaj-salu.component';
 import { DodavanjeTipaPregledaComponent } from './definisanje-pregleda/dodavanje-tipa-pregleda/dodavanje-tipa-pregleda.component';
 import { KlinikaServiceComponent } from './services/klinika-service/klinika-service.component';
+import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
+
+
 
 
 
@@ -47,8 +52,6 @@ const appRouts: Routes = [
   { path: 'registracija-klinike', component : RegistracijaKlinikeComponent},
   { path: '', redirectTo : '/login', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent },
-  
-
 ];
 
 @NgModule({
@@ -81,6 +84,9 @@ const appRouts: Routes = [
     FormsModule,
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    AngularDateTimePickerModule,
     RouterModule.forRoot(appRouts)
   ],
   providers: [],

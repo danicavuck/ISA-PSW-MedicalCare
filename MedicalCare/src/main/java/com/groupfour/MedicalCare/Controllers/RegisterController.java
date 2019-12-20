@@ -2,7 +2,6 @@ package com.groupfour.MedicalCare.Controllers;
 
 import com.groupfour.MedicalCare.Model.DTO.PacijentDTO;
 import com.groupfour.MedicalCare.Repository.PacijentRepository;
-import com.groupfour.MedicalCare.Service.LoginService;
 import com.groupfour.MedicalCare.Service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RegisterController {
 
     @Autowired
-    public RegisterController(PacijentRepository pacijentRepository){
+    public RegisterController(PacijentRepository pacijentRepository) {
 
     }
 
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody PacijentDTO pacijentDTO){
+    public ResponseEntity<String> register(@RequestBody PacijentDTO pacijentDTO) {
         return RegisterService.registerPacijent(pacijentDTO);
     }
 }

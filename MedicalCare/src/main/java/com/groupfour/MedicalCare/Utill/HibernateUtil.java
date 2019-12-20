@@ -9,34 +9,33 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class HibernateUtil {
-    public HibernateUtil(){
-
-    }
-
     private static StandardServiceRegistry standardServiceRegistry;
     private static SessionFactory sessionFactory;
 
     static {
         try {
-            if(sessionFactory == null){
+            if (sessionFactory == null) {
                 standardServiceRegistry = new StandardServiceRegistryBuilder().configure().build();
                 MetadataSources metadataSources = new MetadataSources(standardServiceRegistry);
                 Metadata metadata = metadataSources.getMetadataBuilder().build();
                 sessionFactory = metadata.getSessionFactoryBuilder().build();
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            if(standardServiceRegistry != null){
+            if (standardServiceRegistry != null) {
                 StandardServiceRegistryBuilder.destroy(standardServiceRegistry);
             }
-        }
-        finally {
+        } finally {
 
         }
     }
 
-    public static SessionFactory getSessionFactory(){
+    public HibernateUtil() {
+
+    }
+
+    public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 }

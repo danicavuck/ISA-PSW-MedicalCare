@@ -178,7 +178,7 @@ public final class DbColumnConstants {
     public static final String ROLE_DESCRIPTION = "role";
 
 
-    private DbColumnConstants(){
+    private DbColumnConstants() {
 
     }
 }

@@ -7,4 +7,6 @@ import java.util.ArrayList;
 
 public interface TipPregledaRepository extends JpaRepository<TipPregleda, Integer> {
     ArrayList<TipPregleda> findAll();
+
+    TipPregleda findByTipPregleda(String tipPregleda);
 }

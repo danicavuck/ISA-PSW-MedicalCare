@@ -1,4 +1,5 @@
 package com.groupfour.MedicalCare.Model.Zahtevi;
+
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import lombok.*;

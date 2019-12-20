@@ -6,7 +6,7 @@ public class PasswordCheck {
 
     private static final int LOG_ROUNDS = 10;
 
-    public  PasswordCheck(){
+    public PasswordCheck() {
 
     }
 
@@ -14,7 +14,7 @@ public class PasswordCheck {
         return BCrypt.hashpw(password, BCrypt.gensalt(LOG_ROUNDS));
     }
 
-    public static boolean  verifyHash(String password, String hash) {
+    public static boolean verifyHash(String password, String hash) {
         return BCrypt.checkpw(password, hash);
     }
 

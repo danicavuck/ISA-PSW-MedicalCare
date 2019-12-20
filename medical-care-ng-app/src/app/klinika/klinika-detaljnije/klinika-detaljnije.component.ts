@@ -9,6 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class KlinikaDetaljnijeComponent implements OnInit {
 
+  private pregledi: Array<Pregled>;
   private klinika: KlinikaDTO = {
     id: 0,
     naziv: '',
@@ -29,6 +30,7 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     // Metode
     this.getLekareInitialy();
     this.getSaleInitialy();
+    this.getPregledeInitialy();
    }
 
   ngOnInit() {
@@ -51,6 +53,18 @@ export class KlinikaDetaljnijeComponent implements OnInit {
       });
   }
 
+  async getPregledeInitialy() {
+    const apiEndpoint = 'http://localhost:8080/pregledi/' + this.klinika.id;
+
+    this.http.get(apiEndpoint,
+      {responseType: 'json'}).subscribe((data) => {
+        this.pregledi = data as Array<Pregled>;
+      }, err => {
+        console.log('Greska pri pribavljanju lekara: ');
+        console.log(err);
+      });
+  }
+
 
 
   async getSaleInitialy() {
@@ -60,7 +74,6 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
         this.sale = data as Array<SalePretraga>;
-        console.log(this.sale);
       }, err => {
         console.log('Greska pri pribavljanju sala: ');
         console.log(err);
@@ -71,7 +84,6 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     const apiEndpoint = 'http://localhost:8080/klinika';
 
     this.http.put(apiEndpoint, this.klinika, {responseType: 'text'}).subscribe((data) => {
-      console.log('Uspeh');
     }, err => {
       console.log('Greska');
       console.log(err);
@@ -81,8 +93,6 @@ export class KlinikaDetaljnijeComponent implements OnInit {
   }
 
   async obrisiSalu(sala) {
-    console.log(sala);
-
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -118,3 +128,17 @@ export interface SalePretraga {
   pocetakTermina: string;
   krajTermina: string;
 }
+
+export interface Pregled {
+  datumVreme: Date;
+  trajanjePregleda: number;
+  cena: number;
+  popust: number;
+  sala: number;
+  tipPregleda: string;
+  lekar: number;
+  lekarImeIPrezime: string;
+  pocetakTermina: string;
+  krajTermina: string;
+}
+
