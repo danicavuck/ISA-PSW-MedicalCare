@@ -93,32 +93,35 @@
             </div>
 
                 <hr>
-                <div style="text-align: center;" style="margin-top: 10%;">
-                    <h3>Sale</h3>
-                    <table class="table">
-                        <thead class = "thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Broj sale</th>
-                            <th scope="col">Pocetak Termina</th>
-                            <th scope="col">Kraj Termina</th>
-                            <th scope="col">Akcije</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let sala of sale; let i=index">
-                                <th scope="row">{{i + 1}}</th>
-                                <td>{{sala.brojSale}}</td>
-                                <td>{{sala.pocetakTermina}}</td>
-                                <td>{{sala.krajTermina}}</td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm" (click)="obrisiSalu(sala)">
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                            <span> Obrisi</span>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
+                <div>
+                    <mat-divider style="margin: 10px 0 10px 0;"></mat-divider>
+                    <div class="mat-h1">Sale</div>
+                    <table mat-table [dataSource]="sale" class="mat-elevation-z8">
+                        <ng-container matColumnDef="Broj Sale">
+                            <mat-header-cell *matHeaderCellDef>Broj Sale</mat-header-cell>
+                            <mat-cell *matCellDef="let sala"> {{sala.brojSale}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Pocetak termina">
+                            <mat-header-cell *matHeaderCellDef>Pocetak termina</mat-header-cell>
+                            <mat-cell *matCellDef="let sala"> {{sala.pocetakTermina}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Kraj termina">
+                            <mat-header-cell *matHeaderCellDef>Kraj Termina</mat-header-cell>
+                            <mat-cell *matCellDef="let sala"> {{sala.krajTermina}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Akcije">
+                            <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
+                            <mat-cell *matCellDef="let sala" style="padding-left: 10%;">
+                                <button mat-mini-fab color="warn" (click)="openDialog(sala)" matTooltip="Obrisi salu">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
                     </table>
                 </div>
 

@@ -29,9 +29,8 @@ import { DodavanjeTipaPregledaComponent } from './definisanje-pregleda/dodavanje
 import { KlinikaServiceComponent } from './services/klinika-service/klinika-service.component';
 import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-
-
-
+import { MaterialModule } from './material/material.module';
+import { SalaDialogComponent } from './dialozi/sala-dialog/sala-dialog.component';
 
 
 
@@ -73,7 +72,8 @@ const appRouts: Routes = [
     SaleComponent,
     DodajSaluComponent,
     DodavanjeTipaPregledaComponent,
-    KlinikaServiceComponent
+    KlinikaServiceComponent,
+    SalaDialogComponent,
 
   ],
   imports: [
@@ -87,9 +87,11 @@ const appRouts: Routes = [
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AngularDateTimePickerModule,
+    MaterialModule,
     RouterModule.forRoot(appRouts)
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [SalaDialogComponent]
 })
 export class AppModule { }

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { KlinikaServiceComponent } from 'src/app/services/klinika-service/klinika-service.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MatDialog, MatSnackBar } from '@angular/material';
+import { SalaDialogComponent } from 'src/app/dialozi/sala-dialog/sala-dialog.component';
+
 
 @Component({
   selector: 'app-klinika-detaljnije',
@@ -9,6 +12,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class KlinikaDetaljnijeComponent implements OnInit {
 
+  private displayColumns: string[] = ['Broj Sale', 'Pocetak termina', 'Kraj termina', 'Akcije'];
   private pregledi: Array<Pregled>;
   private klinika: KlinikaDTO = {
     id: 0,
@@ -19,12 +23,11 @@ export class KlinikaDetaljnijeComponent implements OnInit {
   private klinikaStara: KlinikaDTO;
   private sale: Array<SalePretraga>;
   lekari: Array<Lekar>;
-  constructor(private dataService: KlinikaServiceComponent, private http: HttpClient) {
+  // tslint:disable-next-line: max-line-length
+  constructor(private dataService: KlinikaServiceComponent, private http: HttpClient, private salaDialog: MatDialog, private snackBar: MatSnackBar) {
     if (this.dataService.getData() !== undefined) {
       this.klinika = this.dataService.getData();
       this.klinikaStara = this.klinika;
-      console.log('Prihvacena klinika');
-      console.log(this.klinika);
     }
 
     // Metode
@@ -46,7 +49,6 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
         this.lekari = data as Array<Lekar>;
-        console.log(this.lekari);
       }, err => {
         console.log('Greska pri pribavljanju lekara: ');
         console.log(err);
@@ -74,6 +76,7 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
         this.sale = data as Array<SalePretraga>;
+        console.log(this.sale);
       }, err => {
         console.log('Greska pri pribavljanju sala: ');
         console.log(err);
@@ -106,6 +109,20 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     }, err => {
       console.log(err);
     });
+  }
+
+  async openDialog(sala) {
+    const odgovor = this.salaDialog.open(SalaDialogComponent);
+    odgovor.afterClosed().subscribe(result => {
+      if (result === 'true') {
+        this.obrisiSalu(sala);
+        this.snackBar.open('Sala izbrisana', 'X', {duration: 2000});
+      }
+    });
+  }
+
+  async openSnackBar(message, action){
+    this.snackBar.open(message, action);
   }
 }
 
