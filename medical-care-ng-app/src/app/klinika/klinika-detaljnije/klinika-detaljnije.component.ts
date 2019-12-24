@@ -13,6 +13,8 @@ import { SalaDialogComponent } from 'src/app/dialozi/sala-dialog/sala-dialog.com
 export class KlinikaDetaljnijeComponent implements OnInit {
 
   private displayColumns: string[] = ['Broj Sale', 'Pocetak termina', 'Kraj termina', 'Akcije'];
+  private lekariColumns: string[] = ['Ime', 'Prezime', 'Email', 'Akcije'];
+  private preglediColumns: string[] = ['Broj Sale', 'Pocetak pregleda', 'Kraj pregleda', 'Lekar', 'Akcije'];
   private pregledi: Array<Pregled>;
   private klinika: KlinikaDTO = {
     id: 0,
@@ -76,7 +78,6 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
         this.sale = data as Array<SalePretraga>;
-        console.log(this.sale);
       }, err => {
         console.log('Greska pri pribavljanju sala: ');
         console.log(err);

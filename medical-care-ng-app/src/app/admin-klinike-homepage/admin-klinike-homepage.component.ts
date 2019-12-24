@@ -9,7 +9,7 @@ import { KlinikaServiceComponent } from '../services/klinika-service/klinika-ser
   styleUrls: ['./admin-klinike-homepage.component.css'],
 })
 export class AdminKlinikeHomepageComponent implements OnInit {
-
+  private displayColumns: string[] = ['Naziv', 'Adresa', 'Opis', 'Akcije'];
   private models: Array<KlinikaDTO>;
   private klinika: KlinikaDTO;
   constructor(private router: Router, private http: HttpClient, private dataService: KlinikaServiceComponent) { }

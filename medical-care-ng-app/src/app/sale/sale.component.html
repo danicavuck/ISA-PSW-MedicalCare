@@ -1,64 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sale</title>
 </head>
+
 <body>
 
     <div class="container">
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-                <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/adminklinike']">Pocetna strana</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/adminklinike/defpregleda']">Pregledi</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/adminklinike/sale']">Sale</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/adminklinike/izvestaj']">Izvestaj</a>
-                </li>
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/adminklinike/home']">Home</a>
-                </li>
-                </ul>
-        </nav>
+        <app-navbar></app-navbar>
 
         <!-- Actual page -->
         <div class="jumbotron">
-        
-        <div class="text-center">
-            
-            <form name="form" #f="ngForm" class="my-form" novalidate (ngSubmit)="pretraziSale()">
-                  <mat-form-field class="form-input1">
-                    <mat-label>Tacan naziv sale</mat-label>
-                    <input class="input" type="text" id="naziv" matInput name="naziv" placeholder="Naziv/Broj sale"     [(ngModel)]="salaPretraga.brojSale">
-                  </mat-form-field>
+
+            <div class="text-center">
+
+                <form name="form" #f="ngForm" class="my-form" novalidate (ngSubmit)="pretraziSale()">
+                    <mat-form-field class="form-input1">
+                        <mat-label>Tacan naziv sale</mat-label>
+                        <input class="input" type="text" id="naziv" matInput name="naziv" placeholder="Naziv/Broj sale"
+                            [(ngModel)]="salaPretraga.brojSale">
+                    </mat-form-field>
                     <button type="submit" mat-stroked-button [disabled]="!f.valid">
                         <i class="fa fa-search" aria-hidden="true"></i>
                         <span> Pretrazi</span>
                     </button>
-                    
-                <div class="col">
-                    <mat-form-field class="form-input2">
-                        <mat-label>Filter</mat-label>
-                        <input (keyup)="applyFilter($event.target.value)" matInput>
-                    </mat-form-field>
-                </div>
 
-              </form>
+                    <div class="col">
+                        <mat-form-field class="form-input2">
+                            <mat-label>Filter</mat-label>
+                            <input (keyup)="applyFilter($event.target.value)" matInput>
+                        </mat-form-field>
+                    </div>
 
-            <div style="text-align: center;">
-                <div class="container" style="margin: 0 0 30px 0;">
+                </form>
+
+                <div style="text-align: center;">
+                    <div class="container" style="margin: 0 0 30px 0;">
                         <h3 style="display: inline; margin-right: 20px; text-align:center;">Sale</h3>
-                </div>
+                    </div>
 
                     <table mat-table [dataSource]="saleDataSource" class="mat-elevation-z8" *ngIf="!filtriraj">
                         <ng-container matColumnDef="Broj Sale">
@@ -87,29 +70,32 @@
                         <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
                     </table>
- 
+
                     <div class="nadjenaSala" *ngIf="filtriraj">
                         <div class="mat-display-1">Broj sale: {{nadjenaSala.brojSale}}</div>
                         <div class="mat-display-1">Pocetak termina {{nadjenaSala.pocetakTermina}}</div>
                         <div class="mat-display-1">Kraj termina {{nadjenaSala.krajTermina}}</div>
-                        <button class="nazadButton" mat-raised-button color="primary" (click)="filtriraj=false">Nazad</button>
+                        <button class="nazadButton" mat-raised-button color="primary"
+                            (click)="filtriraj=false">Nazad</button>
                     </div>
-                    
-                <button class="btn btn-outline-success btn-sm" style="width: 100%;" [routerLink]="['/adminklinike/dodajsalu']">
+
+                    <button mat-raised-button color="primary" style="width: 100%;"
+                        [routerLink]="['/adminklinike/dodajsalu']">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         <span> Dodaj salu</span>
-                </button>
+                    </button>
+                </div>
+
+
             </div>
-                
-    
-        </div>
         </div>
         <div class="container" style="margin-bottom: 10%;">
-        <button type="button" class="btn btn-outline-info pull-left" [routerLink]="['/adminklinike']">Nazad</button>
-        <button class="btn btn-outline-info pull-right" [routerLink]="['/login']">Odjavite se</button>
+            <button type="button" class="btn btn-outline-info pull-left" [routerLink]="['/adminklinike']">Nazad</button>
+            <button class="btn btn-outline-info pull-right" [routerLink]="['/login']">Odjavite se</button>
         </div>
-    
+
     </div>
-      
-      </body>
+
+</body>
+
 </html>

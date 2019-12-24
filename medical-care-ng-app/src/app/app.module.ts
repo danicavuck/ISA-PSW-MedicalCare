@@ -31,6 +31,7 @@ import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { MaterialModule } from './material/material.module';
 import { SalaDialogComponent } from './dialozi/sala-dialog/sala-dialog.component';
+import { NavbarComponent } from './admin-klinike/navbar/navbar.component';
 
 
 
@@ -74,6 +75,7 @@ const appRouts: Routes = [
     DodavanjeTipaPregledaComponent,
     KlinikaServiceComponent,
     SalaDialogComponent,
+    NavbarComponent,
 
   ],
   imports: [

@@ -9,8 +9,10 @@
 </head>
 <body>
 
+  <app-navbar></app-navbar>
+
   <div class="container">
-      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+      <!-- <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/adminklinike']">Pocetna strana</a>
@@ -30,13 +32,41 @@
                 <a class="nav-link" [routerLink]="['/adminklinike/home']">Home</a>
               </li>
             </ul>
-      </nav>
+      </nav> -->
     <div class="jumbotron">
       
       <div class="text-center">
-        <h3 style="margin: -30px 0 20px 0;">Klinika</h3>
+        <h2 class="mat-display-1">Klinika</h2>
 
-        <table class="table">
+        <table mat-table [dataSource]="models" class="mat-elevation-z8" *ngIf="!filtriraj">
+          <ng-container matColumnDef="Naziv">
+              <mat-header-cell *matHeaderCellDef>Naziv</mat-header-cell>
+              <mat-cell *matCellDef="let klinika"> {{klinika.naziv}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Adresa">
+              <mat-header-cell *matHeaderCellDef>Adresa</mat-header-cell>
+              <mat-cell *matCellDef="let klinika"> {{klinika.adresa}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Opis">
+              <mat-header-cell *matHeaderCellDef>Opis</mat-header-cell>
+              <mat-cell *matCellDef="let klinika"> {{klinika.opis}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Akcije">
+              <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
+              <mat-cell *matCellDef="let klinika" style="padding-left: 10%;">
+                  <button mat-mini-fab color="primary" (click)="onDetaljnije(klinika)" routerLink="/adminklinike/klinika" matTooltip="Vise informacija o klinici">
+                      <i class="fa fa-info" aria-hidden="true"></i>
+                  </button>
+              </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+      </table>
+
+        <!-- <table class="table">
           <thead class = "thead-dark">
           <tr>
             <th scope="col">#</th>
@@ -56,7 +86,7 @@
                   Detaljnije</button></td>
             </tr>
           </tbody>
-        </table>
+        </table> -->
 
       </div>
     </div>

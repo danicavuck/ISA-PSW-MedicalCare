@@ -63,7 +63,7 @@ public class SalaService {
 
     public static SalaPretragaDTO pretraziSaluPoBrojuSale(SalaPretragaDTO salaPretragaDTO) {
         Sala sala = salaRepository.findByBrojSale(salaPretragaDTO.getBrojSale());
-        return mapiranjeSaleNaSalaPretragaDTO(sala, salaPretragaDTO);
+        return mapiranjeSaleNaSalaPretragaDTO(sala);
     }
 
     public static void dodavanjeNoveSaleUKliniku(Klinika klinika, SalaDodavanjeDTO salaDodavanjeDTO) {
@@ -76,10 +76,14 @@ public class SalaService {
         klinika.dodajSalu(sala);
     }
 
-    public static SalaPretragaDTO mapiranjeSaleNaSalaPretragaDTO(Sala sala, SalaPretragaDTO salaPretragaDTO) {
+    public static SalaPretragaDTO mapiranjeSaleNaSalaPretragaDTO(Sala sala) {
         ModelMapper modelMapper = new ModelMapper();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
         if (sala != null) {
-            return modelMapper.map(sala, SalaPretragaDTO.class);
+            SalaPretragaDTO salaPretragaDTO = modelMapper.map(sala, SalaPretragaDTO.class);
+            salaPretragaDTO.setPocetakTermina(sala.getPocetakTermina().format(formatter));
+            salaPretragaDTO.setKrajTermina(sala.getKrajTermina().format(formatter));
+            return salaPretragaDTO;
         }
         return null;
     }

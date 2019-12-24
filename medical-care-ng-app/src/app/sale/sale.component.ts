@@ -20,8 +20,8 @@ export class SaleComponent implements OnInit {
   sala: SalaDTO = {
     brojSale: 0,
     datum: null,
-    pocetakTermina: null,
-    krajTermina: null
+    pocetakTermina: '',
+    krajTermina: ''
   };
   salaPretraga: SalaDTO = {
     brojSale: 101,
@@ -44,6 +44,8 @@ export class SaleComponent implements OnInit {
         this.nadjenaSala = data as SalePretraga;
         //this.nadjenaSalaDataSource = new MatTableDataSource(this.nadjenaSala);
         this.filtriraj = true;
+        console.log('POSLATO');
+        console.log(this.salaPretraga);
         console.log(this.filtriraj);
         console.log(this.nadjenaSala);
       }, err => {
@@ -112,6 +114,6 @@ export interface SalePretraga {
 export interface SalaDTO {
   brojSale: number;
   datum: Date;
-  pocetakTermina: Date;
-  krajTermina: Date;
+  pocetakTermina: string;
+  krajTermina: string;
 }
