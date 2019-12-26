@@ -40,7 +40,7 @@ public class LoginService {
         Pacijent pacijent = pacijentRepository.findUserByEmail(loginDTO.getEmail());
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraByEmail(loginDTO.getEmail());
         AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeByEmail(loginDTO.getEmail());
-        Lekar lekar = lekarRepository.findByEmail(loginDTO.getEmail());
+        Lekar lekar = lekarRepository.findLekarByEmail(loginDTO.getEmail());
         MedicinskaSestra medicinskaSestra = medicinskaSestraRepository.findMedicinskaSestraByEmail(loginDTO.getEmail());
 
 

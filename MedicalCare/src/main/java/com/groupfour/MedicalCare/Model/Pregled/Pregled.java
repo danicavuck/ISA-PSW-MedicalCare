@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Model.Pregled;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Dokumenti.IzvestajOPregledu;
@@ -19,7 +20,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Table(name = DbTableConstants.PREGLED)
 public class Pregled {
 
@@ -40,6 +40,7 @@ public class Pregled {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = DbColumnConstants.PREGLED_SALA)
+    @JsonIgnoreProperties("pregledi")
     private Sala sala;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,7 +48,7 @@ public class Pregled {
     private TipPregleda tipPregleda;
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "setPregleda")
     private Set<Lekar> lekari = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -63,5 +64,10 @@ public class Pregled {
             this.lekari = new HashSet<>();
         }
         this.lekari.add(lekar);
+    }
+
+    @Override
+    public String toString() {
+        return "Pregled id: " + this.id + " Tip pregleda: " + this.tipPregleda.getTipPregleda();
     }
 }

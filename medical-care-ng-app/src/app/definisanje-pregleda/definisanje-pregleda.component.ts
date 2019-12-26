@@ -81,6 +81,7 @@ export class DefinisanjePregledaComponent implements OnInit {
 
   async onSubmit() {
     const apiEndpoint = 'http://localhost:8080/pregledi';
+    this.uvecanjeSatnice(this.pregled);
     this.http.post(apiEndpoint, this.pregled,
       {responseType: 'text'}).subscribe((data) => {
         console.log(data);
@@ -88,7 +89,10 @@ export class DefinisanjePregledaComponent implements OnInit {
         console.log('Greska pri kreiranju novog pregeda: ');
         console.log(err);
       });
-    // console.log(this.pregled);
+  }
+
+  async uvecanjeSatnice(pregled) {
+    pregled.datumVreme.setHours(this.pregled.datumVreme.getHours() + 1, 0, 0, 0);
   }
 
 }

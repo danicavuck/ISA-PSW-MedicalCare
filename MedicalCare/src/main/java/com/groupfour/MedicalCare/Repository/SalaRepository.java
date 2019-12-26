@@ -9,6 +9,5 @@ import java.util.ArrayList;
 @Repository
 public interface SalaRepository extends JpaRepository<Sala, Integer> {
     ArrayList<Sala> findAll();
-
     Sala findByBrojSale(int brojSale);
 }

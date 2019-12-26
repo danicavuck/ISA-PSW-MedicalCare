@@ -43,26 +43,26 @@
             <div style="text-align: center; margin-top: 10%;">
                 <mat-divider style="margin: 10px 0 10px 0;"></mat-divider>
                 <div class="mat-h1">Lekari</div>
-                <table mat-table [dataSource]="lekari" class="mat-elevation-z8">
+                <table mat-table [dataSource]="lekariDataSource" class="mat-elevation-z8" matSort>
                     <ng-container matColumnDef="Ime">
-                        <mat-header-cell *matHeaderCellDef>Ime</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Ime</mat-header-cell>
                         <mat-cell *matCellDef="let lekar"> {{lekar.ime}} </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="Prezime">
-                        <mat-header-cell *matHeaderCellDef>Prezime</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Prezime</mat-header-cell>
                         <mat-cell *matCellDef="let lekar"> {{lekar.prezime}} </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="Email">
-                        <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
                         <mat-cell *matCellDef="let lekar"> {{lekar.email}} </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="Akcije">
                         <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
                         <mat-cell *matCellDef="let lekar" style="padding-left: 10%;">
-                            <button mat-mini-fab color="warn" (click)="openDialog(lekar)" matTooltip="Obrisi lekara">
+                            <button mat-mini-fab color="warn" (click)="openLekarDialog(lekar)" matTooltip="Obrisi lekara">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
                         </mat-cell>
@@ -70,7 +70,7 @@
                     <mat-header-row *matHeaderRowDef="lekariColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: lekariColumns;"></mat-row>
                 </table>
-            </div>
+               </div>
 
                 <div>
                     <mat-divider style="margin: 30px 0 10px 0;"></mat-divider>
@@ -102,16 +102,20 @@
                         <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
                     </table>
-                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
                 </div>
 
                 <div style="text-align: center;" style="margin-top: 10%;">
                     <mat-divider style="margin: 10px 0 10px 0;"></mat-divider>
                     <div class="mat-h1">Pregledi</div>
-                    <table mat-table [dataSource]="pregledi" class="mat-elevation-z8">
+                    <table mat-table [dataSource]="preglediDataSource" class="mat-elevation-z8">
                         <ng-container matColumnDef="Broj Sale">
                             <mat-header-cell *matHeaderCellDef>Broj Sale</mat-header-cell>
                             <mat-cell *matCellDef="let pregled"> {{pregled.sala}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Tip pregleda">
+                            <mat-header-cell *matHeaderCellDef>Tip pregleda</mat-header-cell>
+                            <mat-cell *matCellDef="let pregled"> {{pregled.tipPregleda}} </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="Pocetak pregleda">
@@ -140,6 +144,7 @@
                         <mat-header-row *matHeaderRowDef="preglediColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: preglediColumns;"></mat-row>
                     </table>
+                    <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator>
                 </div>
                 
     

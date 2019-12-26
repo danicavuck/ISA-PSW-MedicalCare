@@ -26,31 +26,44 @@
             </div>
       
             <div class="form-group">
-              <label for="tippregleda">Tip pregleda </label>
-              <select class="form-control" name="tippregleda" id="tipptegleda" required [(ngModel)]="pregled.tipPregleda">
-                <option *ngFor="let tip of tipPregleda; let i = index" value="{{tip.tipPregleda}}">{{tip.tipPregleda}} </option>
-              </select>
-              <button type="button" class="btn btn-success" [routerLink]="['/adminklinike/dodavanjetipa']" style="width: 100%; margin: 10px 0 10px 0;">Dodajte novi tip pregleda</button>
+
+              <mat-form-field class="full-width">
+                <mat-label style="margin-bottom: 30px;">Tip pregleda</mat-label>
+                <mat-select [(ngModel)]="pregled.tipPregleda" required name="tippregleda">
+                    <mat-option *ngFor="let tip of tipPregleda" value={{tip.tipPregleda}}>
+                        {{tip.tipPregleda}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button type="button" mat-raised-button color="primary" [routerLink]="['/adminklinike/dodavanjetipa']" style="width: 100%; margin: 10px 0 10px 0;">Dodajte novi tip pregleda</button>
             </div>
       
             <div class="form-group">
-              <label for="trajanje">Trajanje pregleda (min) </label>
-              <input type="number" name="trajanje" id="trajanje" class="form-control" required min="0" max="120" [(ngModel)]="pregled.trajanjePregleda">
+              <label for="trajanje">Trajanje pregleda (min) </label>  
+                <input mdInput  type="number" name="trajanje" id="trajanje" class="form-control" required min="0" max="120" [(ngModel)]="pregled.trajanjePregleda">             
             </div>
 
 
             <div class="form-group">
-                <label for="sala">Sala </label>
-                <select class="form-control" name="sala" id="sala" required [(ngModel)]="pregled.sala">
-                    <option *ngFor="let sala of sale; let i = index" value="{{sala.brojSale}}">{{sala.brojSale}}</option>
-                </select>
+              <mat-form-field class="full-width">
+                <mat-label style="margin-bottom: 30px;">Sala</mat-label>
+                  <mat-select [(ngModel)]="pregled.sala" required name="sala">
+                      <mat-option *ngFor="let sala of sale" value={{sala.brojSale}}>
+                          {{sala.brojSale}}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
             </div>
 
             <div class="form-group">
-                <label for="lekar">Lekar </label>
-                <select class="form-control" name="lekar" id="lekar" required [(ngModel)]="pregled.lekar">
-                    <option *ngFor="let lekar of lekari; let i = index" value="{{lekar.id}}">{{lekar.ime}} {{lekar.prezime}} </option>
-                </select>
+              <mat-form-field class="full-width">
+                <mat-label style="margin-bottom: 30px;">Lekar</mat-label>
+                  <mat-select [(ngModel)]="pregled.lekar" required name="lekar">
+                      <mat-option *ngFor="let lekar of lekari" value={{lekar.id}}>
+                          {{lekar.ime}} {{lekar.prezime}}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
             </div>
 
             <div class="form-group">
@@ -60,8 +73,8 @@
 
       
             <div style="margin-bottom: 30px;">
-              <button type="button" class="btn btn-outline-info pull-left" [routerLink]="['/adminklinike']">Nazad</button>
-              <button type="submit" class="btn btn-success pull-right" [disabled]="!f.valid">
+              <button type="button" mat-flat-button class="pull-left" [routerLink]="['/adminklinike']">Nazad</button>
+              <button type="submit" mat-raised-button color="primary" class="pull-right" [disabled]="!f.valid">
                 <i class="fa fa-check" aria-hidden="true"></i>
                 <span> Dodaj pregled</span>
               </button>

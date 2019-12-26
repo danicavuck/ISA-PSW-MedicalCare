@@ -5,3 +5,7 @@ table {
 .full-width {
     width: 100%;
 }
+
+.paginator {
+    margin-top: 1px;
+}

@@ -32,6 +32,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { MaterialModule } from './material/material.module';
 import { SalaDialogComponent } from './dialozi/sala-dialog/sala-dialog.component';
 import { NavbarComponent } from './admin-klinike/navbar/navbar.component';
+import { LekarDialogComponent } from './dialozi/lekar-dialog/lekar-dialog.component';
+import { DodavanjeLekaraComponent } from './dodavanje-lekara/dodavanje-lekara.component';
 
 
 
@@ -45,6 +47,7 @@ const appRouts: Routes = [
   { path: 'adminklinike/sale', component: SaleComponent},
   { path: 'adminklinike/dodavanjetipa', component: DodavanjeTipaPregledaComponent},
   { path: 'adminklinike/dodajsalu', component: DodajSaluComponent},
+  { path: 'adminklinike/dodavanjelekara', component : DodavanjeLekaraComponent},
   { path: 'lekar', component: LekarComponent },
   { path: 'medsestra', component: MedicinskaSestraComponent },
   { path: 'adminkc', component : AdminKcComponent},
@@ -76,6 +79,8 @@ const appRouts: Routes = [
     KlinikaServiceComponent,
     SalaDialogComponent,
     NavbarComponent,
+    LekarDialogComponent,
+    DodavanjeLekaraComponent,
 
   ],
   imports: [
@@ -94,6 +99,6 @@ const appRouts: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [SalaDialogComponent]
+  entryComponents: [SalaDialogComponent, LekarDialogComponent]
 })
 export class AppModule { }

@@ -6,10 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.ArrayList;
 
 public interface LekarRepository extends JpaRepository<Lekar, Integer> {
-    Lekar findByEmail(String email);
-
-    Lekar findById(int id);
-
+    Lekar findLekarByEmail(String email);
+    Lekar findLekarById(int id);
     ArrayList<Lekar> findAll();
 
 }

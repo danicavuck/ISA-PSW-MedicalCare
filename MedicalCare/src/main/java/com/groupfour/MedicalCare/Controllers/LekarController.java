@@ -1,14 +1,12 @@
 package com.groupfour.MedicalCare.Controllers;
 
+import com.groupfour.MedicalCare.Model.DTO.DodavanjeLekaraDTO;
 import com.groupfour.MedicalCare.Model.DTO.LekarDTO;
 import com.groupfour.MedicalCare.Service.LekarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -28,5 +26,15 @@ public class LekarController {
     @GetMapping(value = "/{klinikaId}")
     public ResponseEntity<ArrayList<LekarDTO>> getLekariZaKliniku(@PathVariable(value = "klinikaId") Integer klinikaId) {
         return new ResponseEntity<>(LekarService.getLekareDTO(klinikaId), HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> brisanjeLekara(@RequestBody LekarDTO lekarDTO){
+        return LekarService.brisanjeLekara(lekarDTO);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> dodavanjeNovogLekara(@RequestBody DodavanjeLekaraDTO dodavanjeLekaraDTO){
+        return LekarService.dodavanjeNovogLekara(dodavanjeLekaraDTO);
     }
 }

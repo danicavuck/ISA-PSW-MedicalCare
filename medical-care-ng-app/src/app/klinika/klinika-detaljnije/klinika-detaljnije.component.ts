@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { KlinikaServiceComponent } from 'src/app/services/klinika-service/klinika-service.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar, MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { SalaDialogComponent } from 'src/app/dialozi/sala-dialog/sala-dialog.component';
+import { LekarDialogComponent } from 'src/app/dialozi/lekar-dialog/lekar-dialog.component';
 
 
 @Component({
@@ -10,11 +11,16 @@ import { SalaDialogComponent } from 'src/app/dialozi/sala-dialog/sala-dialog.com
   templateUrl: './klinika-detaljnije.component.html',
   styleUrls: ['./klinika-detaljnije.component.css']
 })
-export class KlinikaDetaljnijeComponent implements OnInit {
 
+export class KlinikaDetaljnijeComponent implements OnInit {
   private displayColumns: string[] = ['Broj Sale', 'Pocetak termina', 'Kraj termina', 'Akcije'];
   private lekariColumns: string[] = ['Ime', 'Prezime', 'Email', 'Akcije'];
-  private preglediColumns: string[] = ['Broj Sale', 'Pocetak pregleda', 'Kraj pregleda', 'Lekar', 'Akcije'];
+  private preglediColumns: string[] = ['Broj Sale', 'Tip pregleda', 'Pocetak pregleda', 'Kraj pregleda', 'Lekar', 'Akcije'];
+
+  private lekariDataSource;
+  private saleDataSource;
+  private preglediDataSource;
+
   private pregledi: Array<Pregled>;
   private klinika: KlinikaDTO = {
     id: 0,
@@ -25,8 +31,17 @@ export class KlinikaDetaljnijeComponent implements OnInit {
   private klinikaStara: KlinikaDTO;
   private sale: Array<SalePretraga>;
   lekari: Array<Lekar>;
+
+  @ViewChild(MatSort, {static: false}) lekariSort: MatSort;
+  @ViewChild(MatSort, {static: false}) saleSort: MatSort;
+  @ViewChild(MatSort, {static: false}) preglediSort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) lekariPaginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) salePaginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) preglediPaginator: MatPaginator;
+
   // tslint:disable-next-line: max-line-length
-  constructor(private dataService: KlinikaServiceComponent, private http: HttpClient, private salaDialog: MatDialog, private snackBar: MatSnackBar) {
+  constructor(private dataService: KlinikaServiceComponent, private http: HttpClient, private salaDialog: MatDialog, private snackBar: MatSnackBar,
+              private lekarDialog: MatDialog) {
     if (this.dataService.getData() !== undefined) {
       this.klinika = this.dataService.getData();
       this.klinikaStara = this.klinika;
@@ -51,6 +66,9 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
         this.lekari = data as Array<Lekar>;
+        this.lekariDataSource = new MatTableDataSource(this.lekari);
+        this.lekariDataSource.sort = this.lekariSort;
+        this.lekariDataSource.paginator = this.lekariPaginator;
       }, err => {
         console.log('Greska pri pribavljanju lekara: ');
         console.log(err);
@@ -63,6 +81,9 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
         this.pregledi = data as Array<Pregled>;
+        this.preglediDataSource = new MatTableDataSource(this.pregledi);
+        this.preglediDataSource.sort = this.preglediSort;
+        this.preglediDataSource.paginator = this.preglediPaginator;
       }, err => {
         console.log('Greska pri pribavljanju lekara: ');
         console.log(err);
@@ -119,6 +140,35 @@ export class KlinikaDetaljnijeComponent implements OnInit {
         this.obrisiSalu(sala);
         this.snackBar.open('Sala izbrisana', 'X', {duration: 2000});
       }
+    });
+  }
+
+
+  async openLekarDialog(lekar) {
+    const odgovor = this.lekarDialog.open(LekarDialogComponent);
+    odgovor.afterClosed().subscribe(result => {
+      if (result === 'true'){
+        this.obrisiLekara(lekar);
+        this.snackBar.open('Lekar izbrisan', 'X', {duration: 2000});
+      } else {
+        console.log('Ne moze da se brise: ' + lekar);
+      }
+    });
+  }
+
+  async obrisiLekara(lekar) {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: lekar,
+    };
+    const apiEndpoint = 'http://localhost:8080/lekari';
+    this.http.delete(apiEndpoint, options).subscribe((data) => {
+      console.log('Uspenso brisanje lekara');
+      this.getLekareInitialy();
+    }, err => {
+      console.log(err);
     });
   }
 

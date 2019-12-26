@@ -39,6 +39,8 @@ public class Lekar {
     private String lozinka;
     @Column(name = DbColumnConstants.LEKAR_PROSECNA_OCENA)
     private float prosecnaOcena;
+    @Column(name = DbColumnConstants.LEKAR_AKTIVAN)
+    private boolean aktivan;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = DbColumnConstants.LEKAR_KLINIKA)

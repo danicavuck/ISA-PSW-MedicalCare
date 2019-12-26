@@ -20,7 +20,7 @@
                             <mat-form-field class="full-width">
                                 <mat-label>Broj sale</mat-label>
                                 <input class="input" type="text" id="brojSale" matInput name="brojSale" [(ngModel)]="sala.brojSale" required>
-                              </mat-form-field>
+                            </mat-form-field>
                         </div>
                         <div class="form-group">
                             <mat-form-field class="full-width">
@@ -31,12 +31,6 @@
                                 </mat-option>
                             </mat-select>
                             </mat-form-field>
-<!--                             
-                            
-                            <label for="klinika">Klinika kojoj sala pripada</label>
-                            <select name="klinika" id="klinika" class="form-control" required [(ngModel)]="sala.klinika">
-                                    <option *ngFor="let klinika of models; let i = index" value={{klinika.id}} >{{klinika.naziv}}</option>
-                            </select> -->
                         </div>
                         <div class="form-group">
                             <button type="submit" mat-raised-button color="primary" style="width: 100%;" [disabled]="!f.valid">

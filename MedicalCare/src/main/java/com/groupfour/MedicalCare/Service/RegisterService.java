@@ -4,6 +4,7 @@ import com.groupfour.MedicalCare.Model.DTO.PacijentDTO;
 import com.groupfour.MedicalCare.Model.DTO.UserRole;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Repository.PacijentRepository;
+import com.groupfour.MedicalCare.Utill.EmailUniqueness;
 import com.groupfour.MedicalCare.Utill.HibernateUtil;
 import com.groupfour.MedicalCare.Utill.PasswordCheck;
 import org.hibernate.Session;
@@ -24,16 +25,14 @@ public class RegisterService {
     }
 
     public static ResponseEntity<String> registerPacijent(@RequestBody PacijentDTO pacijentDTO) {
-        Pacijent pacijent = pacijentRepository.findUserByEmail(pacijentDTO.getEmail());
-        if (pacijent == null) {
-            napraviNoviNalogPacijentu(pacijent, pacijentDTO);
+        if (EmailUniqueness.isEmailUniqe(pacijentDTO.getEmail())) {
+            return napraviNoviNalogPacijentu(pacijentDTO);
         }
-
         return new ResponseEntity<>("Email address already taken", HttpStatus.FORBIDDEN);
     }
 
-    public static ResponseEntity<String> napraviNoviNalogPacijentu(Pacijent pacijent, PacijentDTO pacijentDTO) {
-        pacijent = napraviNovogPacijenta(pacijentDTO);
+    public static ResponseEntity<String> napraviNoviNalogPacijentu(PacijentDTO pacijentDTO) {
+        Pacijent pacijent = napraviNovogPacijenta(pacijentDTO);
         UserRole userRole = UserRole.builder().user_email(pacijentDTO.getEmail()).role("pacijent").build();
         if (sacuvajUBazuPacijentaIRolu(pacijent, userRole)) {
             return new ResponseEntity<>("Instance created", HttpStatus.CREATED);

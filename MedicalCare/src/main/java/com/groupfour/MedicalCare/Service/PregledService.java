@@ -77,7 +77,7 @@ public class PregledService {
     public static void kreirajNoviPregled(PregledDTO pregledDTO) {
         TipPregleda tipPregleda = tipPregledaRepository.findByTipPregleda(pregledDTO.getTipPregleda());
         Sala sala = salaRepository.findByBrojSale(pregledDTO.getSala());
-        Lekar lekar = lekarRepository.findById(pregledDTO.getLekar());
+        Lekar lekar = lekarRepository.findLekarById(pregledDTO.getLekar());
         int popust = pregledDTO.getPopust();
         int cena = pregledDTO.getCena();
         int trajanje = pregledDTO.getTrajanjePregleda();

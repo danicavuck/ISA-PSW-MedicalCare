@@ -47,6 +47,7 @@ public class Klinika {
             joinColumns = @JoinColumn(name = DbColumnConstants.KLINIKA_ID),
             inverseJoinColumns = @JoinColumn(name = DbColumnConstants.SALA_ID)
     )
+    @JsonIgnoreProperties("klinika")
     private Set<Sala> spisakSala = new HashSet<>();
 
     @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
