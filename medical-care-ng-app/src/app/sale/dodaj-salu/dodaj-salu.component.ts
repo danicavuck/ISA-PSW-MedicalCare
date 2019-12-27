@@ -11,7 +11,7 @@ export class DodajSaluComponent implements OnInit {
   private hasError = false;
   private errorStatus = 'Neispravni podaci';
   sala: SalaDTO = {
-    brojSale: 0,
+    brojSale: null,
     klinika: 0
   };
 
@@ -23,14 +23,15 @@ export class DodajSaluComponent implements OnInit {
   }
 
   async onSubmit() {
-    const apiEndpoint = 'http://localhost:8080/sale';
-    this.http.post(apiEndpoint, this.sala,
-      {responseType: 'text'}).subscribe( data => {
-        console.log(this.sala);
-        console.log(data);
-    }, err => {
-        console.log(err);
-    });
+    // const apiEndpoint = 'http://localhost:8080/sale';
+    // this.http.post(apiEndpoint, this.sala,
+    //   {responseType: 'text'}).subscribe( data => {
+    //     console.log(this.sala);
+    //     console.log(data);
+    // }, err => {
+    //     console.log(err);
+    // });
+    console.log(this.sala);
   }
 
   async getKlinike() {

@@ -11,6 +11,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -57,12 +58,12 @@ public class MedicinskaSestra {
     private Set<Recept> recepti = new HashSet<>();
 
 
-    public void dodajPacijenta(Pacijent pacijent){
+    public void dodajPacijenta(Pacijent pacijent) {
         this.listaPacijenata.add(pacijent);
         pacijent.getListaSestara().add(this);
     }
 
-    public void dodajRecept(Recept recept){
+    public void dodajRecept(Recept recept) {
         this.recepti.add(recept);
         recept.setMedicinskaSestra(this);
     }

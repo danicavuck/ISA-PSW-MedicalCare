@@ -10,6 +10,7 @@ public interface KlinikaRepository extends JpaRepository<Klinika, Integer> {
 
 
     Klinika findByNaziv(String naziv);
+
     Klinika findById(int id);
 
 

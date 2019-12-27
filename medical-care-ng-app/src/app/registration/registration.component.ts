@@ -9,8 +9,8 @@ import {Router} from '@angular/router';
 })
 export class RegistrationComponent implements OnInit {
 
-  lozinkaPonovo: string = '';
-  isLoading: boolean = false;
+  lozinkaPonovo = '';
+  isLoading = false;
   errorStatus: string = null;
 
   model: RegistrationViewModel = {
@@ -60,7 +60,8 @@ export class RegistrationComponent implements OnInit {
   }
 
   performCheck() {
-    if (this.model.ime == '' || this.model.prezime == '' || this.model.lozinka == '' || this.model.brojOsiguranja == '' || this.model.telefon == '' || this.model.drzava =='' || this.model.adresaPrebivalista == '' || this.model.email == '') {
+    // tslint:disable-next-line: max-line-length
+    if (this.model.ime === '' || this.model.prezime === '' || this.model.lozinka === '' || this.model.brojOsiguranja === '' || this.model.telefon === '' || this.model.drzava === '' || this.model.adresaPrebivalista === '' || this.model.email === '') {
       alert('Polja ne smeju biti prazna');
       return false;
     }
@@ -70,7 +71,7 @@ export class RegistrationComponent implements OnInit {
       return false;
     }
 
-    if (this.model.lozinka != this.lozinkaPonovo) {
+    if (this.model.lozinka !== this.lozinkaPonovo) {
       alert('Lozinke se moraju podudarati!');
       return false;
     }

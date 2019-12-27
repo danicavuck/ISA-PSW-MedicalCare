@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Model.Klinika;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
@@ -16,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
+
 @Entity
 @Table(name = DbTableConstants.SALA)
 public class Sala {
@@ -34,16 +35,23 @@ public class Sala {
     private int brojSale;
 
     @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("sala")
     private Set<Operacija> operacije = new HashSet<>();
 
     @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("sala")
     private Set<Pregled> pregledi = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = DbColumnConstants.SALA_KLINIKA)
+    @JsonIgnoreProperties("spisakSala")
     private Klinika klinika;
 
     @Column(name = DbColumnConstants.SALA_AKTIVNA)
     private boolean aktivna;
 
+    @Override
+    public String toString() {
+        return "Sala id:" + this.id + " Broj sale: " + this.brojSale + " Pocetak termina: " + this.pocetakTermina.toString() + " Kraj termina: " + this.krajTermina;
+    }
 }

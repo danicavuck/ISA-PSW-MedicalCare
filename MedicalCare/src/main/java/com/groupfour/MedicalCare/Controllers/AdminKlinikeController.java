@@ -19,7 +19,7 @@ import java.util.List;
 public class AdminKlinikeController {
 
     @GetMapping
-    public ResponseEntity<String> adminKlinikeHomepage(HttpServletRequest request){
+    public ResponseEntity<String> adminKlinikeHomepage(HttpServletRequest request) {
 //        if(request.getSession().getAttribute("role") == null || !request.getSession().getAttribute("role").equals("admin_klinike")){
 //            return new ResponseEntity<>("Unauthorized request", HttpStatus.FORBIDDEN);
 //
@@ -29,7 +29,7 @@ public class AdminKlinikeController {
 
 
     @GetMapping("/klinike")
-    public ResponseEntity<List<KlinikaDTO>> getKlinike(){
+    public ResponseEntity<List<KlinikaDTO>> getKlinike() {
         ArrayList<KlinikaDTO> klinike = KlinikaService.getKlinike();
 
         return new ResponseEntity<>(klinike, HttpStatus.OK);

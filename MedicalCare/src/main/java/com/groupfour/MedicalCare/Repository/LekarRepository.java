@@ -7,8 +7,7 @@ import java.util.ArrayList;
 
 public interface LekarRepository extends JpaRepository<Lekar, Integer> {
     Lekar findLekarByEmail(String email);
-
-
+    Lekar findLekarById(int id);
     ArrayList<Lekar> findAll();
 
 }

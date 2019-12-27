@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Time } from '@angular/common';
+
 
 @Component({
   selector: 'app-definisanje-pregleda',
@@ -9,13 +9,20 @@ import { Time } from '@angular/common';
 })
 export class DefinisanjePregledaComponent implements OnInit {
   tipPregleda: Array<TipPregleda>;
+
+  dateAndTime: Date = new Date();
+  settings = {
+    bigBanner: true,
+        timePicker: false,
+    format: 'dd-MM-yyyy',
+        defaultOpen: true
+  };
   pregled: Pregled = {
-    datumPregleda: new Date(),
+    datumVreme: new Date(),
     tipPregleda: '',
-    vremePregleda: new Date().getTime(),
     trajanjePregleda: 0,
     sala: 0,
-    lekar: '',
+    lekar: 0,
     cena: 0
   };
   sale: Array<SalePretraga>;
@@ -29,6 +36,7 @@ export class DefinisanjePregledaComponent implements OnInit {
 
 
   constructor(private http: HttpClient) {
+    this.dateAndTime = new Date();
     this.getSaleInitialy();
     this.getLekareInitialy();
     this.getTipInitialy();
@@ -42,7 +50,6 @@ export class DefinisanjePregledaComponent implements OnInit {
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
         this.sale = data as Array<SalePretraga>;
-        console.log(this.sale);
       }, err => {
         console.log('Greska pri pribavljanju sala: ');
         console.log(err);
@@ -54,7 +61,6 @@ export class DefinisanjePregledaComponent implements OnInit {
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
         this.tipPregleda = data as Array<TipPregleda>;
-        console.log(this.tipPregleda);
       }, err => {
         console.log('Greska pri pribavljanju tipova pregeda: ');
         console.log(err);
@@ -67,7 +73,6 @@ export class DefinisanjePregledaComponent implements OnInit {
     this.http.get(apiEndpoint,
       {responseType: 'json'}).subscribe((data) => {
         this.lekari = data as Array<Lekar>;
-        console.log(this.lekari);
       }, err => {
         console.log('Greska pri pribavljanju lekara: ');
         console.log(err);
@@ -75,7 +80,19 @@ export class DefinisanjePregledaComponent implements OnInit {
   }
 
   async onSubmit() {
-    console.log(this.pregled);
+    const apiEndpoint = 'http://localhost:8080/pregledi';
+    this.uvecanjeSatnice(this.pregled);
+    this.http.post(apiEndpoint, this.pregled,
+      {responseType: 'text'}).subscribe((data) => {
+        console.log(data);
+      }, err => {
+        console.log('Greska pri kreiranju novog pregeda: ');
+        console.log(err);
+      });
+  }
+
+  async uvecanjeSatnice(pregled) {
+    pregled.datumVreme.setHours(this.pregled.datumVreme.getHours() + 1, 0, 0, 0);
   }
 
 }
@@ -98,11 +115,10 @@ export interface TipPregleda {
 }
 
 export interface Pregled {
-  datumPregleda: Date;
-  vremePregleda: number;
+  datumVreme: Date;
   tipPregleda: string;
   trajanjePregleda: number;
   sala: number;
-  lekar: string;
+  lekar: number;
   cena: number;
 }

@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Model.Pregled;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Dokumenti.IzvestajOPregledu;
@@ -19,7 +20,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Table(name = DbTableConstants.PREGLED)
 public class Pregled {
 
@@ -30,7 +30,7 @@ public class Pregled {
     @Column(name = DbColumnConstants.PREGLED_TERMIN)
     private LocalDateTime terminPregleda;
     @Column(name = DbColumnConstants.PREGLED_TRAJANJE)
-    private String trajanjePregleda;
+    private int trajanjePregleda;
     @Column(name = DbColumnConstants.PREGLED_CENA)
     private int cena;
     @Column(name = DbColumnConstants.PREGLED_POPUST)
@@ -40,6 +40,7 @@ public class Pregled {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = DbColumnConstants.PREGLED_SALA)
+    @JsonIgnoreProperties("pregledi")
     private Sala sala;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,20 +48,26 @@ public class Pregled {
     private TipPregleda tipPregleda;
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = DbTableConstants.LEKAR_PREGLED,
-            joinColumns = @JoinColumn(name = DbColumnConstants.PREGLED_ID),
-            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_ID)
-    )
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "setPregleda")
     private Set<Lekar> lekari = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = DbColumnConstants.PREGLED_IZVESTAJ)
     private IzvestajOPregledu izvestajOPregledu;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = DbColumnConstants.PREGLED_PACIJENT)
     private Pacijent pacijent;
 
+    public void dodajLekara(Lekar lekar) {
+        if (this.lekari == null) {
+            this.lekari = new HashSet<>();
+        }
+        this.lekari.add(lekar);
+    }
+
+    @Override
+    public String toString() {
+        return "Pregled id: " + this.id + " Tip pregleda: " + this.tipPregleda.getTipPregleda();
+    }
 }

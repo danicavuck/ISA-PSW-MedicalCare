@@ -1,0 +1,17 @@
+table {
+    width: 100%;
+    margin-bottom: 5%;
+}
+
+.form-input1 {
+    width: 300px;
+    margin-right: 10px;
+}
+
+.form-input2 {
+    width: 400px;
+}
+
+.nazadButton {
+    margin: 10px 0 20px 0;
+}

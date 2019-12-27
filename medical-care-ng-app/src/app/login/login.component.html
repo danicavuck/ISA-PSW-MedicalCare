@@ -1,48 +1,55 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Logovanje</title>
 </head>
+
 <body>
-    <div class="container col-xs-12 col-md-8 col-md-offset-3">
-        <div class="jumbotron">
-          <div class="text-center">
-            <h1>Prijava na sistem</h1>
-          </div>
-          <div class="alert alert-danger" *ngIf="errorStatus" style="text-align: center">
-            <h4>{{errorStatus}}</h4>
-          </div>
-          <div *ngIf="isLoading" style="text-align: center">
-            <app-loading-spinner></app-loading-spinner>
-          </div>
-          <form name="form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+  <div class="container col-xs-12 col-md-8 col-md-offset-3">
+    <!-- <div class="jumbotron" style="background-color:transparent !important;"> -->
+    <div class="jumbotron">
+      <div class="text-center">
+        <div class="mat-display-2">Prijava na sistem</div>
+      </div>
+      <div class="alert alert-danger" *ngIf="errorStatus" style="text-align: center">
+        <h4>{{errorStatus}}</h4>
+      </div>
+      <div *ngIf="isLoading" style="text-align: center">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+      <form name="form" #f="ngForm" class="my-form" novalidate (ngSubmit)="onSubmit()" *ngIf="!isLoading">
 
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" class="form-control" name="email" [(ngModel)]="model.email" required email>
-            </div>
-
-            <div class="form-group">
-              <label for="lozinka">Lozinka</label>
-              <input type="password" id="lozinka" class="form-control" name="lozinka" [(ngModel)]="model.lozinka" required minlength="6">
-            </div>
-
-            <button type="submit" class="btn btn-primary pull-left" [disabled]="!f.valid">
-              <i class="fa fa-sign-in"></i>
-              <span> Prijavi se</span>
-            </button>
-
-            <button type="button" class="btn btn-light pull-right" routerLink="/registration">
-              <i class="fa fa-user-plus"></i>
-              <span> Registrujte se</span>
-            </button>
-
-          </form>
+        <div class="forma">
+          <mat-form-field class="full-width">
+            <mat-label>Email</mat-label>
+            <input class="input" type="email" id="email" name="email" [(ngModel)]="model.email" matInput required email>
+          </mat-form-field>
         </div>
+        <div class="forma">
+          <mat-form-field class="full-width">
+            <mat-label>Lozinka</mat-label>
+            <input class="input" type="password" id="lozinka" name="lozinka" [(ngModel)]="model.lozinka" matInput
+              required minlength="6">
+          </mat-form-field>
+        </div>
+
+        <button type="submit" mat-raised-button color="primary" [disabled]="!f.valid">
+          <i class="fa fa-sign-in"></i>
+          <span> Prijavite se</span>
+        </button>
+
+        <button mat-flat-button [color]="'link'" mat-stroked-button class="pull-right" routerLink="/registration">
+          <i class="fa fa-user-plus"></i>
+          <span> Registrujte se</span>
+        </button>
+      </form>
     </div>
+  </div>
 </body>
+
 </html>

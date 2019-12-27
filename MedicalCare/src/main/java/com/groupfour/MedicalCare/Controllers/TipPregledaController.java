@@ -13,17 +13,17 @@ import java.util.ArrayList;
 @CrossOrigin
 @RequestMapping("/tippregleda")
 public class TipPregledaController {
-    public TipPregledaController(){
+    public TipPregledaController() {
 
     }
 
     @GetMapping
-    public ResponseEntity<ArrayList<TipPregledaDTO>> getTipPregleda(){
+    public ResponseEntity<ArrayList<TipPregledaDTO>> getTipPregleda() {
         return new ResponseEntity<>(TipPregledaService.vratiTipovePregleda(), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<String> addTipPregleda(@RequestBody TipPregledaDTO tipPregledaDTO){
+    public ResponseEntity<String> addTipPregleda(@RequestBody TipPregledaDTO tipPregledaDTO) {
         TipPregledaService.dodajNoviTipPregleda(tipPregledaDTO);
         return new ResponseEntity<>("Dodat tip pregleda", HttpStatus.OK);
     }

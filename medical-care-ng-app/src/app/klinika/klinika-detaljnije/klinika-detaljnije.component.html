@@ -9,52 +9,29 @@
 <body>
 
     <div class="container">
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-                <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/adminklinike']">Pocetna strana</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/adminklinike/defpregleda']">Pregledi</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/adminklinike/sale']">Sale</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/adminklinike/izvestaj']">Izvestaj</a>
-                </li>
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/adminklinike/home']">Home</a>
-                </li>
-                </ul>
-        </nav>
+        <app-navbar></app-navbar>
 
         <!-- Actual page -->
         <div class="jumbotron">
         <div class="text-center">
-            <h3>Azuriranje podataka klinike</h3>
+            <h2 class="mat-display-1">Azuriranje podataka klinike</h2>
             <form name="form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()" style="text-align: left;">
-
-                <div class="form-group">
-                    <label for="naziv">Naziv</label>
-                    <input type="text" id="naziv" class="form-control" name="naziv" required [(ngModel)]="klinika.naziv">
-                </div>
-            
-                <div class="form-group">
-                    <label for="adresa">Adresa</label>
-                    <input type="text" id="adresa" class="form-control" name="adresa" required [(ngModel)]="klinika.adresa">
-                </div>
-            
-                <div class="form-group">
-                    <label for="opis">Opis</label>
-                    <textarea type="text" id="opis" class="form-control" name="opis" required [(ngModel)]="klinika.opis"></textarea>
-                </div>
+                <mat-form-field class="full-width">
+                    <mat-label>Naziv</mat-label>
+                    <input class="input" type="text" id="naziv" name="naziv" [(ngModel)]="klinika.naziv" matInput required>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>Adresa</mat-label>
+                    <input class="input" type="text" id="adresa" name="adresa" [(ngModel)]="klinika.adresa" matInput required>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>Opis</mat-label>
+                    <input class="input" type="text" id="opis" name="opis" [(ngModel)]="klinika.opis" matInput required>
+                </mat-form-field>
                 
             
                 <div style="margin-bottom: 10%;">
-                    <button type="submit" class="btn btn-success pull-right" [disabled]="!f.valid">
+                    <button type="submit" mat-raised-button color="primary" class="pull-right" [disabled]="!f.valid">
                     <i class="fa fa-check" aria-hidden="true"></i>
                     <span> Izmeni podatke</span>
                     </button>
@@ -64,70 +41,118 @@
 
 
             <div style="text-align: center; margin-top: 10%;">
-                <h3>Lekari</h3>
-                <table class="table">
-                    <thead class = "thead-dark">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Ime</th>
-                        <th scope="col">Prezime</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Akcije</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let lekar of lekari; let i = index">
-                            <th scope="row">{{i + 1}}</th>
-                            <td>{{lekar.ime}}</td>
-                            <td>{{lekar.prezime}}</td>
-                            <td>{{lekar.email}}</td>
-                            <td>
-                                <button class="btn btn-danger btn-sm">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                        <span> Obrisi</span>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <mat-divider style="margin: 10px 0 10px 0;"></mat-divider>
+                <div class="mat-h1">Lekari</div>
+                <table mat-table [dataSource]="lekariDataSource" class="mat-elevation-z8" matSort>
+                    <ng-container matColumnDef="Ime">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Ime</mat-header-cell>
+                        <mat-cell *matCellDef="let lekar"> {{lekar.ime}} </mat-cell>
+                    </ng-container>
 
-                <hr>
-                <div style="text-align: center;" style="margin-top: 10%;">
-                    <h3>Sale</h3>
-                    <table class="table">
-                        <thead class = "thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Broj sale</th>
-                            <th scope="col">Pocetak Termina</th>
-                            <th scope="col">Kraj Termina</th>
-                            <th scope="col">Akcije</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let sala of sale; let i=index">
-                                <th scope="row">{{i + 1}}</th>
-                                <td>{{sala.brojSale}}</td>
-                                <td>{{sala.pocetakTermina}}</td>
-                                <td>{{sala.krajTermina}}</td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm" (click)="obrisiSalu(sala)">
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                            <span> Obrisi</span>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
+                    <ng-container matColumnDef="Prezime">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Prezime</mat-header-cell>
+                        <mat-cell *matCellDef="let lekar"> {{lekar.prezime}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Email">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+                        <mat-cell *matCellDef="let lekar"> {{lekar.email}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Akcije">
+                        <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
+                        <mat-cell *matCellDef="let lekar" style="padding-left: 10%;">
+                            <button mat-mini-fab color="warn" (click)="openLekarDialog(lekar)" matTooltip="Obrisi lekara">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="lekariColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: lekariColumns;"></mat-row>
+                </table>
+               </div>
+
+                <div>
+                    <mat-divider style="margin: 30px 0 10px 0;"></mat-divider>
+                    <div class="mat-h1">Sale</div>
+                    <table mat-table [dataSource]="sale" class="mat-elevation-z8">
+                        <ng-container matColumnDef="Broj Sale">
+                            <mat-header-cell *matHeaderCellDef>Broj Sale</mat-header-cell>
+                            <mat-cell *matCellDef="let sala"> {{sala.brojSale}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Pocetak termina">
+                            <mat-header-cell *matHeaderCellDef>Pocetak termina</mat-header-cell>
+                            <mat-cell *matCellDef="let sala"> {{sala.pocetakTermina}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Kraj termina">
+                            <mat-header-cell *matHeaderCellDef>Kraj Termina</mat-header-cell>
+                            <mat-cell *matCellDef="let sala"> {{sala.krajTermina}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Akcije">
+                            <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
+                            <mat-cell *matCellDef="let sala" style="padding-left: 10%;">
+                                <button mat-mini-fab color="warn" (click)="openDialog(sala)" matTooltip="Obrisi salu">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
                     </table>
+                </div>
+
+                <div style="text-align: center;" style="margin-top: 10%;">
+                    <mat-divider style="margin: 10px 0 10px 0;"></mat-divider>
+                    <div class="mat-h1">Pregledi</div>
+                    <table mat-table [dataSource]="preglediDataSource" class="mat-elevation-z8">
+                        <ng-container matColumnDef="Broj Sale">
+                            <mat-header-cell *matHeaderCellDef>Broj Sale</mat-header-cell>
+                            <mat-cell *matCellDef="let pregled"> {{pregled.sala}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Tip pregleda">
+                            <mat-header-cell *matHeaderCellDef>Tip pregleda</mat-header-cell>
+                            <mat-cell *matCellDef="let pregled"> {{pregled.tipPregleda}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Pocetak pregleda">
+                            <mat-header-cell *matHeaderCellDef>Pocetak pregleda</mat-header-cell>
+                            <mat-cell *matCellDef="let pregled"> {{pregled.pocetakTermina}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Kraj pregleda">
+                            <mat-header-cell *matHeaderCellDef>Kraj regelda</mat-header-cell>
+                            <mat-cell *matCellDef="let pregled"> {{pregled.krajTermina}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Lekar">
+                            <mat-header-cell *matHeaderCellDef>Lekar</mat-header-cell>
+                            <mat-cell *matCellDef="let pregled"> {{pregled.lekarImeIPrezime}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Akcije">
+                            <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
+                            <mat-cell *matCellDef="let sala" style="padding-left: 10%;">
+                                <button mat-mini-fab color="warn" (click)="openDialog(sala)" matTooltip="Obrisi pregled">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="preglediColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: preglediColumns;"></mat-row>
+                    </table>
+                    <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator>
                 </div>
                 
     
         </div>
         </div>
-        <div class="container" style="margin-bottom: 10%;">
-        <button type="button" class="btn btn-outline-info pull-left" [routerLink]="['/adminklinike']">Nazad</button>
-        <button class="btn btn-primary pull-right" [routerLink]="['/login']">Odjavite se</button>
+        <div class="container" style="margin-bottom: 20%;">
+        <button mat-stroked-button color="primary" type="button" class="pull-left" [routerLink]="['/adminklinike']">Nazad</button>
+        <button mat-raised-button color="primary" class="pull-right" [routerLink]="['/login']">Odjavite se</button>
         </div>
     
     </div>

@@ -12,7 +12,7 @@ public class UserDetailsImpl implements UserDetails {
 
     private Pacijent pacijent;
 
-    public UserDetailsImpl(Pacijent pacijent){
+    public UserDetailsImpl(Pacijent pacijent) {
         this.pacijent = pacijent;
     }
 
@@ -20,6 +20,7 @@ public class UserDetailsImpl implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("PACIJENT"));
     }
+
     @Override
     public String getPassword() {
         return pacijent.getLozinka();

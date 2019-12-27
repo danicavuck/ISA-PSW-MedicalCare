@@ -27,6 +27,13 @@ import { SaleComponent } from './sale/sale.component';
 import { DodajSaluComponent } from './sale/dodaj-salu/dodaj-salu.component';
 import { DodavanjeTipaPregledaComponent } from './definisanje-pregleda/dodavanje-tipa-pregleda/dodavanje-tipa-pregleda.component';
 import { KlinikaServiceComponent } from './services/klinika-service/klinika-service.component';
+import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { MaterialModule } from './material/material.module';
+import { SalaDialogComponent } from './dialozi/sala-dialog/sala-dialog.component';
+import { NavbarComponent } from './admin-klinike/navbar/navbar.component';
+import { LekarDialogComponent } from './dialozi/lekar-dialog/lekar-dialog.component';
+import { DodavanjeLekaraComponent } from './dodavanje-lekara/dodavanje-lekara.component';
 
 
 
@@ -40,6 +47,7 @@ const appRouts: Routes = [
   { path: 'adminklinike/sale', component: SaleComponent},
   { path: 'adminklinike/dodavanjetipa', component: DodavanjeTipaPregledaComponent},
   { path: 'adminklinike/dodajsalu', component: DodajSaluComponent},
+  { path: 'adminklinike/dodavanjelekara', component : DodavanjeLekaraComponent},
   { path: 'lekar', component: LekarComponent },
   { path: 'medsestra', component: MedicinskaSestraComponent },
   { path: 'adminkc', component : AdminKcComponent},
@@ -47,8 +55,6 @@ const appRouts: Routes = [
   { path: 'registracija-klinike', component : RegistracijaKlinikeComponent},
   { path: '', redirectTo : '/login', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent },
-  
-
 ];
 
 @NgModule({
@@ -70,7 +76,11 @@ const appRouts: Routes = [
     SaleComponent,
     DodajSaluComponent,
     DodavanjeTipaPregledaComponent,
-    KlinikaServiceComponent
+    KlinikaServiceComponent,
+    SalaDialogComponent,
+    NavbarComponent,
+    LekarDialogComponent,
+    DodavanjeLekaraComponent,
 
   ],
   imports: [
@@ -81,9 +91,14 @@ const appRouts: Routes = [
     FormsModule,
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    AngularDateTimePickerModule,
+    MaterialModule,
     RouterModule.forRoot(appRouts)
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [SalaDialogComponent, LekarDialogComponent]
 })
 export class AppModule { }

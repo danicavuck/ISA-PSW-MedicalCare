@@ -26,7 +26,7 @@ public class LoginService {
 
     @Autowired
     public LoginService(PacijentRepository pRepository, AdminKCRepository aKCRepository, AdminKlinikeRepository aKlinike,
-                        LekarRepository lRepo, MedicinskaSestraRepository mSestraRepository){
+                        LekarRepository lRepo, MedicinskaSestraRepository mSestraRepository) {
         pacijentRepository = pRepository;
         adminKCRepository = aKCRepository;
         adminKlinikeRepository = aKlinike;
@@ -35,7 +35,7 @@ public class LoginService {
 
     }
 
-    public static ResponseEntity<UserRole> loginPacijent(@RequestBody LoginDTO loginDTO){
+    public static ResponseEntity<UserRole> loginPacijent(@RequestBody LoginDTO loginDTO) {
         // Pretraga svih entiteta
         Pacijent pacijent = pacijentRepository.findUserByEmail(loginDTO.getEmail());
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraByEmail(loginDTO.getEmail());
@@ -44,37 +44,28 @@ public class LoginService {
         MedicinskaSestra medicinskaSestra = medicinskaSestraRepository.findMedicinskaSestraByEmail(loginDTO.getEmail());
 
 
-        if(pacijent != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), pacijent.getLozinka())){
+        if (pacijent != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), pacijent.getLozinka())) {
             UserRole userRole = UserRole.builder().user_email(pacijent.getEmail()).role("pacijent").build();
             return new ResponseEntity<>(userRole, HttpStatus.OK);
-        }
-
-        else if(adminKlinickogCentra != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), adminKlinickogCentra.getLozinka())){
+        } else if (adminKlinickogCentra != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), adminKlinickogCentra.getLozinka())) {
             UserRole userRole = UserRole.builder().user_email(adminKlinickogCentra.getEmail()).role("admin_kc").build();
             return new ResponseEntity<>(userRole, HttpStatus.OK);
-        }
-
-        else if(adminKlinike != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), adminKlinike.getLozinka())){
+        } else if (adminKlinike != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), adminKlinike.getLozinka())) {
             UserRole userRole = UserRole.builder().user_email(adminKlinike.getEmail()).role("admin_klinike").build();
             return new ResponseEntity<>(userRole, HttpStatus.OK);
-        }
-
-        else if(lekar != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), lekar.getLozinka())){
+        } else if (lekar != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), lekar.getLozinka())) {
             UserRole userRole = UserRole.builder().user_email(lekar.getEmail()).role("lekar").build();
             return new ResponseEntity<>(userRole, HttpStatus.OK);
-        }
-
-        else if(medicinskaSestra != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), medicinskaSestra.getLozinka())){
+        } else if (medicinskaSestra != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), medicinskaSestra.getLozinka())) {
             UserRole userRole = UserRole.builder().user_email(medicinskaSestra.getEmail()).role("med_sestra").build();
             return new ResponseEntity<>(userRole, HttpStatus.OK);
-        }
-        else{
+        } else {
             return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
         }
 
     }
 
-    public static ResponseEntity<String> logoutPacijent(){
+    public static ResponseEntity<String> logoutPacijent() {
         return new ResponseEntity<>("Successfull logout", HttpStatus.OK);
     }
 

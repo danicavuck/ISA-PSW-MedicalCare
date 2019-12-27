@@ -38,7 +38,7 @@ public class AdminKlinike {
     @JoinColumn(name = DbColumnConstants.ADMIN_KLINIKE_KLINIKA)
     private Klinika klinika;
 
-    public void dodajKliniku(Klinika k){
+    public void dodajKliniku(Klinika k) {
         this.klinika = k;
         k.getAdminiKlinike().add(this);
     }
