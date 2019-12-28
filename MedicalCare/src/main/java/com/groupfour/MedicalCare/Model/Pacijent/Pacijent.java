@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Model.Pacijent;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Dokumenti.Karton;
@@ -24,6 +25,7 @@ import java.util.Set;
 @Builder
 @ToString
 @Table(name = DbTableConstants.PACIJENT)
+@JsonIgnoreProperties({ "klinika", "lozinka"})
 public class Pacijent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +49,6 @@ public class Pacijent {
     private String brojTelefona;
     @Column(name = DbColumnConstants.PACIJENT_BROJOSIGURANJA)
     private String brojOsiguranja;
-
 
     @ManyToMany
     @JoinTable(

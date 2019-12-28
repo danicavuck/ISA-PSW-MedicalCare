@@ -57,6 +57,7 @@ public class Pregled {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = DbColumnConstants.PREGLED_PACIJENT)
+    @JsonIgnoreProperties("listaPregleda")
     private Pacijent pacijent;
 
     public void dodajLekara(Lekar lekar) {

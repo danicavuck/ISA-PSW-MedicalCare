@@ -34,6 +34,7 @@ import { SalaDialogComponent } from './dialozi/sala-dialog/sala-dialog.component
 import { NavbarComponent } from './admin-klinike/navbar/navbar.component';
 import { LekarDialogComponent } from './dialozi/lekar-dialog/lekar-dialog.component';
 import { DodavanjeLekaraComponent } from './dodavanje-lekara/dodavanje-lekara.component';
+import { PregledPacijenataComponent } from './admin-klinike/pregled-pacijenata/pregled-pacijenata.component';
 
 
 
@@ -47,6 +48,7 @@ const appRouts: Routes = [
   { path: 'adminklinike/sale', component: SaleComponent},
   { path: 'adminklinike/dodavanjetipa', component: DodavanjeTipaPregledaComponent},
   { path: 'adminklinike/dodajsalu', component: DodajSaluComponent},
+  { path: 'adminklinike/pregledpacijenata', component : PregledPacijenataComponent},
   { path: 'adminklinike/dodavanjelekara', component : DodavanjeLekaraComponent},
   { path: 'lekar', component: LekarComponent },
   { path: 'medsestra', component: MedicinskaSestraComponent },
@@ -81,6 +83,7 @@ const appRouts: Routes = [
     NavbarComponent,
     LekarDialogComponent,
     DodavanjeLekaraComponent,
+    PregledPacijenataComponent,
 
   ],
   imports: [

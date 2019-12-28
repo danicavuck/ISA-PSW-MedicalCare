@@ -44,17 +44,17 @@
                 <mat-divider style="margin: 10px 0 10px 0;"></mat-divider>
                 <div class="mat-h1">Lekari</div>
                 <table mat-table [dataSource]="lekariDataSource" class="mat-elevation-z8" matSort>
-                    <ng-container matColumnDef="Ime">
+                    <ng-container matColumnDef="ime">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Ime</mat-header-cell>
                         <mat-cell *matCellDef="let lekar"> {{lekar.ime}} </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="Prezime">
+                    <ng-container matColumnDef="prezime">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Prezime</mat-header-cell>
                         <mat-cell *matCellDef="let lekar"> {{lekar.prezime}} </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="Email">
+                    <ng-container matColumnDef="email">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
                         <mat-cell *matCellDef="let lekar"> {{lekar.email}} </mat-cell>
                     </ng-container>

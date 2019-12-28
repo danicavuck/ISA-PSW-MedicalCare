@@ -40,6 +40,7 @@ public class Operacija {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = DbColumnConstants.OPERACIJA_PACIJENT)
+    @JsonIgnoreProperties("listaOperacija")
     private Pacijent pacijent;
 
     @ManyToMany(fetch = FetchType.LAZY)

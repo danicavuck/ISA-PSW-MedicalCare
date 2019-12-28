@@ -53,6 +53,7 @@ public class Lekar {
             joinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_PACIJENT_LEKAR),
             inverseJoinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_PACIJENT_PACIJENT)
     )
+    @JsonIgnoreProperties("listaLekara")
     private Set<Pacijent> listaPacijenata = new HashSet<>();
 
 
