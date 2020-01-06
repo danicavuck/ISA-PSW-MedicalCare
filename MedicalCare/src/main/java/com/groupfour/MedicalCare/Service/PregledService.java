@@ -3,12 +3,10 @@ package com.groupfour.MedicalCare.Service;
 import com.groupfour.MedicalCare.Model.DTO.PregledDTO;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
+import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Pregled.TipPregleda;
-import com.groupfour.MedicalCare.Repository.LekarRepository;
-import com.groupfour.MedicalCare.Repository.PregeldRepository;
-import com.groupfour.MedicalCare.Repository.SalaRepository;
-import com.groupfour.MedicalCare.Repository.TipPregledaRepository;
+import com.groupfour.MedicalCare.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +21,17 @@ public class PregledService {
     private static TipPregledaRepository tipPregledaRepository;
     private static SalaRepository salaRepository;
     private static LekarRepository lekarRepository;
+    private static PacijentRepository pacijentRepository;
 
     @Autowired
     public PregledService(PregeldRepository pRepository, TipPregledaRepository tpRepository,
-                          SalaRepository sRepository, LekarRepository lRepository) {
+                          SalaRepository sRepository, LekarRepository lRepository,
+                          PacijentRepository pacRepository) {
         pregledRepository = pRepository;
         tipPregledaRepository = tpRepository;
         salaRepository = sRepository;
         lekarRepository = lRepository;
+        pacijentRepository = pacRepository;
     }
 
     public static ArrayList<PregledDTO> dobaviSvePreglede() {
@@ -84,6 +85,30 @@ public class PregledService {
         LocalDateTime datumVreme = pregledDTO.getDatumVreme();
 
         Pregled pregled = Pregled.builder().aktivan(true).cena(cena).popust(popust).sala(sala).tipPregleda(tipPregleda).trajanjePregleda(trajanje).terminPregleda(datumVreme).build();
+
+        System.out.println(pregled);
+
+        // Rucno cu cuvati entitete jer Cascading nije cuvao polja za pregled kada sam ga dodavao kroz lekara
+        pregledRepository.save(pregled);
+        lekar.dodajPregled(pregled);
+        lekarRepository.save(lekar);
+
+    }
+
+    // Pretpostavka za LekarID
+    public static void zapocniNoviPregled(PregledDTO pregledDTO) {
+        TipPregleda tipPregleda = tipPregledaRepository.findByTipPregleda(pregledDTO.getTipPregleda());
+        Sala sala = salaRepository.findByBrojSale(pregledDTO.getSala());
+        //Lekar lekar = lekarRepository.findLekarById(pregledDTO.getLekar());
+        Pacijent pacijent = pacijentRepository.findPacijentById(pregledDTO.getPacijent());
+        Lekar lekar = lekarRepository.findLekarById(1);
+        int popust = pregledDTO.getPopust();
+        int cena = pregledDTO.getCena();
+        int trajanje = pregledDTO.getTrajanjePregleda();
+        LocalDateTime datumVreme = pregledDTO.getDatumVreme();
+
+        Pregled pregled =
+                Pregled.builder().aktivan(true).cena(cena).popust(popust).sala(sala).tipPregleda(tipPregleda).trajanjePregleda(trajanje).terminPregleda(datumVreme).pacijent(pacijent).build();
 
         System.out.println(pregled);
 

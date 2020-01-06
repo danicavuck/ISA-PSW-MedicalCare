@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @Controller
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RequestMapping("/login")
 public class LoginController {
 
@@ -21,7 +24,7 @@ public class LoginController {
     }
 
     @PostMapping
-    public ResponseEntity<UserRole> login(@RequestBody LoginDTO loginDTO) {
-        return LoginService.loginPacijent(loginDTO);
+    public ResponseEntity<UserRole> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request) {
+        return LoginService.loginPacijent(loginDTO, request);
     }
 }

@@ -34,4 +34,10 @@ public class PregledController {
         PregledService.kreirajNoviPregled(pregledDTO);
         return new ResponseEntity<>(pregledDTO.toString(), HttpStatus.CREATED);
     }
+
+    @PostMapping(value = "/zapocni")
+    public static ResponseEntity<String> zapocniNoviPregled(@RequestBody PregledDTO pregledDTO) {
+        PregledService.zapocniNoviPregled(pregledDTO);
+        return new ResponseEntity<>(pregledDTO.toString(), HttpStatus.CREATED);
+    }
 }

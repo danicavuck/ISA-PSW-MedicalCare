@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
       const apiEndpoint = 'http://localhost:8080/login';
 
       this.http.post(apiEndpoint, this.model,
-        {responseType: 'json'}).subscribe( data => {
+        {responseType: 'json', withCredentials: true}).subscribe( data => {
         setTimeout(() => {
           this.userDTO = data as UserDTO;
           switch (this.userDTO.role) {

@@ -17,19 +17,19 @@
       <div class="text-center">
         <h2 class="mat-display-1">Klinika</h2>
 
-        <table mat-table [dataSource]="models" class="mat-elevation-z8" *ngIf="!filtriraj">
+        <table mat-table [dataSource]="models" class="mat-elevation-z8" *ngIf="!filtriraj" matSort>
           <ng-container matColumnDef="Naziv">
-              <mat-header-cell *matHeaderCellDef>Naziv</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Naziv</mat-header-cell>
               <mat-cell *matCellDef="let klinika"> {{klinika.naziv}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="Adresa">
-              <mat-header-cell *matHeaderCellDef>Adresa</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Adresa</mat-header-cell>
               <mat-cell *matCellDef="let klinika"> {{klinika.adresa}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="Opis">
-              <mat-header-cell *matHeaderCellDef>Opis</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Opis</mat-header-cell>
               <mat-cell *matCellDef="let klinika"> {{klinika.opis}} </mat-cell>
           </ng-container>
 
@@ -52,6 +52,6 @@
     </div>
 
   </div>
-  
+  <!-- <app-admin-calendar></app-admin-calendar> -->
 </body>
 </html>

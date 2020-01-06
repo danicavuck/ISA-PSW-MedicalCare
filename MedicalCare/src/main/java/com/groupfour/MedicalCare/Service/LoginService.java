@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @Service
 public class LoginService {
 
@@ -35,7 +38,7 @@ public class LoginService {
 
     }
 
-    public static ResponseEntity<UserRole> loginPacijent(@RequestBody LoginDTO loginDTO) {
+    public static ResponseEntity<UserRole> loginPacijent(@RequestBody LoginDTO loginDTO, HttpServletRequest request) {
         // Pretraga svih entiteta
         Pacijent pacijent = pacijentRepository.findUserByEmail(loginDTO.getEmail());
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraByEmail(loginDTO.getEmail());
@@ -49,9 +52,11 @@ public class LoginService {
             return new ResponseEntity<>(userRole, HttpStatus.OK);
         } else if (adminKlinickogCentra != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), adminKlinickogCentra.getLozinka())) {
             UserRole userRole = UserRole.builder().user_email(adminKlinickogCentra.getEmail()).role("admin_kc").build();
-            return new ResponseEntity<>(userRole, HttpStatus.OK);
+            return ResponseEntity.ok().body(userRole);
         } else if (adminKlinike != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), adminKlinike.getLozinka())) {
             UserRole userRole = UserRole.builder().user_email(adminKlinike.getEmail()).role("admin_klinike").build();
+            request.getSession().setAttribute("role", "admin_klinike");
+            System.out.println("SESSION ID: " + request.getSession());
             return new ResponseEntity<>(userRole, HttpStatus.OK);
         } else if (lekar != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), lekar.getLozinka())) {
             UserRole userRole = UserRole.builder().user_email(lekar.getEmail()).role("lekar").build();

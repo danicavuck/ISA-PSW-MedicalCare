@@ -35,6 +35,12 @@ import { NavbarComponent } from './admin-klinike/navbar/navbar.component';
 import { LekarDialogComponent } from './dialozi/lekar-dialog/lekar-dialog.component';
 import { DodavanjeLekaraComponent } from './dodavanje-lekara/dodavanje-lekara.component';
 import { PregledPacijenataComponent } from './admin-klinike/pregled-pacijenata/pregled-pacijenata.component';
+import { AdminCalendarComponent } from './admin-klinike/admin-calendar/admin-calendar.component';
+import { LekarNavbarComponent } from './lekar/lekar-navbar/lekar-navbar.component';
+import { DodavanjePregledaComponent } from './lekar/dodavanje-pregleda/dodavanje-pregleda.component';
+import { RadniKalendarComponent } from './lekar/radni-kalendar/radni-kalendar.component';
+import { OdsustvaIOdmorComponent } from './lekar/odsustva-i-odmor/odsustva-i-odmor.component';
+import { PregledIOperacijeComponent } from './lekar/pregled-i-operacije/pregled-i-operacije.component';
 
 
 
@@ -51,6 +57,10 @@ const appRouts: Routes = [
   { path: 'adminklinike/pregledpacijenata', component : PregledPacijenataComponent},
   { path: 'adminklinike/dodavanjelekara', component : DodavanjeLekaraComponent},
   { path: 'lekar', component: LekarComponent },
+  { path: 'lekar/dodavanjepregleda', component : DodavanjePregledaComponent},
+  { path: 'lekar/zakazivanje', component : PregledIOperacijeComponent},
+  { path: 'lekar/odsustva', component : OdsustvaIOdmorComponent},
+  { path: 'lekar/kalendar', component : RadniKalendarComponent},
   { path: 'medsestra', component: MedicinskaSestraComponent },
   { path: 'adminkc', component : AdminKcComponent},
   { path: 'registracija-admina', component : RegistracijaAdminaKlinikeComponent},
@@ -84,7 +94,12 @@ const appRouts: Routes = [
     LekarDialogComponent,
     DodavanjeLekaraComponent,
     PregledPacijenataComponent,
-
+    AdminCalendarComponent,
+    LekarNavbarComponent,
+    DodavanjePregledaComponent,
+    RadniKalendarComponent,
+    OdsustvaIOdmorComponent,
+    PregledIOperacijeComponent,
   ],
   imports: [
     BrowserModule,
@@ -102,6 +117,6 @@ const appRouts: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [SalaDialogComponent, LekarDialogComponent]
+  entryComponents: [SalaDialogComponent, LekarDialogComponent],
 })
 export class AppModule { }

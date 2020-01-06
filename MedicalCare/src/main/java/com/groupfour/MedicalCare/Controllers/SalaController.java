@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 @Controller
@@ -19,13 +21,20 @@ public class SalaController {
     }
 
     @GetMapping
-    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaSvakuKliniku() {
+    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaSvakuKliniku(HttpSession session) {
+//        if(!session.getAttribute("role").equals("admin_klinike"))
+//            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         ArrayList<SalaPretragaDTO> sale = SalaService.getSale(0);
         return new ResponseEntity<>(sale, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{klinikaId}")
-    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaOdredjenuKliniku(@PathVariable(value = "klinikaId") Integer klinikaId) {
+    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaOdredjenuKliniku(@PathVariable(value = "klinikaId") Integer klinikaId, HttpSession session) {
+        System.out.println("Session id: " + session);
+        System.out.println("ATRIBUTI SESIJE: ");
+        System.out.println(session.getAttributeNames());
+//        if(session.getAttribute("role") == null || !session.getAttribute("role").equals("admin_klinike"))
+////            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         ArrayList<SalaPretragaDTO> sale = SalaService.getSale(klinikaId);
         return new ResponseEntity<>(sale, HttpStatus.OK);
     }

@@ -23,4 +23,5 @@ public class PregledDTO {
     private String lekarImeIPrezime;
     private String pocetakTermina;
     private String krajTermina;
+    private int pacijent;
 }
