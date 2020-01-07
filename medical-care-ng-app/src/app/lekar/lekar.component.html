@@ -11,7 +11,27 @@
 <div class="text-center">
   <app-lekar-navbar></app-lekar-navbar>
   <h2 class="mat-display-1">Pacijenti klinike</h2>
-  <table mat-table [dataSource]="models" class="mat-elevation-z8" *ngIf="!filtriraj" matSort>
+
+  <form name="form" #f="ngForm" class="my-form" novalidate (ngSubmit)="pretraziPacijente()">
+    <mat-form-field class="form-input1">
+        <mat-label>Ime i prezime pacijenta</mat-label>
+        <input class="input" type="text" id="naziv" matInput name="naziv" placeholder="Ime i Prezime"
+            [(ngModel)]="pacijentPretraga" required>
+    </mat-form-field>
+    <button type="submit" mat-stroked-button [disabled]="!f.valid">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        <span> Pretrazi</span>
+    </button>
+
+    <div class="col">
+        <mat-form-field class="form-input2">
+            <mat-label>Filter</mat-label>
+            <input (keyup)="applyFilter($event.target.value)" matInput>
+        </mat-form-field>
+    </div>
+    </form>
+
+  <table mat-table [dataSource]="modelsDataSource" class="mat-elevation-z8" *ngIf="!filtriraj" matSort>
     <ng-container matColumnDef="ime">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Ime</mat-header-cell>
         <mat-cell *matCellDef="let pacijent"> {{pacijent.ime}} </mat-cell>
@@ -29,8 +49,8 @@
 
     <ng-container matColumnDef="Akcije">
         <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
-        <mat-cell *matCellDef="let klinika" style="padding-left: 10%;">
-            <button mat-mini-fab color="primary" (click)="onDetaljnije(klinika)" routerLink="/adminklinike/klinika" matTooltip="Vise informacija o pacijentu">
+        <mat-cell *matCellDef="let pacijent" style="padding-left: 10%;">
+            <button mat-mini-fab color="primary" (click)="onDetaljnije(pacijent)" routerLink="/lekar/pacijent" matTooltip="Vise informacija o pacijentu">
                 <i class="fa fa-info" aria-hidden="true"></i>
             </button>
         </mat-cell>

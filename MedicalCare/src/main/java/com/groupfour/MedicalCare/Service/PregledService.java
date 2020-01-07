@@ -8,11 +8,14 @@ import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Pregled.TipPregleda;
 import com.groupfour.MedicalCare.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -117,6 +120,21 @@ public class PregledService {
         lekar.dodajPregled(pregled);
         lekarRepository.save(lekar);
 
+    }
+
+    public static ResponseEntity<?> dobaviPregledeZaPacijenta(Integer pacijentId) {
+        Pacijent pacijent = pacijentRepository.findPacijentById(pacijentId);
+        Set<Pregled> pregledi = new HashSet<>();
+        Set<PregledDTO> pregledDTOS = new HashSet<>();
+        if(pacijent != null) {
+            pregledi = pacijent.getListaPregleda();
+            for(Pregled pregled : pregledi) {
+                pregledDTOS.add(mapirajPregledDTO(pregled));
+            }
+
+            return new ResponseEntity<>(pregledDTOS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(pregledDTOS, HttpStatus.NOT_FOUND);
     }
 
 }

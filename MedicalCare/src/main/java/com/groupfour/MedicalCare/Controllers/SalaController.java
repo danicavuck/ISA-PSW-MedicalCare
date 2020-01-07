@@ -54,7 +54,7 @@ public class SalaController {
     }
 
     @PostMapping(value = "/pretraga")
-    public ResponseEntity<SalaPretragaDTO> saleSearch(@RequestBody SalaPretragaDTO salaPretragaDTO) {
-        return new ResponseEntity<>(SalaService.pretraziSaluPoBrojuSale(salaPretragaDTO), HttpStatus.OK);
+    public ResponseEntity<?> saleSearch(@RequestBody SalaPretragaDTO salaPretragaDTO) {
+        return SalaService.pretraziSaluPoBrojuSale(salaPretragaDTO);
     }
 }
