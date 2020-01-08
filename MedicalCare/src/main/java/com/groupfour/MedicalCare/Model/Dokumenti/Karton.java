@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Model.Dokumenti;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
@@ -27,6 +28,7 @@ public class Karton {
     private boolean aktivan;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "zdravstveniKarton", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonIgnoreProperties("zdravstveniKarton")
     private Pacijent pacijet;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

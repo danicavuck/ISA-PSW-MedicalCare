@@ -8,6 +8,8 @@ import com.groupfour.MedicalCare.Repository.KlinikaRepository;
 import com.groupfour.MedicalCare.Repository.SalaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -61,9 +63,14 @@ public class SalaService {
         return saleDTO;
     }
 
-    public static SalaPretragaDTO pretraziSaluPoBrojuSale(SalaPretragaDTO salaPretragaDTO) {
+    public static ResponseEntity<?> pretraziSaluPoBrojuSale(SalaPretragaDTO salaPretragaDTO) {
+        ArrayList<SalaPretragaDTO> saleDTO = new ArrayList<>();
         Sala sala = salaRepository.findByBrojSale(salaPretragaDTO.getBrojSale());
-        return mapiranjeSaleNaSalaPretragaDTO(sala);
+        if(sala == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        saleDTO.add(mapiranjeSaleNaSalaPretragaDTO(sala));
+        return new ResponseEntity<>(saleDTO, HttpStatus.OK);
     }
 
     public static void dodavanjeNoveSaleUKliniku(Klinika klinika, SalaDodavanjeDTO salaDodavanjeDTO) {

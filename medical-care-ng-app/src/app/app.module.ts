@@ -34,6 +34,15 @@ import { SalaDialogComponent } from './dialozi/sala-dialog/sala-dialog.component
 import { NavbarComponent } from './admin-klinike/navbar/navbar.component';
 import { LekarDialogComponent } from './dialozi/lekar-dialog/lekar-dialog.component';
 import { DodavanjeLekaraComponent } from './dodavanje-lekara/dodavanje-lekara.component';
+import { PregledPacijenataComponent } from './admin-klinike/pregled-pacijenata/pregled-pacijenata.component';
+import { AdminCalendarComponent } from './admin-klinike/admin-calendar/admin-calendar.component';
+import { LekarNavbarComponent } from './lekar/lekar-navbar/lekar-navbar.component';
+import { DodavanjePregledaComponent } from './lekar/dodavanje-pregleda/dodavanje-pregleda.component';
+import { RadniKalendarComponent } from './lekar/radni-kalendar/radni-kalendar.component';
+import { OdsustvaIOdmorComponent } from './lekar/odsustva-i-odmor/odsustva-i-odmor.component';
+import { PregledIOperacijeComponent } from './lekar/pregled-i-operacije/pregled-i-operacije.component';
+import { PacijentServiceComponent } from './services/pacijent-service/pacijent-service.component';
+import { PacijentDetaljnijeComponent } from './lekar/pacijent-detaljnije/pacijent-detaljnije.component';
 
 
 
@@ -47,8 +56,14 @@ const appRouts: Routes = [
   { path: 'adminklinike/sale', component: SaleComponent},
   { path: 'adminklinike/dodavanjetipa', component: DodavanjeTipaPregledaComponent},
   { path: 'adminklinike/dodajsalu', component: DodajSaluComponent},
+  { path: 'adminklinike/pregledpacijenata', component : PregledPacijenataComponent},
   { path: 'adminklinike/dodavanjelekara', component : DodavanjeLekaraComponent},
   { path: 'lekar', component: LekarComponent },
+  { path: 'lekar/dodavanjepregleda', component : DodavanjePregledaComponent},
+  { path: 'lekar/zakazivanje', component : PregledIOperacijeComponent},
+  { path: 'lekar/odsustva', component : OdsustvaIOdmorComponent},
+  { path: 'lekar/kalendar', component : RadniKalendarComponent},
+  { path: 'lekar/pacijent', component : PacijentDetaljnijeComponent},
   { path: 'medsestra', component: MedicinskaSestraComponent },
   { path: 'adminkc', component : AdminKcComponent},
   { path: 'registracija-admina', component : RegistracijaAdminaKlinikeComponent},
@@ -81,7 +96,15 @@ const appRouts: Routes = [
     NavbarComponent,
     LekarDialogComponent,
     DodavanjeLekaraComponent,
-
+    PregledPacijenataComponent,
+    AdminCalendarComponent,
+    LekarNavbarComponent,
+    DodavanjePregledaComponent,
+    RadniKalendarComponent,
+    OdsustvaIOdmorComponent,
+    PregledIOperacijeComponent,
+    PacijentServiceComponent,
+    PacijentDetaljnijeComponent,
   ],
   imports: [
     BrowserModule,
@@ -99,6 +122,6 @@ const appRouts: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [SalaDialogComponent, LekarDialogComponent]
+  entryComponents: [SalaDialogComponent, LekarDialogComponent],
 })
 export class AppModule { }

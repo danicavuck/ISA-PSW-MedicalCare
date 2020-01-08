@@ -16,7 +16,6 @@ export class SaleComponent implements OnInit {
   sale: Array<SalePretraga>;
   private saleDataSource;
   // private nadjenaSalaDataSource;
-  nadjenaSala: SalePretraga;
   sala: SalaDTO = {
     brojSale: 0,
     datum: null,
@@ -41,13 +40,8 @@ export class SaleComponent implements OnInit {
     const apiEndpoint = 'http://localhost:8080/sale/pretraga';
 
     this.http.post(apiEndpoint, this.salaPretraga, {responseType: 'json'}).subscribe((data) => {
-        this.nadjenaSala = data as SalePretraga;
-        //this.nadjenaSalaDataSource = new MatTableDataSource(this.nadjenaSala);
-        this.filtriraj = true;
-        console.log('POSLATO');
-        console.log(this.salaPretraga);
-        console.log(this.filtriraj);
-        console.log(this.nadjenaSala);
+        this.sale = data as Array<SalePretraga>;
+        this.saleDataSource = new MatTableDataSource(this.sale);
       }, err => {
         console.log('Greska pri pribavljanju sala: ');
         console.log(err);

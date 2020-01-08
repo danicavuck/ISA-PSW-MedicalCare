@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Model.Osoblje;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Dokumenti.Recept;
@@ -44,6 +45,7 @@ public class MedicinskaSestra {
             joinColumns = @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_SESTRA),
             inverseJoinColumns = @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_PACIJENT)
     )
+    @JsonIgnoreProperties("listaSestara")
     private Set<Pacijent> listaPacijenata = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

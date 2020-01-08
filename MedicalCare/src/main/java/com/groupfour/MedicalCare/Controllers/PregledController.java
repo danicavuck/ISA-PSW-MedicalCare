@@ -29,9 +29,20 @@ public class PregledController {
         return new ResponseEntity<>(pregledi, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/pacijent/{pacijentId}")
+    public static ResponseEntity<?> dobavliPregledeZaPacijenta(@PathVariable(value = "pacijentId") Integer pacijentId) {
+        return PregledService.dobaviPregledeZaPacijenta(pacijentId);
+    }
+
     @PostMapping
     public static ResponseEntity<String> kreirajNoviPregled(@RequestBody PregledDTO pregledDTO) {
         PregledService.kreirajNoviPregled(pregledDTO);
+        return new ResponseEntity<>(pregledDTO.toString(), HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/zapocni")
+    public static ResponseEntity<String> zapocniNoviPregled(@RequestBody PregledDTO pregledDTO) {
+        PregledService.zapocniNoviPregled(pregledDTO);
         return new ResponseEntity<>(pregledDTO.toString(), HttpStatus.CREATED);
     }
 }

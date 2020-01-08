@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Model.Osoblje;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
@@ -32,6 +33,7 @@ public class OcenaLekara {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = DbColumnConstants.OCENA_LEKARA_ID_PACIJENTA)
+    @JsonIgnoreProperties("oceneLekara")
     private Pacijent pacijent;
 
 

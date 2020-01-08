@@ -14,7 +14,7 @@ import { LekarDialogComponent } from 'src/app/dialozi/lekar-dialog/lekar-dialog.
 
 export class KlinikaDetaljnijeComponent implements OnInit {
   private displayColumns: string[] = ['Broj Sale', 'Pocetak termina', 'Kraj termina', 'Akcije'];
-  private lekariColumns: string[] = ['Ime', 'Prezime', 'Email', 'Akcije'];
+  private lekariColumns: string[] = ['ime', 'prezime', 'email', 'Akcije'];
   private preglediColumns: string[] = ['Broj Sale', 'Tip pregleda', 'Pocetak pregleda', 'Kraj pregleda', 'Lekar', 'Akcije'];
 
   private lekariDataSource;
@@ -147,7 +147,7 @@ export class KlinikaDetaljnijeComponent implements OnInit {
   async openLekarDialog(lekar) {
     const odgovor = this.lekarDialog.open(LekarDialogComponent);
     odgovor.afterClosed().subscribe(result => {
-      if (result === 'true'){
+      if (result === 'true') {
         this.obrisiLekara(lekar);
         this.snackBar.open('Lekar izbrisan', 'X', {duration: 2000});
       } else {
@@ -172,7 +172,7 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     });
   }
 
-  async openSnackBar(message, action){
+  async openSnackBar(message, action) {
     this.snackBar.open(message, action);
   }
 }
