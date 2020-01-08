@@ -52,10 +52,9 @@ export class PacijentDetaljnijeComponent implements OnInit {
       const apiEnpoint = 'http://localhost:8080/pregledi/pacijent/' + this.pacijentID;
       this.http.get(apiEnpoint).subscribe((data) => {
         this.preglediPacijenta = data as Array<Pregledi>;
-        if (this.preglediPacijenta !== undefined && this.preglediPacijenta !== null) {
+        if (this.preglediPacijenta.length !== 0) {
           this.postojePregledi = true;
           this.preglediDataSource = new MatTableDataSource(this.preglediPacijenta);
-
         }
       }, err => {
         console.log('Greska pri dobavljanju informacija o pregledima Pacijenata');

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pregledi na cekanju</title>
+</head>
+<body>
+    <div class="jumbotron" style="text-align: center;">
+        <div class="mat-h1">Pregledi na cekanju</div>
+                <table mat-table [dataSource]="preglediDataSource" class="mat-elevation-z8" matSort style="width: 100%;">
+                    <ng-container matColumnDef="pocetakTermina">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Pocetak pregleda</mat-header-cell>
+                        <mat-cell *matCellDef="let pregled"> {{pregled.pocetakTermina}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="krajTermina">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Zavrsetak pregleda</mat-header-cell>
+                        <mat-cell *matCellDef="let pregled"> {{pregled.krajTermina}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tipPregleda">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Tip pregleda</mat-header-cell>
+                        <mat-cell *matCellDef="let pregled"> {{pregled.tipPregleda}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="sale">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Sale</mat-header-cell>
+                        <mat-cell *matCellDef="let sala">
+                            <mat-select [(ngModel)]="odabranaSala" required name="sale">
+                                <mat-option *ngFor="let sala of brojeviSala" value={{sala}}>
+                                    {{sala}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Akcije">
+                        <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
+                        <mat-cell *matCellDef="let pregled" style="padding-left: 10%;">
+                            <button mat-mini-fab color="primary" (click)="dodajSaluPregledu(pregled)" matTooltip="Dodaj salu pregledu">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="preglediColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: preglediColumns;"></mat-row>
+                </table>
+    </div>
+</body>
+</html>

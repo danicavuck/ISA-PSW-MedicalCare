@@ -49,6 +49,7 @@
         <mapping class="com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta"/>
         <mapping class="com.groupfour.MedicalCare.Model.DTO.UserRole"/>
         <mapping class="com.groupfour.MedicalCare.Model.Tabele.PacijentKlinika"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Pregled.PreglediNaCekanju"/>
 
     </session-factory>
 </hibernate-configuration>

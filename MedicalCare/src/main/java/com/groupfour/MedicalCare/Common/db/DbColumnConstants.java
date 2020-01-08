@@ -154,6 +154,7 @@ public final class DbColumnConstants {
     public static final String PREGLED_IZVESTAJ = "id_izvestaja";
     public static final String PREGLED_TIP_PREGLEDA = "tip_id";
     public static final String PREGLED_PACIJENT = "pacijent_id";
+    public static final String PREGLED_KLINIKA = "klinika_id";
 
     // Ocena Lekara
     public static final String OCENA_LEKARA_ID = "ocena_id";

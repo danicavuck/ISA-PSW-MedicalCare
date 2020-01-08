@@ -20,6 +20,7 @@ public final class DbTableConstants {
     public static final String ODSUSTVO = "odsustvo";
     public static final String TIP_PREGLEDA = "tip_pregleda";
     public static final String PREGLED = "pregled";
+    public static final String PREGLEDI_CEKANJE = "pregledi_na_cekanju";
     public static final String OCENA_LEKARA = "ocena_lekara";
     public static final String OCENA_KLINIKE = "ocena_klinike";
     public static final String KARTON = "karton";

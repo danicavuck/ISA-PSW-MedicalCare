@@ -92,7 +92,7 @@ export class DefinisanjePregledaComponent implements OnInit {
   }
 
   async uvecanjeSatnice(pregled) {
-    pregled.datumVreme.setHours(this.pregled.datumVreme.getHours() + 1, 0, 0, 0);
+    pregled.datumVreme.setHours(this.pregled.datumVreme.getHours() + 1);
   }
 
 }
