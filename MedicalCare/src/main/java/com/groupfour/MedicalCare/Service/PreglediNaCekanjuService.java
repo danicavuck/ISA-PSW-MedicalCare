@@ -1,8 +1,11 @@
 package com.groupfour.MedicalCare.Service;
 
 import com.groupfour.MedicalCare.Model.DTO.PregledDTO;
+import com.groupfour.MedicalCare.Model.DTO.PregledNaCekanjuDTO;
+import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Model.Pregled.PreglediNaCekanju;
 import com.groupfour.MedicalCare.Repository.PreglediNaCekanjuRepository;
+import com.groupfour.MedicalCare.Repository.SalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +18,12 @@ import java.util.ArrayList;
 @Service
 public class PreglediNaCekanjuService {
     private static PreglediNaCekanjuRepository preglediNaCekanjuRepository;
+    private static SalaRepository salaRepository;
 
     @Autowired
-    PreglediNaCekanjuService(PreglediNaCekanjuRepository pregledi){
+    PreglediNaCekanjuService(PreglediNaCekanjuRepository pregledi, SalaRepository sRepository){
         preglediNaCekanjuRepository = pregledi;
+        salaRepository = sRepository;
     }
 
     public static ResponseEntity<?> sviPreglediNaCekanjuZaKliniku(Integer klinikaId) {
@@ -27,7 +32,8 @@ public class PreglediNaCekanjuService {
         if(preglediNaCekanju != null){
             ArrayList<PregledDTO> preglediDTO = new ArrayList<>();
             for(PreglediNaCekanju pregled : preglediNaCekanju){
-                preglediDTO.add(mapiraniPregled(pregled));
+                if(pregled.isAktivan())
+                    preglediDTO.add(mapiraniPregled(pregled));
             }
 
             return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
@@ -45,4 +51,21 @@ public class PreglediNaCekanjuService {
 
         return PregledDTO.builder().id(preglediNaCekanju.getId()).pocetakTermina(pocetakTermina).krajTermina(krajTermina).tipPregleda(preglediNaCekanju.getTipPregleda().getTipPregleda()).build();
     }
+
+    public static ResponseEntity<?> odabirSaleZaPregled(PregledNaCekanjuDTO pregledNaCekanjuDTO) {
+        PreglediNaCekanju pregledNaCekanju =
+                preglediNaCekanjuRepository.getPregledNaCekanjuById(pregledNaCekanjuDTO.getId());
+        Sala sala = salaRepository.findByBrojSale(pregledNaCekanjuDTO.getBrojSale());
+        if(pregledNaCekanju != null && sala != null) {
+            pregledNaCekanju.setSala(sala);
+            pregledNaCekanju.setAktivan(false);
+            preglediNaCekanjuRepository.save(pregledNaCekanju);
+            posaljiMejlLekaruIPacijentu();
+            return new ResponseEntity<>(null, HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    // Trebaju mi informacije o Lekaru i Pacijentu koji zakazuje pregled
+    public static void posaljiMejlLekaruIPacijentu(){}
 }

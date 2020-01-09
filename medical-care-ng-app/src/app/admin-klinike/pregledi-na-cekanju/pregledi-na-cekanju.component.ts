@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material';
 
+
 @Component({
   selector: 'app-pregledi-na-cekanju',
   templateUrl: './pregledi-na-cekanju.component.html',
@@ -9,6 +10,7 @@ import { MatTableDataSource } from '@angular/material';
 })
 export class PreglediNaCekanjuComponent implements OnInit {
   private preglediColumns: string[] = ['pocetakTermina', 'krajTermina', 'tipPregleda', 'sale', 'Akcije'];
+  private postojePregledi = false;
   private sale: Array<Sala>;
   private brojeviSala: Array<number> = [];
   private odabranaSala = 0;
@@ -19,11 +21,13 @@ export class PreglediNaCekanjuComponent implements OnInit {
   };
   private preglediDataSource;
   constructor(private http: HttpClient) {
-    this.getPregledeNaCekanjuInitially();
-    this.getSaleInitially();
+
   }
 
   ngOnInit() {
+    this.postojePregledi = false;
+    this.getPregledeNaCekanjuInitially();
+    this.getSaleInitially();
   }
 
   async getPregledeNaCekanjuInitially() {
@@ -32,7 +36,9 @@ export class PreglediNaCekanjuComponent implements OnInit {
     this.http.get(apiEnpoint, {responseType: 'json'}).subscribe(data => {
       this.pregledi = data as Array<Pregled>;
       this.preglediDataSource = new MatTableDataSource(this.pregledi);
-      console.log(this.pregledi);
+      if (this.pregledi.length > 0) {
+        this.postojePregledi = true;
+      }
     }, err => {
       console.log('Neuspesno pribavljanje pregleda na cekanju');
     });
@@ -55,9 +61,18 @@ export class PreglediNaCekanjuComponent implements OnInit {
   async dodajSaluPregledu(pregled) {
     this.odabranaSalaZaSlanje.brojSale = this.odabranaSala;
     this.odabranaSalaZaSlanje.id = pregled.id;
-    console.log(this.odabranaSalaZaSlanje);
+    if (this.odabranaSalaZaSlanje.brojSale !== 0) {
+      const apiEnpoint = 'http://localhost:8080/pregledinacekanju';
+      this.http.post(apiEnpoint, this.odabranaSalaZaSlanje, {responseType: 'json'}).subscribe(data => {
+      console.log('Uspesno dodeljena sala');
+      this.ngOnInit();
+    }, err => {
+      console.log('Greska pri dodeljivanju sala');
+    });
+    } else {
+      alert('Morate odabrati salu!');
+    }
   }
-
 }
 
 export interface Pregled {

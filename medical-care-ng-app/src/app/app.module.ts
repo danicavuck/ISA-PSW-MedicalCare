@@ -44,6 +44,7 @@ import { PregledIOperacijeComponent } from './lekar/pregled-i-operacije/pregled-
 import { PacijentServiceComponent } from './services/pacijent-service/pacijent-service.component';
 import { PacijentDetaljnijeComponent } from './lekar/pacijent-detaljnije/pacijent-detaljnije.component';
 import { PreglediNaCekanjuComponent } from './admin-klinike/pregledi-na-cekanju/pregledi-na-cekanju.component';
+import { ZahteviZaOdsustvoComponent } from './admin-klinike/zahtevi-za-odsustvo/zahtevi-za-odsustvo.component';
 
 
 
@@ -60,6 +61,7 @@ const appRouts: Routes = [
   { path: 'adminklinike/pregledpacijenata', component : PregledPacijenataComponent},
   { path: 'adminklinike/dodavanjelekara', component : DodavanjeLekaraComponent},
   { path: 'adminklinike/pregledinacekanju', component: PreglediNaCekanjuComponent},
+  { path: 'adminklinike/zahtevizaodsustvo', component: ZahteviZaOdsustvoComponent},
   { path: 'lekar', component: LekarComponent },
   { path: 'lekar/dodavanjepregleda', component : DodavanjePregledaComponent},
   { path: 'lekar/zakazivanje', component : PregledIOperacijeComponent},
@@ -108,6 +110,7 @@ const appRouts: Routes = [
     PacijentServiceComponent,
     PacijentDetaljnijeComponent,
     PreglediNaCekanjuComponent,
+    ZahteviZaOdsustvoComponent,
   ],
   imports: [
     BrowserModule,

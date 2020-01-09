@@ -6,7 +6,8 @@ import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Dokumenti.Recept;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
-import com.groupfour.MedicalCare.Model.Zahtevi.Odsustvo;
+import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoLekara;
+import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoMedicinskeSestre;
 import lombok.*;
 
 import javax.persistence.*;
@@ -48,13 +49,8 @@ public class MedicinskaSestra {
     @JsonIgnoreProperties("listaSestara")
     private Set<Pacijent> listaPacijenata = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = DbTableConstants.MED_SESTRA_ODSUSTVA,
-            joinColumns = @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_ID),
-            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.ODSUSTVO_ID)
-    )
-    private Set<Odsustvo> listaOdsustva = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "medicinskaSestra")
+    private Set<OdsustvoMedicinskeSestre> listaOdsustva = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "medicinskaSestra", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Recept> recepti = new HashSet<>();

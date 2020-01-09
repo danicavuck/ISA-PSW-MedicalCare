@@ -8,7 +8,8 @@
 </head>
 <body>
     <div class="jumbotron" style="text-align: center;">
-        <div class="mat-h1">Pregledi na cekanju</div>
+        <div class="pregledi" *ngIf="postojePregledi">
+            <div class="mat-h1">Pregledi na cekanju</div>
                 <table mat-table [dataSource]="preglediDataSource" class="mat-elevation-z8" matSort style="width: 100%;">
                     <ng-container matColumnDef="pocetakTermina">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Pocetak pregleda</mat-header-cell>
@@ -47,6 +48,11 @@
                     <mat-header-row *matHeaderRowDef="preglediColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: preglediColumns;"></mat-row>
                 </table>
+        </div>
+        <div class="ne-postoje-pregledi" *ngIf="!postojePregledi">
+            <div class="mat-h1">Trenutno nema pregleda na cekanju</div>
+        </div>
     </div>
+    <button mat-raised-button color='primary' [routerLink]="['/adminklinike/klinika']" class="pull left" style="margin-left: 5%;">Nazad</button>
 </body>
 </html>

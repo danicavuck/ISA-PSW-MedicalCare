@@ -70,6 +70,7 @@
                     <mat-header-row *matHeaderRowDef="lekariColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: lekariColumns;"></mat-row>
                 </table>
+                <button mat-raised-button color="primary" [routerLink]="['/adminklinike/zahtevizaodsustvo']" style="margin-top: 2%; width: 100%;">Zahtevi osoblja za odsustvo</button>
                </div>
 
                 <div>

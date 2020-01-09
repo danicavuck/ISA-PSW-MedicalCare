@@ -7,7 +7,7 @@ import com.groupfour.MedicalCare.Model.Dokumenti.Recept;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
-import com.groupfour.MedicalCare.Model.Zahtevi.Odsustvo;
+import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoLekara;
 import com.groupfour.MedicalCare.Model.Zahtevi.Operacija;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -73,13 +73,8 @@ public class Lekar {
     )
     private Set<Pregled> setPregleda = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = DbTableConstants.LEKAR_ODSUSTVA,
-            joinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_ID),
-            inverseJoinColumns = @JoinColumn(name = DbColumnConstants.ODSUSTVO_ID)
-    )
-    private Set<Odsustvo> listaOdsusta = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "lekar")
+    private Set<OdsustvoLekara> listaOdsusta = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lekar", cascade = CascadeType.ALL)
     private Set<OcenaLekara> oceneLekara = new HashSet<>();

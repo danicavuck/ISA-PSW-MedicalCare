@@ -17,7 +17,8 @@ public final class DbTableConstants {
     public static final String IZVESTAJ_O_PREGLEDU = "izvestaj_o_pregledu";
     public static final String RECEPT = "recept";
     public static final String OPERACIJA = "operacija";
-    public static final String ODSUSTVO = "odsustvo";
+    public static final String ODSUSTVO_LEKARA = "odsustvo_lekara";
+    public static final String ODSUSTVO_MEDICINSKE_SESTRE = "odsustvo_med_sestra";
     public static final String TIP_PREGLEDA = "tip_pregleda";
     public static final String PREGLED = "pregled";
     public static final String PREGLEDI_CEKANJE = "pregledi_na_cekanju";
@@ -30,8 +31,6 @@ public final class DbTableConstants {
     public static final String KARTON_IZVESTAJI = "karton_izvestaji";
     public static final String KARTON_DIJAGNOZE = "karton_dijagnoze";
     public static final String IZVESTAJ_RECEPT = "izvestaj_recept";
-    public static final String LEKAR_ODSUSTVA = "lekar_odsustva";
-    public static final String MED_SESTRA_ODSUSTVA = "med_sestra_odsusutva";
     public static final String KLINIKA_SALA = "klinika_sala";
     public static final String USER_ROLE = "role";
 

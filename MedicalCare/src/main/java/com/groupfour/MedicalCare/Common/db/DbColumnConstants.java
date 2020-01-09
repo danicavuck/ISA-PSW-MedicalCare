@@ -136,6 +136,8 @@ public final class DbColumnConstants {
     public static final String ODSUSTVO_KRAJ = "kraj_odsustva";
     public static final String ODSUSTVO_ODOBRRENO = "odobreno";
     public static final String ODSUSTVO_AKTIVNO = "aktivno";
+    public static final String ODSUSTVO_LEKAR = "lekar_id";
+    public static final String ODSUSTVO_MEDICINSKA_SESTRA = "med_sestra_id";
 
     // Tip pregleda
     public static final String TIP_PREGLEDA_ID = "tip_pregleda_id";

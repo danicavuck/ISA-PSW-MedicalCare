@@ -30,9 +30,9 @@ public class SalaController {
 
     @GetMapping(value = "/{klinikaId}")
     public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaOdredjenuKliniku(@PathVariable(value = "klinikaId") Integer klinikaId, HttpSession session) {
-        System.out.println("Session id: " + session);
-        System.out.println("ATRIBUTI SESIJE: ");
-        System.out.println(session.getAttributeNames());
+//        System.out.println("Session id: " + session);
+//        System.out.println("ATRIBUTI SESIJE: ");
+//        System.out.println(session.getAttributeNames());
 //        if(session.getAttribute("role") == null || !session.getAttribute("role").equals("admin_klinike"))
 ////            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         ArrayList<SalaPretragaDTO> sale = SalaService.getSale(klinikaId);
