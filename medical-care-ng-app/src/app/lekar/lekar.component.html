@@ -59,6 +59,7 @@
     <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
 </table>
 <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator>
+<button mat-raised-button color='primary' class="pull-left" style="margin: 0 0 30px 20px;" [routerLink]="['/login']" (click)="odjaviSe()">Odjava</button>
 </div>
 </body>
 </html>

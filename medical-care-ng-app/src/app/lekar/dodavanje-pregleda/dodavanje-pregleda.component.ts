@@ -69,7 +69,7 @@ export class DodavanjePregledaComponent implements OnInit {
     const apiEndpoint = 'http://localhost:8080/pacijenti/' + 5;
 
     this.http.get(apiEndpoint,
-      {responseType: 'json'}).subscribe((data) => {
+      {responseType: 'json', withCredentials: true},).subscribe((data) => {
         this.pacijenti = data as Array<Pacijent>;
       }, err => {
         console.log('Greska pri pribavljanju pacijenata: ');

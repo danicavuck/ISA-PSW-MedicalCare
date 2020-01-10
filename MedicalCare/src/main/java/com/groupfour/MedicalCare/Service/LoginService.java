@@ -40,32 +40,51 @@ public class LoginService {
 
     }
 
+    @SuppressWarnings("SingleStatementInBlock")
     public static ResponseEntity<UserRole> loginPacijent(@RequestBody LoginDTO loginDTO, HttpSession session) {
         // Pretraga svih entiteta
         Pacijent pacijent = pacijentRepository.findUserByEmail(loginDTO.getEmail());
-        AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraByEmail(loginDTO.getEmail());
-        AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeByEmail(loginDTO.getEmail());
-        Lekar lekar = lekarRepository.findLekarByEmail(loginDTO.getEmail());
-        MedicinskaSestra medicinskaSestra = medicinskaSestraRepository.findMedicinskaSestraByEmail(loginDTO.getEmail());
+        AdminKlinickogCentra adminKlinickogCentra = null;
+        AdminKlinike adminKlinike = null;
+        Lekar lekar = null;
+        MedicinskaSestra medicinskaSestra = null;
+        if(pacijent == null) {
+            adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraByEmail(loginDTO.getEmail());
+        }
+        if(adminKlinickogCentra == null && pacijent == null){
+            adminKlinike = adminKlinikeRepository.findAdminKlinikeByEmail(loginDTO.getEmail());
+        }
+        if(adminKlinike == null && adminKlinickogCentra == null && pacijent == null) {
+            lekar = lekarRepository.findLekarByEmail(loginDTO.getEmail());
+        }
+        if(lekar == null && adminKlinike == null && adminKlinickogCentra == null && pacijent == null) {
+            medicinskaSestra =  medicinskaSestraRepository.findMedicinskaSestraByEmail(loginDTO.getEmail());
+        }
 
-        logger.info("Finding user by username & password: ");
+            logger.info("Finding user by username & password: ");
         if (pacijent != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), pacijent.getLozinka())) {
+            session.setAttribute("id", pacijent.getId());
+            session.setAttribute("role", "pacijent");
             UserRole userRole = UserRole.builder().user_email(pacijent.getEmail()).role("pacijent").build();
             return new ResponseEntity<>(userRole, HttpStatus.OK);
         } else if (adminKlinickogCentra != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), adminKlinickogCentra.getLozinka())) {
+            session.setAttribute("id", adminKlinickogCentra.getId());
+            session.setAttribute("role", "adminkc");
             UserRole userRole = UserRole.builder().user_email(adminKlinickogCentra.getEmail()).role("admin_kc").build();
             return ResponseEntity.ok().body(userRole);
         } else if (adminKlinike != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), adminKlinike.getLozinka())) {
+            session.setAttribute("id", adminKlinike.getId());
+            session.setAttribute("role", "adminklinike");
             UserRole userRole = UserRole.builder().user_email(adminKlinike.getEmail()).role("admin_klinike").build();
             return new ResponseEntity<>(userRole, HttpStatus.OK);
         } else if (lekar != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), lekar.getLozinka())) {
-            logger.info("LEKAR found! Setting session attributes");
             session.setAttribute("id", lekar.getId());
             session.setAttribute("role", "lekar");
-            logger.info("Setovani atributi sesije id: " + session.getAttribute("id") + " role: " + session.getAttribute("role"));
             UserRole userRole = UserRole.builder().user_email(lekar.getEmail()).role("lekar").build();
             return new ResponseEntity<>(userRole, HttpStatus.OK);
         } else if (medicinskaSestra != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), medicinskaSestra.getLozinka())) {
+            session.setAttribute("id", medicinskaSestra.getId());
+            session.setAttribute("role", "med_sestra");
             UserRole userRole = UserRole.builder().user_email(medicinskaSestra.getEmail()).role("med_sestra").build();
             return new ResponseEntity<>(userRole, HttpStatus.OK);
         } else {
@@ -74,8 +93,16 @@ public class LoginService {
 
     }
 
-    public static ResponseEntity<String> logoutPacijent() {
-        return new ResponseEntity<>("Successfull logout", HttpStatus.OK);
+    public static ResponseEntity<?> logoutPacijent(HttpSession session) {
+        logger.info("Entered logoutPacijent");
+        try {
+            logger.info("Trying to invalidate session");
+            session.invalidate();
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("An Error occured while invalidating session");
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

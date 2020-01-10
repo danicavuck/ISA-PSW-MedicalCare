@@ -57,6 +57,15 @@ export class LekarComponent implements OnInit {
   async applyFilter(filterValue: string) {
     this.modelsDataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  async odjaviSe() {
+    const apiEndpoint = 'http://localhost:8080/odjava';
+    this.http.post(apiEndpoint, {responseType: 'json', withCredentials: true}).subscribe(data => {
+      console.log('Uspesno odjavljivanje sa sistema');
+    }, err => {
+      console.log(err);
+    });
+  }
 }
 
 export interface Pacijent {

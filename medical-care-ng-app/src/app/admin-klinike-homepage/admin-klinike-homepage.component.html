@@ -48,10 +48,9 @@
       </div>
     </div>
     <div class="container">
-      <button class="btn btn-outline-primary pull-right" [routerLink]="['/login']">Odjavite se</button>
+      <button mat-raised-button color='primary' class="pull-left" [routerLink]="['/login']" (click)="onLogout()">Odjavite se</button>
     </div>
 
   </div>
-  <!-- <app-admin-calendar></app-admin-calendar> -->
 </body>
 </html>
