@@ -24,7 +24,7 @@ public class LoginController {
     }
 
     @PostMapping
-    public ResponseEntity<UserRole> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request) {
-        return LoginService.loginPacijent(loginDTO, request);
+    public ResponseEntity<UserRole> login(@RequestBody LoginDTO loginDTO, HttpSession session) {
+        return LoginService.loginPacijent(loginDTO, session);
     }
 }

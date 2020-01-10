@@ -9,13 +9,14 @@ import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Repository.*;
 import com.groupfour.MedicalCare.Utill.PasswordCheck;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Service
@@ -26,6 +27,7 @@ public class LoginService {
     private static AdminKlinikeRepository adminKlinikeRepository;
     private static LekarRepository lekarRepository;
     private static MedicinskaSestraRepository medicinskaSestraRepository;
+    private static Logger logger = LoggerFactory.getLogger(LoginService.class);
 
     @Autowired
     public LoginService(PacijentRepository pRepository, AdminKCRepository aKCRepository, AdminKlinikeRepository aKlinike,
@@ -38,7 +40,7 @@ public class LoginService {
 
     }
 
-    public static ResponseEntity<UserRole> loginPacijent(@RequestBody LoginDTO loginDTO, HttpServletRequest request) {
+    public static ResponseEntity<UserRole> loginPacijent(@RequestBody LoginDTO loginDTO, HttpSession session) {
         // Pretraga svih entiteta
         Pacijent pacijent = pacijentRepository.findUserByEmail(loginDTO.getEmail());
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraByEmail(loginDTO.getEmail());
@@ -46,7 +48,7 @@ public class LoginService {
         Lekar lekar = lekarRepository.findLekarByEmail(loginDTO.getEmail());
         MedicinskaSestra medicinskaSestra = medicinskaSestraRepository.findMedicinskaSestraByEmail(loginDTO.getEmail());
 
-
+        logger.info("Finding user by username & password: ");
         if (pacijent != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), pacijent.getLozinka())) {
             UserRole userRole = UserRole.builder().user_email(pacijent.getEmail()).role("pacijent").build();
             return new ResponseEntity<>(userRole, HttpStatus.OK);
@@ -55,10 +57,12 @@ public class LoginService {
             return ResponseEntity.ok().body(userRole);
         } else if (adminKlinike != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), adminKlinike.getLozinka())) {
             UserRole userRole = UserRole.builder().user_email(adminKlinike.getEmail()).role("admin_klinike").build();
-            request.getSession().setAttribute("role", "admin_klinike");
-            System.out.println("SESSION ID: " + request.getSession());
             return new ResponseEntity<>(userRole, HttpStatus.OK);
         } else if (lekar != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), lekar.getLozinka())) {
+            logger.info("LEKAR found! Setting session attributes");
+            session.setAttribute("id", lekar.getId());
+            session.setAttribute("role", "lekar");
+            logger.info("Setovani atributi sesije id: " + session.getAttribute("id") + " role: " + session.getAttribute("role"));
             UserRole userRole = UserRole.builder().user_email(lekar.getEmail()).role("lekar").build();
             return new ResponseEntity<>(userRole, HttpStatus.OK);
         } else if (medicinskaSestra != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), medicinskaSestra.getLozinka())) {

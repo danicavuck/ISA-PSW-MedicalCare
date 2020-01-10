@@ -1,19 +1,26 @@
 package com.groupfour.MedicalCare.Controllers;
 
 import com.groupfour.MedicalCare.Service.PacijentService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
-@CrossOrigin
+@CrossOrigin(allowCredentials = "true")
 @RequestMapping("/pacijenti")
 public class PacijentController {
     public PacijentController(){}
 
     @GetMapping(value = "/{klinikaId}")
-    public ResponseEntity<?> dobaviPacijenteOdgovarajuceKlinike(@PathVariable(value = "klinikaId") Integer klinikaId){
-        return PacijentService.dobaviPacijenteOdgovarajuceKlinike(klinikaId);
+    public ResponseEntity<?> dobaviPacijenteOdgovarajuceKlinike(@PathVariable(value = "klinikaId") Integer klinikaId,
+                                                                HttpSession session){
+        if(session.getAttribute("role").equals("lekar")){
+            return PacijentService.dobaviPacijenteOdgovarajuceKlinike(klinikaId);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping(value = "/pacijent/{pacijentId}")
