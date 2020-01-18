@@ -8,10 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 @Controller
-@CrossOrigin
+@CrossOrigin(allowCredentials = "true")
 @RequestMapping("/lekari")
 public class LekarController {
     public LekarController() {
@@ -29,7 +30,9 @@ public class LekarController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> brisanjeLekara(@RequestBody LekarDTO lekarDTO){
+    public ResponseEntity<?> brisanjeLekara(@RequestBody LekarDTO lekarDTO, HttpSession session){
+        if(session.getAttribute("role") == null || !session.getAttribute("role").equals("adminklinike"))
+            return new ResponseEntity<>("Nije dozvoljeno brisanje lekara!", HttpStatus.UNAUTHORIZED);
         return LekarService.brisanjeLekara(lekarDTO);
     }
 

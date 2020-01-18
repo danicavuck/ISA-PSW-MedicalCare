@@ -79,7 +79,7 @@ public class PregledService {
     public static PregledDTO mapirajPregledDTO(Pregled pregled) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
         PregledDTO pregledDTO =
-                PregledDTO.builder().trajanjePregleda(pregled.getTrajanjePregleda()).cena(pregled.getCena()).popust(pregled.getPopust()).sala(pregled.getSala().getBrojSale()).tipPregleda(pregled.getTipPregleda().getTipPregleda()).build();
+                PregledDTO.builder().trajanjePregleda(pregled.getTrajanjePregleda()).cena(pregled.getCena()).popust(pregled.getPopust()).sala(pregled.getSala().getNazivSale()).tipPregleda(pregled.getTipPregleda().getTipPregleda()).build();
         Set<Lekar> lekari = pregled.getLekari();
         Lekar lekar = lekari.iterator().next();
         LocalDateTime pocetakTermina = pregled.getTerminPregleda();
@@ -96,7 +96,7 @@ public class PregledService {
 
     public static void kreirajNoviPregled(PregledDTO pregledDTO) {
         TipPregleda tipPregleda = tipPregledaRepository.findByTipPregleda(pregledDTO.getTipPregleda());
-        Sala sala = salaRepository.findByBrojSale(pregledDTO.getSala());
+        Sala sala = salaRepository.findByNazivSale(pregledDTO.getSala());
         Lekar lekar = lekarRepository.findLekarById(pregledDTO.getLekar());
         int popust = pregledDTO.getPopust();
         int cena = pregledDTO.getCena();

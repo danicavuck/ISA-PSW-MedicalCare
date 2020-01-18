@@ -8,7 +8,7 @@ import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoLekara;
-import com.groupfour.MedicalCare.Model.Zahtevi.Operacija;
+import com.groupfour.MedicalCare.Model.Pregled.Operacija;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnore;
 

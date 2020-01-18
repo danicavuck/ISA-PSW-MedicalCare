@@ -10,7 +10,7 @@ import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import com.groupfour.MedicalCare.Model.Osoblje.OcenaLekara;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
-import com.groupfour.MedicalCare.Model.Zahtevi.Operacija;
+import com.groupfour.MedicalCare.Model.Pregled.Operacija;
 import lombok.*;
 
 import javax.persistence.*;

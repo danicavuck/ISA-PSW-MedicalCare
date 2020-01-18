@@ -55,7 +55,7 @@ public class PreglediNaCekanjuService {
     public static ResponseEntity<?> odabirSaleZaPregled(PregledNaCekanjuDTO pregledNaCekanjuDTO) {
         PreglediNaCekanju pregledNaCekanju =
                 preglediNaCekanjuRepository.getPregledNaCekanjuById(pregledNaCekanjuDTO.getId());
-        Sala sala = salaRepository.findByBrojSale(pregledNaCekanjuDTO.getBrojSale());
+        Sala sala = salaRepository.findByNazivSale(pregledNaCekanjuDTO.getNazivSale());
         if(pregledNaCekanju != null && sala != null) {
             pregledNaCekanju.setSala(sala);
             pregledNaCekanju.setAktivan(false);

@@ -10,24 +10,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@CrossOrigin
+@CrossOrigin(allowCredentials = "true")
 @RequestMapping("/klinika")
 public class KlinikaController {
 
-    private static KlinikaService klinikaService;
 
-    @Autowired
     public KlinikaController(KlinikaService kService) {
-        klinikaService = kService;
+
     }
 
     @GetMapping("/klinike")
-    public ResponseEntity<?> getKlinike() {
-        ArrayList<KlinikaDTO> klinike = KlinikaService.getKlinike();
+    public ResponseEntity<?> getKlinike(HttpSession session) {
+        ArrayList<KlinikaDTO> klinike = KlinikaService.getKlinike(session);
         return new ResponseEntity<>(klinike, HttpStatus.OK);
     }
 

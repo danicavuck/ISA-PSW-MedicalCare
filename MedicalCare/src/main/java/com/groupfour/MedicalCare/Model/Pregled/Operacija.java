@@ -1,4 +1,4 @@
-package com.groupfour.MedicalCare.Model.Zahtevi;
+package com.groupfour.MedicalCare.Model.Pregled;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
@@ -30,6 +30,8 @@ public class Operacija {
     private int id;
     @Column(name = DbColumnConstants.OPERACIJA_TERMIN)
     private LocalDateTime terminOperacije;
+    @Column(name = DbColumnConstants.TRAJANJE_OPERACIJE)
+    private int trajanjeOperacije;
     @Column(name = DbColumnConstants.OPERACIJA_AKTIVNA)
     private boolean aktivan;
 

@@ -9,6 +9,6 @@ import lombok.*;
 @Builder
 @ToString
 public class SalaDodavanjeDTO {
-    private int brojSale;
+    private String nazivSale;
     private int klinika;
 }

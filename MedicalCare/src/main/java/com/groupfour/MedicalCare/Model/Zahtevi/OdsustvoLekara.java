@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Model.Zahtevi;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 @Table(name = DbTableConstants.ODSUSTVO_LEKARA)
+@JsonIgnoreProperties({"lekar"})
 public class OdsustvoLekara {
 
     @Id

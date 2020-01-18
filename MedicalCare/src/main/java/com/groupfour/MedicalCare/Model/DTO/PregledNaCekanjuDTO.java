@@ -12,5 +12,5 @@ import org.springframework.stereotype.Component;
 @ToString
 public class PregledNaCekanjuDTO {
     private int id;
-    private int brojSale;
+    private String nazivSale;
 }

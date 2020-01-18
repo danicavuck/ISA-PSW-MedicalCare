@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 @Controller
-@CrossOrigin
+@CrossOrigin(allowCredentials = "true")
 @RequestMapping("/sale")
 public class SalaController {
 
@@ -21,35 +21,25 @@ public class SalaController {
     }
 
     @GetMapping
-    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaSvakuKliniku(HttpSession session) {
-//        if(!session.getAttribute("role").equals("admin_klinike"))
-//            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        ArrayList<SalaPretragaDTO> sale = SalaService.getSale(0);
-        return new ResponseEntity<>(sale, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/{klinikaId}")
-    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaOdredjenuKliniku(@PathVariable(value = "klinikaId") Integer klinikaId, HttpSession session) {
-//        System.out.println("Session id: " + session);
-//        System.out.println("ATRIBUTI SESIJE: ");
-//        System.out.println(session.getAttributeNames());
+    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaOdredjenuKliniku(HttpSession session) {
 //        if(session.getAttribute("role") == null || !session.getAttribute("role").equals("admin_klinike"))
 ////            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        ArrayList<SalaPretragaDTO> sale = SalaService.getSale(klinikaId);
+        ArrayList<SalaPretragaDTO> sale = SalaService.getSale(session);
         return new ResponseEntity<>(sale, HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteSala(@RequestBody SalaPretragaDTO salaPretragaDTO) {
+    public ResponseEntity<?> deleteSala(@RequestBody SalaPretragaDTO salaPretragaDTO, HttpSession session) {
+        if(session.getAttribute("role") == null || !session.getAttribute("role").equals("adminklinike") && !session.getAttribute("role").equals(
+                "adminkc"))
+            return new ResponseEntity<String>("Neuspesno brisanje sale", HttpStatus.UNAUTHORIZED);
         SalaService.deleteSala(salaPretragaDTO);
-
         return new ResponseEntity<String>("Uspesno izvrseno brisanje", HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<?> addSala(@RequestBody SalaDodavanjeDTO salaDodavanjeDTO) {
-        SalaService.addSala(salaDodavanjeDTO);
-
+    public ResponseEntity<?> addSala(@RequestBody SalaDodavanjeDTO salaDodavanjeDTO, HttpSession session) {
+        SalaService.addSala(salaDodavanjeDTO, session);
         return new ResponseEntity<String>("Uspesno dodavanje sale", HttpStatus.OK);
     }
 

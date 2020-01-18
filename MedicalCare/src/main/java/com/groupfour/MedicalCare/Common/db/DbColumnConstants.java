@@ -72,7 +72,7 @@ public final class DbColumnConstants {
     public static final String SALA_ZAUZECE = "zauzeta";
     public static final String SALA_POCETAK_TERMINA = "pocetak_termina";
     public static final String SALA_ZAVRSETAK_TERMINA = "zavrsetak_termina";
-    public static final String SALA_BROJ_SALE = "broj_sale";
+    public static final String SALA_NAZIV_SALE = "naziv_sale";
     public static final String SALA_AKTIVNA = "aktivna";
     public static final String SALA_KLINIKA = "klinika_id";
 
@@ -129,6 +129,7 @@ public final class DbColumnConstants {
     public static final String OPERACIJA_AKTIVNA = "aktivna";
     public static final String OPERACIJA_SALA = "sala";
     public static final String OPERACIJA_PACIJENT = "pacijent";
+    public static final String TRAJANJE_OPERACIJE = "trajanje";
 
     // Odsustvo
     public static final String ODSUSTVO_ID = "id_odsustva";

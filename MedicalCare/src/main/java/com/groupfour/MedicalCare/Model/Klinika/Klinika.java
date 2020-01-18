@@ -20,6 +20,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = DbTableConstants.KLINIKA)
+@JsonIgnoreProperties({"adminiKlinike"})
 public class Klinika {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

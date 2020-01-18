@@ -75,6 +75,7 @@ public class LoginService {
         } else if (adminKlinike != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), adminKlinike.getLozinka())) {
             session.setAttribute("id", adminKlinike.getId());
             session.setAttribute("role", "adminklinike");
+            logger.info("Startovana sesija role:" + session.getAttribute("role") + " id: " + session.getAttribute("id"));
             UserRole userRole = UserRole.builder().user_email(adminKlinike.getEmail()).role("admin_klinike").build();
             return new ResponseEntity<>(userRole, HttpStatus.OK);
         } else if (lekar != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), lekar.getLozinka())) {
