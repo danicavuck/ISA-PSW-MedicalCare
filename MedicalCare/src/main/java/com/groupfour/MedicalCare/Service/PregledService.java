@@ -1,6 +1,8 @@
 package com.groupfour.MedicalCare.Service;
 
+import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.PregledDTO;
+import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ public class PregledService {
     private static TipPregledaRepository tipPregledaRepository;
     private static SalaRepository salaRepository;
     private static LekarRepository lekarRepository;
+    private static AdminKlinikeRepository adminKlinikeRepository;
     private static PacijentRepository pacijentRepository;
     private static JavaMailSender javaMailSender;
     private static Logger logger = LoggerFactory.getLogger(PregledService.class);
@@ -43,7 +47,7 @@ public class PregledService {
     public PregledService(PregeldRepository pRepository, TipPregledaRepository tpRepository,
                           SalaRepository sRepository, LekarRepository lRepository,
                           PacijentRepository pacRepository, PreglediNaCekanjuRepository pNaCekanju,
-                          JavaMailSender javaMSender) {
+                          JavaMailSender javaMSender, AdminKlinikeRepository adminKlinikeRepo) {
         pregledRepository = pRepository;
         tipPregledaRepository = tpRepository;
         salaRepository = sRepository;
@@ -51,29 +55,41 @@ public class PregledService {
         pacijentRepository = pacRepository;
         preglediNaCekanjuRepository = pNaCekanju;
         javaMailSender = javaMSender;
+        adminKlinikeRepository = adminKlinikeRepo;
     }
 
-    public static ArrayList<PregledDTO> dobaviSvePreglede() {
+    public static ResponseEntity<?> dobaviSvePregledeZaKliniku(HttpSession session) {
+        int klinikaId = dobaviIdKlinike(session);
         ArrayList<Pregled> pregledi = pregledRepository.findAll();
         ArrayList<PregledDTO> preglediDTO = new ArrayList<>();
 
-        for (Pregled p : pregledi) {
-            preglediDTO.add(mapirajPregledDTO(p));
+        if(klinikaId != -1)
+        {
+            for (Pregled p : pregledi) {
+                if(p.getSala().getKlinika().getId() == klinikaId)
+                    preglediDTO.add(mapirajPregledDTO(p));
+            }
+            return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
         }
-
-        return preglediDTO;
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    public static ArrayList<PregledDTO> dobaviPregledeZaKliniku(Integer klinikaId) {
-        ArrayList<Pregled> pregledi = pregledRepository.findAll();
-        ArrayList<PregledDTO> preglediDTO = new ArrayList<>();
-
-        for (Pregled p : pregledi) {
-            if (p.getSala().getKlinika().getId() == klinikaId)
-                preglediDTO.add(mapirajPregledDTO(p));
+    public static int dobaviIdKlinike(HttpSession session){
+        int idKlinike = -1;
+        AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
+        if(adminKlinike != null)
+        {
+            try
+            {
+                return adminKlinike.getKlinika().getId();
+            } catch (Exception e)
+            {
+                logger.error("Admin klinike nema kliniku");
+                return idKlinike;
+            }
         }
-
-        return preglediDTO;
+        logger.info("Admin klinike nije pronadjen");
+        return idKlinike;
     }
 
     public static PregledDTO mapirajPregledDTO(Pregled pregled) {
@@ -115,35 +131,63 @@ public class PregledService {
     }
 
     // Pretpostavka za LekarID = 1, kao i za klinikaId = 5
-    public static void zapocniNoviPregled(PregledDTO pregledDTO) {
-        System.out.println(pregledDTO);
-        TipPregleda tipPregleda = tipPregledaRepository.findByTipPregleda(pregledDTO.getTipPregleda());
-        Pacijent pacijent = pacijentRepository.findPacijentById(pregledDTO.getPacijent());
-        Lekar lekar = lekarRepository.findLekarById(1);
-        int popust = pregledDTO.getPopust();
-        int cena = pregledDTO.getCena();
-        int trajanje = pregledDTO.getTrajanjePregleda();
-        LocalDateTime datumVreme = pregledDTO.getDatumVreme();
+    public static ResponseEntity<?> zapocniNoviPregled(PregledDTO pregledDTO, HttpSession session) {
+        int[] klinikaIdLekarID = nadjiIdKlinike(session);
+        if(klinikaIdLekarID[0] != -1 && klinikaIdLekarID[1] != -1)
+        {
+            TipPregleda tipPregleda = tipPregledaRepository.findByTipPregleda(pregledDTO.getTipPregleda());
+            Pacijent pacijent = pacijentRepository.findPacijentById(pregledDTO.getPacijent());
+            Lekar lekar = lekarRepository.findLekarById(klinikaIdLekarID[1]);
+            int popust = pregledDTO.getPopust();
+            int cena = pregledDTO.getCena();
+            int trajanje = pregledDTO.getTrajanjePregleda();
+            LocalDateTime datumVreme = pregledDTO.getDatumVreme();
 
-        PreglediNaCekanju pregledNaCekanju =
-                PreglediNaCekanju.builder().klinikaId(5).aktivan(true).cena(cena).popust(popust).tipPregleda(tipPregleda).trajanjePregleda(trajanje).terminPregleda(datumVreme).pacijent(pacijent).build();
+            PreglediNaCekanju pregledNaCekanju =
+                    PreglediNaCekanju.builder().klinikaId(klinikaIdLekarID[0]).aktivan(true).cena(cena).popust(popust).tipPregleda(tipPregleda).trajanjePregleda(trajanje).terminPregleda(datumVreme).pacijent(pacijent).build();
             preglediNaCekanjuRepository.save(pregledNaCekanju);
 
             try{
-                posaljiMejlAdminu(lekar, pregledNaCekanju);
+                posaljiMejlAdminu(lekar, pregledNaCekanju, session);
             } catch (MailException exception){
                 logger.info("Neuspesno slanje mejla:" + exception.getMessage());
             }
 
-        // Rucno cu cuvati entitete jer Cascading nije cuvao polja za pregled kada sam ga dodavao kroz lekara
-//        pregledRepository.save(pregled);
-//        lekar.dodajPregled(pregled);
-//        lekarRepository.save(lekar);
+            return new ResponseEntity<>("Uspesno zapocet pregled", HttpStatus.CREATED);
+        }
+        else
+        {
+            return new ResponseEntity<>("Bezuspesno zapocet pregled", HttpStatus.NOT_FOUND);
+        }
+    }
 
+    public static int[] nadjiIdKlinike(HttpSession session){
+        int[] klinikaIdLekarID = {-1, -1};
+        Lekar lekar = lekarRepository.findLekarById((int) session.getAttribute("id"));
+        if (lekar != null)
+        {
+            try
+            {
+                klinikaIdLekarID[0] = lekar.getKlinika().getId();
+                klinikaIdLekarID[1] = lekar.getId();
+            } catch (Exception e)
+            {
+                logger.info("Lekar nema kliniku");
+                return klinikaIdLekarID;
+            }
+        }
+        logger.error("Lekar nije pronadjen");
+        return klinikaIdLekarID;
     }
 
     @Async
-    public static void posaljiMejlAdminu(Lekar lekar, PreglediNaCekanju pregledNaCekanju) throws MailException {
+    public static void posaljiMejlAdminu(Lekar lekar, PreglediNaCekanju pregledNaCekanju, HttpSession session) throws MailException {
+        AdminKlinike adminKlinike = nadjiAdminaKlinikePrekoKlinike(lekar.getKlinika());
+        if(adminKlinike == null)
+        {
+            logger.error("Nije pronadjen admin klinike preko klinike");
+            return;
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
@@ -151,10 +195,9 @@ public class PregledService {
                 "<h3>Sala za pregled</h3><p>Postovani,</p><p>Lekar " + lekar.getIme() + " " + lekar.getPrezime() + " " +
                         "zeli da zakaze pregled pacijentu za datum " + formatter.format(pregledNaCekanju.getTerminPregleda()) + "h</p><p>Molimo Vas da dodelite salu za pregled</p></br><p>Srdacan pozdrav,</p></p>Medical Care</p>";
 
-
         try {
             helper.setText(message, true);
-            helper.setTo("petar.kovacevic0088@gmail.com");
+            helper.setTo(adminKlinike.getEmail());
             helper.setSubject("Novi zahtev za pregled");
             helper.setFrom(emailAddress);
         } catch (MessagingException e) {
@@ -173,10 +216,20 @@ public class PregledService {
             for(Pregled pregled : pregledi) {
                 pregledDTOS.add(mapirajPregledDTO(pregled));
             }
-
             return new ResponseEntity<>(pregledDTOS, HttpStatus.OK);
         }
         return new ResponseEntity<>(pregledDTOS, HttpStatus.NOT_FOUND);
+    }
+
+    public static AdminKlinike nadjiAdminaKlinikePrekoKlinike(Klinika klinika)
+    {
+        ArrayList<AdminKlinike> adminiKlinike = adminKlinikeRepository.findAll();
+        for(AdminKlinike admin : adminiKlinike)
+        {
+            if(admin.getKlinika().getId() == klinika.getId())
+                return admin;
+        }
+        return null;
     }
 
 }

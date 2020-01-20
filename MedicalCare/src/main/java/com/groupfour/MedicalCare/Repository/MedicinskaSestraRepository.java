@@ -5,6 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MedicinskaSestraRepository extends JpaRepository<MedicinskaSestra, Integer> {
     MedicinskaSestra findMedicinskaSestraByEmail(String email);
-
-
+    MedicinskaSestra findMedicinskaSestraById(int id);
 }

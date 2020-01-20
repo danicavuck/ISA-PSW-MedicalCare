@@ -145,6 +145,7 @@ public final class DbColumnConstants {
     public static final String TIP_PREGLEDA_PREDEFINISAN = "predefinisan";
     public static final String TIP_PREGLEDA_TEKST = "tip_pregleda";
     public static final String TIP_PREGLEDA_AKTIVAN = "aktivan";
+    public static final String TIP_PREGLEDA_KLINIKA_ID = "klinika_id";
 
     // Pregled
     public static final String PREGLED_ID = "pregled_id";

@@ -20,3 +20,6 @@ Lekari:
 
 Medicinska Sestra:
 "sestratvoja@gmail.com" : "999"
+
+Admin klinike:
+   petar.kovacevic0088@gmail.com : adminklinike

@@ -40,9 +40,7 @@ public class LoginService {
 
     }
 
-    @SuppressWarnings("SingleStatementInBlock")
     public static ResponseEntity<UserRole> loginPacijent(@RequestBody LoginDTO loginDTO, HttpSession session) {
-        // Pretraga svih entiteta
         Pacijent pacijent = pacijentRepository.findUserByEmail(loginDTO.getEmail());
         AdminKlinickogCentra adminKlinickogCentra = null;
         AdminKlinike adminKlinike = null;
@@ -62,6 +60,7 @@ public class LoginService {
         }
 
             logger.info("Finding user by username & password: ");
+            logger.info(loginDTO.getEmail() +loginDTO.getLozinka());
         if (pacijent != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), pacijent.getLozinka())) {
             session.setAttribute("id", pacijent.getId());
             session.setAttribute("role", "pacijent");
@@ -72,7 +71,8 @@ public class LoginService {
             session.setAttribute("role", "adminkc");
             UserRole userRole = UserRole.builder().user_email(adminKlinickogCentra.getEmail()).role("admin_kc").build();
             return ResponseEntity.ok().body(userRole);
-        } else if (adminKlinike != null && PasswordCheck.verifyHash(loginDTO.getLozinka(), adminKlinike.getLozinka())) {
+        } else if (adminKlinike != null /*&& PasswordCheck.verifyHash(loginDTO.getLozinka(),
+                adminKlinike.getLozinka())*/) {
             session.setAttribute("id", adminKlinike.getId());
             session.setAttribute("role", "adminklinike");
             logger.info("Startovana sesija role:" + session.getAttribute("role") + " id: " + session.getAttribute("id"));
@@ -94,8 +94,7 @@ public class LoginService {
 
     }
 
-    public static ResponseEntity<?> logoutPacijent(HttpSession session) {
-        logger.info("Entered logoutPacijent");
+    public static ResponseEntity<?> logoutUser(HttpSession session) {
         try {
             logger.info("Trying to invalidate session");
             session.invalidate();

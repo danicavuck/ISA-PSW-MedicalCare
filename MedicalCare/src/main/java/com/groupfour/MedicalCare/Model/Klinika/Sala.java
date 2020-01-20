@@ -3,12 +3,11 @@ package com.groupfour.MedicalCare.Model.Klinika;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
-import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Pregled.Operacija;
+import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 

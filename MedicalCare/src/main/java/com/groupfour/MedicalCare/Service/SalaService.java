@@ -5,8 +5,10 @@ import com.groupfour.MedicalCare.Model.DTO.SalaDodavanjeDTO;
 import com.groupfour.MedicalCare.Model.DTO.SalaPretragaDTO;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
+import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Repository.AdminKlinikeRepository;
 import com.groupfour.MedicalCare.Repository.KlinikaRepository;
+import com.groupfour.MedicalCare.Repository.LekarRepository;
 import com.groupfour.MedicalCare.Repository.SalaRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -25,19 +27,30 @@ public class SalaService {
     private static SalaRepository salaRepository;
     private static AdminKlinikeRepository adminKlinikeRepository;
     private static KlinikaRepository klinikaRepository;
+    private static LekarRepository lekarRepository;
     private static Logger logger = LoggerFactory.getLogger(SalaService.class);
 
     @Autowired
     public SalaService(SalaRepository sRepository, KlinikaRepository kRepository,
-                       AdminKlinikeRepository adkRepository) {
+                       AdminKlinikeRepository adkRepository, LekarRepository lekarRepo) {
         salaRepository = sRepository;
         klinikaRepository = kRepository;
         adminKlinikeRepository = adkRepository;
+        lekarRepository = lekarRepo;
     }
 
     public static ArrayList<SalaPretragaDTO> getSale(HttpSession session) {
         ArrayList<Sala> sale = salaRepository.findAll();
-        Klinika klinika = nadjiKlinikuZaAdminaKlinike(session);
+        Klinika klinika = null;
+        switch ((String) session.getAttribute("role"))
+        {
+            case "adminklinike": klinika = nadjiKlinikuZaAdminaKlinike(session);
+                break;
+            case "lekar" : klinika = nadjiKlinikuZaLekaraKlinike(session);
+                break;
+            default: logger.error("Nije pronadjena rola korisnika sistema");
+        }
+
         if(klinika != null)
         {
             return vratiSveSaleZaOdgovarajucuKliniku(sale, klinika.getId());
@@ -46,7 +59,6 @@ public class SalaService {
     }
 
     private static Klinika nadjiKlinikuZaAdminaKlinike(HttpSession session){
-        logger.info("ID: " + session.getAttribute("id"));
         AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int)session.getAttribute("id"));
         if(adminKlinike != null)
         {
@@ -56,10 +68,25 @@ public class SalaService {
         return null;
     }
 
-    public static void deleteSala(SalaPretragaDTO salaPretragaDTO) {
+    private static Klinika nadjiKlinikuZaLekaraKlinike(HttpSession session){
+        Lekar lekar = lekarRepository.findLekarById((int)session.getAttribute("id"));
+        if(lekar != null)
+        {
+            return lekar.getKlinika();
+        }
+        logger.error("Lekar klinike nije pronadjen");
+        return null;
+    }
+
+    public static ResponseEntity<?> deleteSala(SalaPretragaDTO salaPretragaDTO) {
         Sala sala = salaRepository.findByNazivSale(salaPretragaDTO.getNazivSale());
+        if(sala.getPregledi() != null || sala.getOperacije() != null)
+        {
+            return new ResponseEntity<>("Nije moguce brisanje sale.", HttpStatus.FORBIDDEN);
+        }
         setujAktivnostSaleNaNulu(sala);
         salaRepository.save(sala);
+        return new ResponseEntity<>("Sala je uspesno obrisana", HttpStatus.NO_CONTENT);
     }
 
     public static void addSala(SalaDodavanjeDTO salaDodavanjeDTO, HttpSession session) {

@@ -6,7 +6,6 @@ import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Dokumenti.Recept;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
-import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoLekara;
 import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoMedicinskeSestre;
 import lombok.*;
 

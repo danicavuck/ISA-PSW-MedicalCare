@@ -19,6 +19,6 @@ public class LogoutController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> logout(HttpSession session){
-        return LoginService.logoutPacijent(session);
+        return LoginService.logoutUser(session);
     }
 }

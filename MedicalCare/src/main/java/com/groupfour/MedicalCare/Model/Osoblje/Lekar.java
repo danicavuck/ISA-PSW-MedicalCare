@@ -6,9 +6,9 @@ import com.groupfour.MedicalCare.Common.db.DbTableConstants;
 import com.groupfour.MedicalCare.Model.Dokumenti.Recept;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
+import com.groupfour.MedicalCare.Model.Pregled.Operacija;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoLekara;
-import com.groupfour.MedicalCare.Model.Pregled.Operacija;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnore;
 

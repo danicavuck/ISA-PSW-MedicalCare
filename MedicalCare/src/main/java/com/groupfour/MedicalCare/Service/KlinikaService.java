@@ -13,6 +13,8 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -49,10 +51,10 @@ public class KlinikaService {
         return klinikeDTO;
     }
 
-    public static boolean updateKlinika(KlinikaDTO klinikaDTO) {
+    public static ResponseEntity<?> updateKlinika(KlinikaDTO klinikaDTO) {
         Klinika klinika = klinikaRepository.findById(klinikaDTO.getId());
         if (klinika == null) {
-            return false;
+            return new ResponseEntity<>("Neuspesna modifikacija", HttpStatus.BAD_REQUEST);
         }
 
         klinika.setNaziv(klinikaDTO.getNaziv());
@@ -60,7 +62,7 @@ public class KlinikaService {
         klinika.setOpis(klinikaDTO.getOpis());
 
         klinikaRepository.save(klinika);
-        return true;
+        return new ResponseEntity<>("Uspesna modifikacija", HttpStatus.OK);
     }
 
     public static List<LekarDTO> getLekari() {
