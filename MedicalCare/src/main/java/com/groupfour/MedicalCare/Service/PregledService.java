@@ -97,17 +97,21 @@ public class PregledService {
         PregledDTO pregledDTO =
                 PregledDTO.builder().trajanjePregleda(pregled.getTrajanjePregleda()).cena(pregled.getCena()).popust(pregled.getPopust()).sala(pregled.getSala().getNazivSale()).tipPregleda(pregled.getTipPregleda().getTipPregleda()).build();
         Set<Lekar> lekari = pregled.getLekari();
+
+        logger.info("Lekari pocetak termina kraj termina i ostalo:\n"+ lekari.toString());
+
         while (lekari.iterator().hasNext())
         {
             Lekar lekar = lekari.iterator().next();
             LocalDateTime pocetakTermina = pregled.getTerminPregleda();
-            long trajanje = (long) pregled.getTrajanjePregleda();
+            long trajanje = pregled.getTrajanjePregleda();
             LocalDateTime krajPregleda = pocetakTermina.plusMinutes(trajanje);
 
             pregledDTO.setLekar(lekar.getId());
             pregledDTO.setPocetakTermina(pocetakTermina.format(formatter));
             pregledDTO.setKrajTermina(krajPregleda.format(formatter));
             pregledDTO.setLekarImeIPrezime(lekar.getIme() + " " + lekar.getPrezime());
+            return pregledDTO;
         }
         return pregledDTO;
     }

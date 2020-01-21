@@ -21,6 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Table(name = DbTableConstants.PREGLED)
+@JsonIgnoreProperties({"lekari"})
 public class Pregled {
 
     @Id

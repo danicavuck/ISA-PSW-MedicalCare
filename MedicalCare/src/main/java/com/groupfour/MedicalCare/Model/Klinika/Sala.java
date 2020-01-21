@@ -16,9 +16,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 @Entity
 @Table(name = DbTableConstants.SALA)
+@JsonIgnoreProperties({"klinika"})
 public class Sala {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

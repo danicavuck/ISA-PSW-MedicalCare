@@ -38,18 +38,20 @@ public class PreglediNaCekanjuService {
     private static AdminKlinikeRepository adminKlinikeRepository;
     private static SalaRepository salaRepository;
     private static CustomEmailSender customEmailSender;
+    private static LekarRepository lekarRepository;
     private static Logger logger = LoggerFactory.getLogger(PreglediNaCekanjuService.class);
 
     @Autowired
     PreglediNaCekanjuService(PreglediNaCekanjuRepository pregledi, SalaRepository sRepository,
                              AdminKlinikeRepository adimnKlinikeRepo, PregledRepository pRepo,
-                             OperacijaRepository opeRepo, CustomEmailSender mSender){
+                             OperacijaRepository opeRepo, CustomEmailSender mSender, LekarRepository lRepo){
         preglediNaCekanjuRepository = pregledi;
         salaRepository = sRepository;
         adminKlinikeRepository = adimnKlinikeRepo;
         pregledRepository = pRepo;
         operacijaRepository = opeRepo;
         customEmailSender = mSender;
+        lekarRepository = lRepo;
     }
 
     public static ResponseEntity<?> sviPreglediNaCekanjuZaKliniku(HttpSession session) {
@@ -134,12 +136,11 @@ public class PreglediNaCekanjuService {
         Pregled pregled =
                 Pregled.builder().terminPregleda(pregledNaCekanju.getTerminPregleda()).trajanjePregleda(pregledNaCekanju.getTrajanjePregleda()).cena(pregledNaCekanju.getCena()).popust(pregledNaCekanju.getPopust()).aktivan(true).sala(pregledNaCekanju.getSala()).tipPregleda(pregledNaCekanju.getTipPregleda()).pacijent(pregledNaCekanju.getPacijent()).build();
 
-        HashSet<Lekar> lekar = new HashSet<>();
-        lekar.add(pregledNaCekanju.getLekar());
-
-        // cuvanje pregleda
+        Lekar lekar = pregledNaCekanju.getLekar();
+        lekar.dodajPregled(pregled);
         pregledRepository.save(pregled);
-
+        // cuvanje lekara
+        lekarRepository.save(lekar);
     }
 
     public static boolean salaJeSlobodnaZaTermin(Sala sala, LocalDateTime pocetakTermina, int trajanje){

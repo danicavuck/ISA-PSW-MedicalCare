@@ -67,7 +67,7 @@ public class Lekar {
     )
     private Set<Operacija> listaOperacija = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = DbTableConstants.LEKAR_PREGLED,
             joinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_ID),
