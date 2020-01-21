@@ -8,38 +8,37 @@ import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoLekara;
 import com.groupfour.MedicalCare.Repository.AdminKlinikeRepository;
 import com.groupfour.MedicalCare.Repository.LekarRepository;
 import com.groupfour.MedicalCare.Repository.OdsustvoLekaraRepository;
+import com.groupfour.MedicalCare.Utill.CustomEmailSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 @Service
 public class OdsustvaService {
     private static final String emailAddress = "medicalcarepsw@gmail.com";
     private static OdsustvoLekaraRepository odsustvoLekaraRepository;
     private static AdminKlinikeRepository adminKlinikeRepository;
+    private static CustomEmailSender customEmailSender;
     private static LekarRepository lekarRepository;
-    private static JavaMailSender javaMailSender;
+
     private static Logger logger = LoggerFactory.getLogger(OdsustvaService.class);
 
     @Autowired
     public OdsustvaService(OdsustvoLekaraRepository odsustvoLekaraRepo, LekarRepository lRepository,
-                           JavaMailSender jMailSender, AdminKlinikeRepository adminKRepo){
+                           AdminKlinikeRepository adminKRepo, CustomEmailSender mSender){
         odsustvoLekaraRepository = odsustvoLekaraRepo;
         lekarRepository = lRepository;
-        javaMailSender = jMailSender;
+        customEmailSender = mSender;
         adminKlinikeRepository = adminKRepo;
     }
 
@@ -61,21 +60,21 @@ public class OdsustvaService {
                 odsustvoDTO.getDatumVreme()[0].format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
         String krajOdsustva =
                 odsustvoDTO.getDatumVreme()[1].format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-        String message =
-                "<html><body><h3>Zahtev za odsustvo</h3><p>Postovani,</p><p>Lekar " + lekar.getIme() + " " + lekar.getPrezime() + " zeli da dobije odsustvo u periodu od " + pocetakOdsustva + " do "+ krajOdsustva + "</p><p>Molimo Vas da razmotrite zahtev u dogledno vreme.</p><p>Srdacan pozdrav,</p></p>Medical Care</p></body></html>";
 
-        try {
-            helper.setText(message, true);
-            helper.setTo("petar.kovacevic0088@gmail.com");
-            helper.setSubject("Novi zahtev za odsustvo lekara");
-            helper.setFrom(emailAddress);
-        } catch (MessagingException e) {
-            logger.info("Neuspesno slanje MimeMessage " + e.getMessage());
+        String message =
+                "<html><body><h3>Zahtev za odsustvo</h3><p>Postovani,</p><p>Lekar " + lekar.getIme() + " " + lekar.getPrezime() + " zeli da dobije odsustvo u periodu od " + pocetakOdsustva + " do "+ krajOdsustva + "</p><p>Molimo Vas da razmotrite zahtev u dogledno vreme.</p><p>Srdacan pozdrav,</p><p>Medical Care</p></body></html>";
+
+        HashSet<AdminKlinike> adminiKlinike = (HashSet<AdminKlinike>) lekar.getKlinika().getAdminiKlinike();
+        String[] adrese = new String[adminiKlinike.size()];
+        int i = 0;
+        for(AdminKlinike admin : adminiKlinike)
+        {
+            adrese[i] = admin.getEmail();
+            ++i;
         }
-        javaMailSender.send(mimeMessage);
-        logger.info("Sending email from: " +  emailAddress);
+
+        customEmailSender.sendMail(adrese, "Zahtev za odsustvo", message);
+
     }
 
     public static ResponseEntity<?> vratiZahteveAdminu(HttpSession session)

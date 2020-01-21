@@ -8,6 +8,7 @@ import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Pregled.Operacija;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
+import com.groupfour.MedicalCare.Model.Pregled.PreglediNaCekanju;
 import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoLekara;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -23,6 +24,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = DbTableConstants.LEKAR)
+@JsonIgnoreProperties({"lozinka"})
 public class Lekar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,29 +84,13 @@ public class Lekar {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lekar", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Recept> recepti = new HashSet<>();
 
-    public void dodajPacijenta(Pacijent pacijent) {
-        this.listaPacijenata.add(pacijent);
-        pacijent.getListaLekara().add(this);
-    }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lekar", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    private Set<PreglediNaCekanju> preglediNaCekanju = new HashSet<>();
 
-    public void dodajRecept(Recept recept) {
-        this.recepti.add(recept);
-        recept.setLekar(this);
-    }
-
-    public void dodajOperaciju(Operacija operacija) {
-        this.listaOperacija.add(operacija);
-        operacija.getLekar().add(this);
-    }
 
     public void dodajPregled(Pregled pregled) {
         this.setPregleda.add(pregled);
         pregled.dodajLekara(this);
-    }
-
-    public void dodajOcenuLekara(OcenaLekara ocenaLekara) {
-        this.oceneLekara.add(ocenaLekara);
-        ocenaLekara.setLekar(this);
     }
 
     @Override
@@ -112,8 +98,4 @@ public class Lekar {
         return "Ime: " + this.ime + " Prezime: " + this.prezime + " Email:" + this.email + " Prosecna ocena: " + this.prosecnaOcena;
     }
 
-    @JsonIgnore
-    public String getLozinka() {
-        return this.lozinka;
-    }
 }

@@ -46,7 +46,6 @@ public final class DbColumnConstants {
     public static final String KLINIKA_ADRESA = "adresa";
     public static final String KLINIKA_OPIS = "opis";
     public static final String KLINIKA_PROSECNA_OCENA = "prosecna_ocena";
-    public static final String KLINIKA_ADMINI_KLINIKE = "admin_klinike";
 
     // Lekar
     // Recept se dodaje iz lekara
@@ -70,8 +69,6 @@ public final class DbColumnConstants {
     // Sala
     public static final String SALA_ID = "id_sala";
     public static final String SALA_ZAUZECE = "zauzeta";
-    public static final String SALA_POCETAK_TERMINA = "pocetak_termina";
-    public static final String SALA_ZAVRSETAK_TERMINA = "zavrsetak_termina";
     public static final String SALA_NAZIV_SALE = "naziv_sale";
     public static final String SALA_AKTIVNA = "aktivna";
     public static final String SALA_KLINIKA = "klinika_id";
@@ -114,6 +111,9 @@ public final class DbColumnConstants {
     public static final String IZVESTAJ_O_PREGLEDU_AKTIVAN = "aktivan";
     public static final String IZVESTAJ_O_PREGLEDU_DIJAGNOZA = "dijagnoza_id";
     public static final String IZVESTAJ_O_PREGLEDU_LEK = "sifarnik_lekova_id";
+
+    // Pregled na cekanju
+    public static final String PREGLED_LEKAR = "lekar_id";
 
     // Recept
     public static final String RECEPT_ID = "recept_id";

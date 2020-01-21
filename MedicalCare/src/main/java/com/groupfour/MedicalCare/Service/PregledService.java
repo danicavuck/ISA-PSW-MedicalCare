@@ -33,7 +33,7 @@ import java.util.Set;
 @Service
 public class PregledService {
     private static final String emailAddress = "medicalcarepsw@gmail.com";
-    private static PregeldRepository pregledRepository;
+    private static PregledRepository pregledRepository;
     private static PreglediNaCekanjuRepository preglediNaCekanjuRepository;
     private static TipPregledaRepository tipPregledaRepository;
     private static SalaRepository salaRepository;
@@ -44,7 +44,7 @@ public class PregledService {
     private static Logger logger = LoggerFactory.getLogger(PregledService.class);
 
     @Autowired
-    public PregledService(PregeldRepository pRepository, TipPregledaRepository tpRepository,
+    public PregledService(PregledRepository pRepository, TipPregledaRepository tpRepository,
                           SalaRepository sRepository, LekarRepository lRepository,
                           PacijentRepository pacRepository, PreglediNaCekanjuRepository pNaCekanju,
                           JavaMailSender javaMSender, AdminKlinikeRepository adminKlinikeRepo) {
@@ -97,16 +97,18 @@ public class PregledService {
         PregledDTO pregledDTO =
                 PregledDTO.builder().trajanjePregleda(pregled.getTrajanjePregleda()).cena(pregled.getCena()).popust(pregled.getPopust()).sala(pregled.getSala().getNazivSale()).tipPregleda(pregled.getTipPregleda().getTipPregleda()).build();
         Set<Lekar> lekari = pregled.getLekari();
-        Lekar lekar = lekari.iterator().next();
-        LocalDateTime pocetakTermina = pregled.getTerminPregleda();
-        long trajanje = (long) pregled.getTrajanjePregleda();
-        LocalDateTime krajPregleda = pocetakTermina.plusMinutes(trajanje);
+        while (lekari.iterator().hasNext())
+        {
+            Lekar lekar = lekari.iterator().next();
+            LocalDateTime pocetakTermina = pregled.getTerminPregleda();
+            long trajanje = (long) pregled.getTrajanjePregleda();
+            LocalDateTime krajPregleda = pocetakTermina.plusMinutes(trajanje);
 
-        pregledDTO.setLekar(lekar.getId());
-        pregledDTO.setPocetakTermina(pocetakTermina.format(formatter));
-        pregledDTO.setKrajTermina(krajPregleda.format(formatter));
-        pregledDTO.setLekarImeIPrezime(lekar.getIme() + " " + lekar.getPrezime());
-
+            pregledDTO.setLekar(lekar.getId());
+            pregledDTO.setPocetakTermina(pocetakTermina.format(formatter));
+            pregledDTO.setKrajTermina(krajPregleda.format(formatter));
+            pregledDTO.setLekarImeIPrezime(lekar.getIme() + " " + lekar.getPrezime());
+        }
         return pregledDTO;
     }
 
@@ -144,7 +146,7 @@ public class PregledService {
             LocalDateTime datumVreme = pregledDTO.getDatumVreme();
 
             PreglediNaCekanju pregledNaCekanju =
-                    PreglediNaCekanju.builder().klinikaId(klinikaIdLekarID[0]).aktivan(true).cena(cena).popust(popust).tipPregleda(tipPregleda).trajanjePregleda(trajanje).terminPregleda(datumVreme).pacijent(pacijent).build();
+                    PreglediNaCekanju.builder().klinikaId(klinikaIdLekarID[0]).aktivan(true).cena(cena).popust(popust).tipPregleda(tipPregleda).trajanjePregleda(trajanje).terminPregleda(datumVreme).pacijent(pacijent).lekar(lekar).build();
             preglediNaCekanjuRepository.save(pregledNaCekanju);
 
             try{

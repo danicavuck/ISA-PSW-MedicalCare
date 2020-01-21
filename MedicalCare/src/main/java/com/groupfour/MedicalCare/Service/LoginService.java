@@ -71,8 +71,8 @@ public class LoginService {
             session.setAttribute("role", "adminkc");
             UserRole userRole = UserRole.builder().user_email(adminKlinickogCentra.getEmail()).role("admin_kc").build();
             return ResponseEntity.ok().body(userRole);
-        } else if (adminKlinike != null /*&& PasswordCheck.verifyHash(loginDTO.getLozinka(),
-                adminKlinike.getLozinka())*/) {
+        } else if (adminKlinike != null && PasswordCheck.verifyHash(loginDTO.getLozinka(),
+                adminKlinike.getLozinka())) {
             session.setAttribute("id", adminKlinike.getId());
             session.setAttribute("role", "adminklinike");
             logger.info("Startovana sesija role:" + session.getAttribute("role") + " id: " + session.getAttribute("id"));

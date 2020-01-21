@@ -21,7 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Table(name = DbTableConstants.PREGLEDI_CEKANJE)
-@JsonIgnoreProperties({"izvestajOPregledu", "pacijent"})
+@JsonIgnoreProperties({"izvestajOPregledu", "pacijent", "lekar", "sala"})
 public class PreglediNaCekanju {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,9 +49,9 @@ public class PreglediNaCekanju {
     @JoinColumn(name = DbColumnConstants.PREGLED_TIP_PREGLEDA)
     private TipPregleda tipPregleda;
 
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "setPregleda")
-    private Set<Lekar> lekari = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = DbColumnConstants.PREGLED_LEKAR)
+    private Lekar lekar;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = DbColumnConstants.PREGLED_IZVESTAJ)
@@ -61,13 +61,6 @@ public class PreglediNaCekanju {
     @JoinColumn(name = DbColumnConstants.PREGLED_PACIJENT)
     @JsonIgnoreProperties("listaPregleda")
     private Pacijent pacijent;
-
-    public void dodajLekara(Lekar lekar) {
-        if (this.lekari == null) {
-            this.lekari = new HashSet<>();
-        }
-        this.lekari.add(lekar);
-    }
 
     @Override
     public String toString() {
