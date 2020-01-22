@@ -27,7 +27,7 @@ export class LekarComponent implements OnInit {
   async getPacijenteInitially() {
     // U startu cemo dobavljati pacijente za kliniku 5
     const apiEndpoint = 'http://localhost:8080/pacijenti/' + 5;
-    this.http.get(apiEndpoint).subscribe((data) => {
+    this.http.get(apiEndpoint, {withCredentials: true}).subscribe((data) => {
       this.models = data as Array<Pacijent>;
       this.modelsDataSource = new MatTableDataSource(this.models);
       this.modelsDataSource.sort = this.pacijentSort;
@@ -56,6 +56,15 @@ export class LekarComponent implements OnInit {
 
   async applyFilter(filterValue: string) {
     this.modelsDataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  async odjaviSe() {
+    const apiEndpoint = 'http://localhost:8080/odjava';
+    this.http.post(apiEndpoint, {responseType: 'json', withCredentials: true}).subscribe(data => {
+      console.log('Uspesno odjavljivanje sa sistema');
+    }, err => {
+      console.log(err);
+    });
   }
 }
 

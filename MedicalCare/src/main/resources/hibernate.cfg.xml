@@ -44,11 +44,13 @@
         <mapping class="com.groupfour.MedicalCare.Model.Pacijent.Pacijent"/>
         <mapping class="com.groupfour.MedicalCare.Model.Pregled.Pregled"/>
         <mapping class="com.groupfour.MedicalCare.Model.Pregled.TipPregleda"/>
-        <mapping class="com.groupfour.MedicalCare.Model.Zahtevi.Odsustvo"/>
-        <mapping class="com.groupfour.MedicalCare.Model.Zahtevi.Operacija"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoLekara"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoMedicinskeSestre"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Pregled.Operacija"/>
         <mapping class="com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta"/>
         <mapping class="com.groupfour.MedicalCare.Model.DTO.UserRole"/>
         <mapping class="com.groupfour.MedicalCare.Model.Tabele.PacijentKlinika"/>
+        <mapping class="com.groupfour.MedicalCare.Model.Pregled.PreglediNaCekanju"/>
 
     </session-factory>
 </hibernate-configuration>

@@ -3,58 +3,59 @@ package com.groupfour.MedicalCare.Controllers;
 import com.groupfour.MedicalCare.Model.DTO.SalaDodavanjeDTO;
 import com.groupfour.MedicalCare.Model.DTO.SalaPretragaDTO;
 import com.groupfour.MedicalCare.Service.SalaService;
+import com.groupfour.MedicalCare.Utill.Authorization;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 @Controller
-@CrossOrigin
+@CrossOrigin(allowCredentials = "true")
 @RequestMapping("/sale")
 public class SalaController {
+    private Authorization authorization;
+    private String[] roles = {"adminklinike"};
 
-    public SalaController() {
+    @Autowired
+    public SalaController(Authorization authorization) {
+        this.authorization = authorization;
     }
 
     @GetMapping
-    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaSvakuKliniku(HttpSession session) {
-//        if(!session.getAttribute("role").equals("admin_klinike"))
-//            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        ArrayList<SalaPretragaDTO> sale = SalaService.getSale(0);
-        return new ResponseEntity<>(sale, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/{klinikaId}")
-    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaOdredjenuKliniku(@PathVariable(value = "klinikaId") Integer klinikaId, HttpSession session) {
-        System.out.println("Session id: " + session);
-        System.out.println("ATRIBUTI SESIJE: ");
-        System.out.println(session.getAttributeNames());
-//        if(session.getAttribute("role") == null || !session.getAttribute("role").equals("admin_klinike"))
-////            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        ArrayList<SalaPretragaDTO> sale = SalaService.getSale(klinikaId);
-        return new ResponseEntity<>(sale, HttpStatus.OK);
+    public ResponseEntity<ArrayList<SalaPretragaDTO>> vratiSaleZaOdredjenuKliniku(HttpSession session) {
+        if(authorization.hasPermisson(session, new String[] {"adminklinike", "lekar"}))
+        {
+            ArrayList<SalaPretragaDTO> sale = SalaService.getSale(session);
+            return new ResponseEntity<>(sale, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteSala(@RequestBody SalaPretragaDTO salaPretragaDTO) {
-        SalaService.deleteSala(salaPretragaDTO);
-
-        return new ResponseEntity<String>("Uspesno izvrseno brisanje", HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> deleteSala(@RequestBody SalaPretragaDTO salaPretragaDTO, HttpSession session) {
+        if(authorization.hasPermisson(session, roles))
+        {
+            return SalaService.deleteSala(salaPretragaDTO);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping
-    public ResponseEntity<?> addSala(@RequestBody SalaDodavanjeDTO salaDodavanjeDTO) {
-        SalaService.addSala(salaDodavanjeDTO);
-
-        return new ResponseEntity<String>("Uspesno dodavanje sale", HttpStatus.OK);
+    public ResponseEntity<?> addSala(@RequestBody SalaDodavanjeDTO salaDodavanjeDTO, HttpSession session) {
+        if(authorization.hasPermisson(session, roles))
+        {
+            SalaService.addSala(salaDodavanjeDTO, session);
+            return new ResponseEntity<String>("Uspesno dodavanje sale", HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping(value = "/pretraga")
-    public ResponseEntity<?> saleSearch(@RequestBody SalaPretragaDTO salaPretragaDTO) {
+    public ResponseEntity<?> saleSearch(@RequestBody SalaPretragaDTO salaPretragaDTO, HttpSession session) {
         return SalaService.pretraziSaluPoBrojuSale(salaPretragaDTO);
     }
 }

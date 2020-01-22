@@ -12,7 +12,7 @@ export class DodavanjePregledaComponent implements OnInit {
   dateAndTime: Date = new Date();
   settings = {
     bigBanner: true,
-        timePicker: false,
+        timePicker: true,
     format: 'dd-MM-yyyy',
         defaultOpen: true
   };
@@ -20,7 +20,6 @@ export class DodavanjePregledaComponent implements OnInit {
     datumVreme: new Date(),
     tipPregleda: '',
     trajanjePregleda: 0,
-    sala: 0,
     pacijent: 0,
     cena: 0
   };
@@ -70,7 +69,7 @@ export class DodavanjePregledaComponent implements OnInit {
     const apiEndpoint = 'http://localhost:8080/pacijenti/' + 5;
 
     this.http.get(apiEndpoint,
-      {responseType: 'json'}).subscribe((data) => {
+      {responseType: 'json', withCredentials: true},).subscribe((data) => {
         this.pacijenti = data as Array<Pacijent>;
       }, err => {
         console.log('Greska pri pribavljanju pacijenata: ');
@@ -83,7 +82,7 @@ export class DodavanjePregledaComponent implements OnInit {
     this.uvecanjeSatnice(this.pregled);
     this.http.post(apiEndpoint, this.pregled,
       {responseType: 'text'}).subscribe((data) => {
-        console.log(data);
+        console.log('Poslat je zahtev adminu na odobravanje.');
       }, err => {
         console.log('Greska pri kreiranju novog pregeda: ');
         console.log(err);
@@ -91,7 +90,7 @@ export class DodavanjePregledaComponent implements OnInit {
   }
 
   async uvecanjeSatnice(pregled) {
-    pregled.datumVreme.setHours(this.pregled.datumVreme.getHours() + 1, 0, 0, 0);
+    pregled.datumVreme.setHours(this.pregled.datumVreme.getHours() + 1);
   }
 
 }
@@ -117,7 +116,6 @@ export interface Pregled {
   datumVreme: Date;
   tipPregleda: string;
   trajanjePregleda: number;
-  sala: number;
   pacijent: number;
   cena: number;
 }

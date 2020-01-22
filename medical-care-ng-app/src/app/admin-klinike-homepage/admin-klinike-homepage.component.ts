@@ -43,11 +43,10 @@ export class AdminKlinikeHomepageComponent implements OnInit {
       });
   }
 
-  async getLogout() {
-    const apiEndpoint = 'http://localhost:8080/logout';
-    this.http.get(apiEndpoint).subscribe(() => {
+  async onLogout() {
+    const apiEndpoint = 'http://localhost:8080/odjava';
+    this.http.post(apiEndpoint, {responseType: 'json'}, {withCredentials: true}).subscribe(() => {
         console.log('Uspesno odjavljivanje');
-        this.router.navigate(['/login']);
       }, err => {
         console.log('Neuspesno odjavljivanje: ');
         console.log(err);

@@ -1,54 +1,123 @@
 package com.groupfour.MedicalCare.Service;
 
+import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.SalaDodavanjeDTO;
 import com.groupfour.MedicalCare.Model.DTO.SalaPretragaDTO;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
+import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
+import com.groupfour.MedicalCare.Repository.AdminKlinikeRepository;
 import com.groupfour.MedicalCare.Repository.KlinikaRepository;
+import com.groupfour.MedicalCare.Repository.LekarRepository;
 import com.groupfour.MedicalCare.Repository.SalaRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @Service
 public class SalaService {
     private static SalaRepository salaRepository;
+    private static AdminKlinikeRepository adminKlinikeRepository;
     private static KlinikaRepository klinikaRepository;
+    private static LekarRepository lekarRepository;
+    private static Logger logger = LoggerFactory.getLogger(SalaService.class);
 
     @Autowired
-    public SalaService(SalaRepository sRepository, KlinikaRepository kRepository) {
+    public SalaService(SalaRepository sRepository, KlinikaRepository kRepository,
+                       AdminKlinikeRepository adkRepository, LekarRepository lekarRepo) {
         salaRepository = sRepository;
         klinikaRepository = kRepository;
+        adminKlinikeRepository = adkRepository;
+        lekarRepository = lekarRepo;
     }
 
-    public static ArrayList<SalaPretragaDTO> getSale(Integer klinikaId) {
+    public static ArrayList<SalaPretragaDTO> getSale(HttpSession session) {
         ArrayList<Sala> sale = salaRepository.findAll();
-        return vratiSveSaleZaOdgovarajucuKliniku(sale, klinikaId);
+        Klinika klinika = null;
+        switch ((String) session.getAttribute("role"))
+        {
+            case "adminklinike": klinika = nadjiKlinikuZaAdminaKlinike(session);
+                break;
+            case "lekar" : klinika = nadjiKlinikuZaLekaraKlinike(session);
+                break;
+            default: logger.error("Nije pronadjena rola korisnika sistema");
+        }
+
+        if(klinika != null)
+        {
+            return vratiSveSaleZaOdgovarajucuKliniku(sale, klinika.getId());
+        }
+        return null;
     }
 
-    public static void deleteSala(SalaPretragaDTO salaPretragaDTO) {
-        Sala sala = salaRepository.findByBrojSale(salaPretragaDTO.getBrojSale());
+    private static Klinika nadjiKlinikuZaAdminaKlinike(HttpSession session){
+        AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int)session.getAttribute("id"));
+        if(adminKlinike != null)
+        {
+            return adminKlinike.getKlinika();
+        }
+        logger.error("Admin klinike nije pronadjen");
+        return null;
+    }
+
+    private static Klinika nadjiKlinikuZaLekaraKlinike(HttpSession session){
+        Lekar lekar = lekarRepository.findLekarById((int)session.getAttribute("id"));
+        if(lekar != null)
+        {
+            return lekar.getKlinika();
+        }
+        logger.error("Lekar klinike nije pronadjen");
+        return null;
+    }
+
+    public static ResponseEntity<?> deleteSala(SalaPretragaDTO salaPretragaDTO) {
+        Sala sala = salaRepository.findByNazivSale(salaPretragaDTO.getNazivSale());
+        if(sala.getPregledi() != null || sala.getOperacije() != null)
+        {
+            return new ResponseEntity<>("Nije moguce brisanje sale.", HttpStatus.FORBIDDEN);
+        }
         setujAktivnostSaleNaNulu(sala);
         salaRepository.save(sala);
+        return new ResponseEntity<>("Sala je uspesno obrisana", HttpStatus.NO_CONTENT);
     }
 
-    public static void addSala(SalaDodavanjeDTO salaDodavanjeDTO) {
-        Klinika klinika = klinikaRepository.findById(salaDodavanjeDTO.getKlinika());
-        dodavanjeNoveSaleUKliniku(klinika, salaDodavanjeDTO);
-        klinikaRepository.save(klinika);
+    public static void addSala(SalaDodavanjeDTO salaDodavanjeDTO, HttpSession session) {
+        Klinika klinika = informacijeOKlinici(session);
+        if(klinika != null)
+        {
+            dodavanjeNoveSaleUKliniku(klinika, salaDodavanjeDTO);
+            klinikaRepository.save(klinika);
+        }
+        else
+        {
+            logger.info("Sala nije dodata u kliniku jer klinika nije pronadjena");
+        }
     }
 
     // Helper funkcije
-
-    private static void formatiranjeDatumaSala(Sala sala, SalaPretragaDTO salaDTO) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
-        salaDTO.setPocetakTermina(sala.getPocetakTermina().format(formatter));
-        salaDTO.setKrajTermina(sala.getKrajTermina().format(formatter));
+    private static Klinika informacijeOKlinici(HttpSession session){
+        String role = (String) session.getAttribute("role");
+        AdminKlinike adminKlinike = null;
+        if(role.equals("adminklinike"))
+        {
+            adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
+            try
+            {
+                return adminKlinike.getKlinika();
+            }catch (Exception e)
+            {
+                logger.error("Admin klinike ili ne postoji, ili nema kliniku!");
+            }
+        }
+        return null;
     }
 
     public static ArrayList<SalaPretragaDTO> vratiSveSaleZaOdgovarajucuKliniku(ArrayList<Sala> sale, Integer klinikaID) {
@@ -57,7 +126,6 @@ public class SalaService {
         for (Sala s : sale) {
             if (s.isAktivna() && ((klinikaID == 0) || (s.getKlinika().getId() == klinikaID))) {
                 saleDTO.add(mapper.map(s, SalaPretragaDTO.class));
-                formatiranjeDatumaSala(s, saleDTO.get(saleDTO.size() - 1));
             }
         }
         return saleDTO;
@@ -65,7 +133,7 @@ public class SalaService {
 
     public static ResponseEntity<?> pretraziSaluPoBrojuSale(SalaPretragaDTO salaPretragaDTO) {
         ArrayList<SalaPretragaDTO> saleDTO = new ArrayList<>();
-        Sala sala = salaRepository.findByBrojSale(salaPretragaDTO.getBrojSale());
+        Sala sala = salaRepository.findByNazivSale(salaPretragaDTO.getNazivSale());
         if(sala == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
@@ -78,8 +146,7 @@ public class SalaService {
             System.out.println("Klinika nije pronadjena (id): " + salaDodavanjeDTO.getKlinika());
             return;
         }
-        Sala sala = Sala.builder().brojSale(salaDodavanjeDTO.getBrojSale()).aktivna(true).build();
-        System.out.println("Dodata sala " + sala.getBrojSale() + " u kliniku " + klinika.getNaziv());
+        Sala sala = Sala.builder().nazivSale(salaDodavanjeDTO.getNazivSale()).aktivna(true).build();
         klinika.dodajSalu(sala);
     }
 
@@ -87,10 +154,7 @@ public class SalaService {
         ModelMapper modelMapper = new ModelMapper();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
         if (sala != null) {
-            SalaPretragaDTO salaPretragaDTO = modelMapper.map(sala, SalaPretragaDTO.class);
-            salaPretragaDTO.setPocetakTermina(sala.getPocetakTermina().format(formatter));
-            salaPretragaDTO.setKrajTermina(sala.getKrajTermina().format(formatter));
-            return salaPretragaDTO;
+            return modelMapper.map(sala, SalaPretragaDTO.class);
         }
         return null;
     }
@@ -99,7 +163,7 @@ public class SalaService {
         try {
             sala.setAktivna(false);
         } catch (NullPointerException e) {
-            System.out.println("Sala " + sala.getBrojSale() + " nije pronadjena");
+            System.out.println("Sala " + sala.getNazivSale() + " nije pronadjena");
             System.out.println("Neuspesno setovanje aktivnosti na 0");
         }
     }

@@ -11,8 +11,6 @@ import java.util.Date;
 @Builder
 @ToString
 public class SalaPretragaDTO {
-    private int brojSale;
+    private String nazivSale;
     private Date datum;
-    private String pocetakTermina;
-    private String krajTermina;
 }

@@ -9,30 +9,18 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@CrossOrigin
+@CrossOrigin(allowCredentials = "true")
 @RequestMapping("/adminklinike")
 public class AdminKlinikeController {
 
-    @GetMapping
-    public ResponseEntity<String> adminKlinikeHomepage(HttpServletRequest request) {
-//        if(request.getSession().getAttribute("role") == null || !request.getSession().getAttribute("role").equals("admin_klinike")){
-//            return new ResponseEntity<>("Unauthorized request", HttpStatus.FORBIDDEN);
-//
-//        }
-        return new ResponseEntity<>("OK Admine", HttpStatus.OK);
-    }
-
-
     @GetMapping("/klinike")
-    public ResponseEntity<List<KlinikaDTO>> getKlinike() {
-        ArrayList<KlinikaDTO> klinike = KlinikaService.getKlinike();
-
+    public ResponseEntity<List<KlinikaDTO>> getKlinike(HttpSession session) {
+        ArrayList<KlinikaDTO> klinike = KlinikaService.getKlinike(session);
         return new ResponseEntity<>(klinike, HttpStatus.OK);
     }
-
 }

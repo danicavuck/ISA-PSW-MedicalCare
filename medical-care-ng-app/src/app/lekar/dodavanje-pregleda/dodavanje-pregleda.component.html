@@ -42,18 +42,6 @@
                 <input mdInput  type="number" name="trajanje" id="trajanje" class="form-control" required min="0" max="120" [(ngModel)]="pregled.trajanjePregleda">             
             </div>
 
-
-            <div class="form-group">
-              <mat-form-field class="full-width">
-                <mat-label style="margin-bottom: 30px;">Sala</mat-label>
-                  <mat-select [(ngModel)]="pregled.sala" required name="sala">
-                      <mat-option *ngFor="let sala of sale" value={{sala.brojSale}}>
-                          {{sala.brojSale}}
-                      </mat-option>
-                  </mat-select>
-              </mat-form-field>
-            </div>
-
             <div class="form-group">
               <mat-form-field class="full-width">
                 <mat-label style="margin-bottom: 30px;">Pacijent</mat-label>
@@ -72,7 +60,7 @@
 
       
             <div style="margin-bottom: 30px;">
-              <button type="button" mat-flat-button class="pull-left" [routerLink]="['/adminklinike']">Nazad</button>
+              <button type="button" mat-flat-button class="pull-left" [routerLink]="['/lekar']">Nazad</button>
               <button type="submit" mat-raised-button color="primary" class="pull-right" [disabled]="!f.valid">
                 <i class="fa fa-check" aria-hidden="true"></i>
                 <span> Dodaj pregled</span>

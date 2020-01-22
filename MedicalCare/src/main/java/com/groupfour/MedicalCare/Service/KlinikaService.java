@@ -1,52 +1,60 @@
 package com.groupfour.MedicalCare.Service;
 
 
+import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.KlinikaDTO;
 import com.groupfour.MedicalCare.Model.DTO.LekarDTO;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
+import com.groupfour.MedicalCare.Repository.AdminKlinikeRepository;
 import com.groupfour.MedicalCare.Repository.KlinikaRepository;
 import com.groupfour.MedicalCare.Repository.LekarRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class KlinikaService {
-    @Autowired
     private static KlinikaRepository klinikaRepository;
-
-    @Autowired
     private static LekarRepository lekarRepository;
+    private static AdminKlinikeRepository adminKlinikeRepository;
+    private static Logger logger = LoggerFactory.getLogger(KlinikaService.class);
 
     @Autowired
-    public KlinikaService(KlinikaRepository kRepository, LekarRepository lRepo) {
+    public KlinikaService(KlinikaRepository kRepository, LekarRepository lRepo,
+                          AdminKlinikeRepository aklinikeRepository) {
         klinikaRepository = kRepository;
         lekarRepository = lRepo;
+        adminKlinikeRepository = aklinikeRepository;
     }
 
 
-    public static ArrayList<KlinikaDTO> getKlinike() {
-        ArrayList<Klinika> klinike = klinikaRepository.findAll();
+    public static ArrayList<KlinikaDTO> getKlinike(HttpSession session) {
+        AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
         ArrayList<KlinikaDTO> klinikeDTO = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
-
-        for (Klinika k : klinike) {
-            // Samo jednu kliniku vraca
-            if (k.getId() == 5)
-                klinikeDTO.add(mapper.map(k, KlinikaDTO.class));
+        if(adminKlinike == null)
+        {
+            logger.error("Nije pronadjen admin klinike");
+            return null;
         }
 
+        klinikeDTO.add(mapper.map(adminKlinike.getKlinika(), KlinikaDTO.class));
         return klinikeDTO;
     }
 
-    public static boolean updateKlinika(KlinikaDTO klinikaDTO) {
+    public static ResponseEntity<?> updateKlinika(KlinikaDTO klinikaDTO) {
         Klinika klinika = klinikaRepository.findById(klinikaDTO.getId());
         if (klinika == null) {
-            return false;
+            return new ResponseEntity<>("Neuspesna modifikacija", HttpStatus.BAD_REQUEST);
         }
 
         klinika.setNaziv(klinikaDTO.getNaziv());
@@ -54,7 +62,7 @@ public class KlinikaService {
         klinika.setOpis(klinikaDTO.getOpis());
 
         klinikaRepository.save(klinika);
-        return true;
+        return new ResponseEntity<>("Uspesna modifikacija", HttpStatus.OK);
     }
 
     public static List<LekarDTO> getLekari() {

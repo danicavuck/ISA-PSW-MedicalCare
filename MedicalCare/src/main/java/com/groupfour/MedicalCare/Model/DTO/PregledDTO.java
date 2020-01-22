@@ -13,15 +13,18 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 public class PregledDTO {
+    private int id;
     private LocalDateTime datumVreme;
     private int trajanjePregleda;
     private int cena;
     private int popust;
-    private int sala;
+    private String sala;
     private String tipPregleda;
     private int lekar;
     private String lekarImeIPrezime;
     private String pocetakTermina;
     private String krajTermina;
     private int pacijent;
+    private String imeLekara;
+    private String prezimeLekara;
 }

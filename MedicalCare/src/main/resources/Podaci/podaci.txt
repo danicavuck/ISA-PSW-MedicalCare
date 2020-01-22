@@ -11,12 +11,17 @@ Admin Klinickog Centra:
 
 Pacijenti:
 "bolestansam@gmail.com" : "111"
+"markomarkovicpacijent@gmail.com", markomarko ,markopacijent
 "milance@gmail.com" : 000
 
 Lekari:
 "lekar@gmail.com" : "000"
+"milospetroviclekar@gmail.com", lekarlekar, miloslekar
  "zzoric@gmail.com": "000000"
  "ana@gmail.com" : "anajovanovic"
 
 Medicinska Sestra:
 "sestratvoja@gmail.com" : "999"
+
+Admin klinike:
+   petar.kovacevic0088@gmail.com : adminklinike

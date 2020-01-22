@@ -70,6 +70,7 @@
                     <mat-header-row *matHeaderRowDef="lekariColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: lekariColumns;"></mat-row>
                 </table>
+                <button mat-raised-button color="primary" [routerLink]="['/adminklinike/zahtevizaodsustvo']" style="margin-top: 2%; width: 100%;">Zahtevi osoblja za odsustvo</button>
                </div>
 
                 <div>
@@ -145,6 +146,7 @@
                         <mat-row *matRowDef="let row; columns: preglediColumns;"></mat-row>
                     </table>
                     <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator>
+                    <button mat-raised-button color="primary" style="width: 100%;" [routerLink]="['/adminklinike/pregledinacekanju']">Pregledi na cekanju</button>
                 </div>
                 
     

@@ -26,5 +26,7 @@ public class TipPregleda {
     private boolean aktivan;
     @Column(name = DbColumnConstants.TIP_PREGLEDA_TEKST)
     private String tipPregleda;
+    @Column(name = DbColumnConstants.TIP_PREGLEDA_KLINIKA_ID)
+    private int klinikaId;
 
 }
