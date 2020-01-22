@@ -11,58 +11,58 @@
     <div class="container col-xs-12 col-md-8 col-md-offset-3">
       <div class="jumbotron">
         <div class="text-center">
-          <h1>Registrujte administratora klinike</h1>
+          <div class="mat-display-2">Dodavanje administratora klinike</div>
         </div>
-
         <div class="alert alert-danger" *ngIf="errorStatus" style="text-align: center">
-          <h4>{{errorStatus}}</h4>
+          <div class="mat-display-1">{{errorStatus}}</div>
         </div>
-        <div *ngIf="isLoading" style="text-align: center">
-          <app-loading-spinner></app-loading-spinner>
-        </div>
+        <form name="form" class="my-form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()">
+  
+          <mat-form-field class="full-width">
+            <mat-label>Ime</mat-label>
+            <input class="input" type="text" id="ime" name="ime" [(ngModel)]="model.ime" matInput required>
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+            <mat-label>Prezime</mat-label>
+            <input class="input" type="text" id="prezime" name="prezime" [(ngModel)]="model.prezime" matInput required>
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+            <mat-label>Email</mat-label>
+            <input class="input" type="email" id="email" name="email" [(ngModel)]="model.email" matInput required email>
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+            <mat-label>Lozinka</mat-label>
+            <input class="input" type="password" id="lozinka" name="lozinka" [(ngModel)]="model.lozinka" matInput
+              required minlength="6">
+            <mat-hint>Minimalno 6 karaktera</mat-hint>
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+            <mat-label>Potvrdite unetu lozinku</mat-label>
+            <input class="input" type="password" id="lozinkaPonovo" name="lozinkaPonovo" [(ngModel)]="lozinkaPonovo"
+              matInput required minlength="6">
+            <mat-hint>Lozinke se moraju poklapati</mat-hint>
+          </mat-form-field>
 
-        <form name="form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
-
-          <div class="form-group">
-            <label for="ime">Ime</label>
-            <input type="text" id="ime" class="form-control" name="ime"  required>
-          </div>
-
-          <div class="form-group">
-            <label for="prezime">Prezime</label>
-            <input type="text" id="prezime" class="form-control" name="ime"  required>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" class="form-control" name="email" required>
-          </div>
-
-          <div class="form-group">
-            <label for="lozinka">Lozinka</label>
-            <input type="password" id="lozinka" class="form-control" name="lozinka" required>
-          </div>
-
-          <div class="form-group">
-            <label for="lozinkaPonovo">Potvrdite unetu lozinku</label>
-            <input type="password" id="lozinkaPonovo" class="form-control" name="lozinkaPonovo" required>
-          </div>
-          <div class="form-group">
-            <label for="sel1">Odaberite kliniku</label>
-            <select class="form-control" id="sel1">
-              <option *ngFor="let klinika of klinike">{{klinika.naziv}}</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary pull-left" [disabled]="!f.valid"  routerLink="/adminkc">
+          <mat-form-field class="full-width" >
+            <mat-label style="margin-bottom: 30px;">Koje klinike ce admin biti</mat-label>
+            <mat-select required name="klinika"  [(ngModel)]="model.id_klinike">
+                <mat-option *ngFor="let klinika of klinike" value={{klinika.id}}>
+                    {{klinika.naziv}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+  
+          <button type="submit" mat-raised-button color="primary" class="pull-left" [disabled]="!f.valid">
             <i class="fa fa-user-plus"></i>
-            <span> Registrujte Admina klinike</span>
+            <span> Dodaj admina klinike</span>
           </button>
-
-
-          <button type="button" class="btn btn-light pull-right" routerLink="/adminkc">
-            <i class="fa fa-sign-in"></i>
-            <span> Vratite se</span>
-          </button>
-
+  
+          <button type="button" mat-stroked-button class="pull-right" routerLink="/adminklinike">Nazad</button>
         </form>
       </div>
     </div>

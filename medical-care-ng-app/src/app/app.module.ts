@@ -45,6 +45,8 @@ import { PacijentServiceComponent } from './services/pacijent-service/pacijent-s
 import { PacijentDetaljnijeComponent } from './lekar/pacijent-detaljnije/pacijent-detaljnije.component';
 import { PreglediNaCekanjuComponent } from './admin-klinike/pregledi-na-cekanju/pregledi-na-cekanju.component';
 import { ZahteviZaOdsustvoComponent } from './admin-klinike/zahtevi-za-odsustvo/zahtevi-za-odsustvo.component';
+import { MedicinskaSestraReceptiComponent } from './medicinska-sestra-recepti/medicinska-sestra-recepti.component';
+import { RazlogOdbijanjaZahtevaComponent } from './razlog-odbijanja-zahteva/razlog-odbijanja-zahteva.component';
 
 
 
@@ -69,6 +71,7 @@ const appRouts: Routes = [
   { path: 'lekar/kalendar', component : RadniKalendarComponent},
   { path: 'lekar/pacijent', component : PacijentDetaljnijeComponent},
   { path: 'medsestra', component: MedicinskaSestraComponent },
+  { path: 'medsestra/svirecepti', component : MedicinskaSestraReceptiComponent},
   { path: 'adminkc', component : AdminKcComponent},
   { path: 'registracija-admina', component : RegistracijaAdminaKlinikeComponent},
   { path: 'registracija-klinike', component : RegistracijaKlinikeComponent},
@@ -128,6 +131,6 @@ const appRouts: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [SalaDialogComponent, LekarDialogComponent],
+  entryComponents: [SalaDialogComponent, LekarDialogComponent,RazlogOdbijanjaZahtevaComponent],
 })
 export class AppModule { }

@@ -6,70 +6,64 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
 
 <title>Admin</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <a class="navbar-brand" href="#">ADMINISTRATOR KLICKOG CENTRA</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button> 
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-      <a class="nav-item nav-link" [routerLink]="['/registracija-klinike']">Registruj Kliniku</a>
-      <a class="nav-item nav-link" [routerLink]="['/registracija-admina']">Registruj Administratora</a>
-      <a class="nav-item nav-link disabled" href="#">Sifarnik Dijagnoza</a>
+  <mat-toolbar color="primary" class="navbar">
+    <div>Medical Care</div>
+    <div>
+      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/registracija-klinike']">Registruj kliniku</a></span>
+      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/registracija-admina']">Registruj admina klinike</a></span>
+      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/adminkc']">Pocetna strana</a></span>
     </div>
-  </div>
-</nav>
+  </mat-toolbar>
   <div class="container">
     <div class="jumbotron">
       <div class="text-center">
-        <div class = "header">Lista zahteva za registraciju:</div>
+        <h2 class="mat-display-1">Zahtevi za registraciju</h2>
 
-        <table class="table" *ngIf="postojiModel">
-          
-          <thead thead-dark>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Ime</th>
-              <th scope="col">Prezime</th>
-              <th scope="col">Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let zahtev of models; let i = index">
-            <ng-container *ngIf="zahtev.aktivan">
-              <th scope="row">{{i + 1}}</th>
-              <td> {{zahtev.ime}} </td>
-              <td>{{zahtev.prezime}}</td>
-              <td>{{zahtev.email}}</td>
-              <td>
-                  <button type="button" class="btn btn-success" (click) = "prihvatiZahtev(zahtev)">Prihvati</button>
-              </td>
-              <td>
-                  <button type="button" class="btn btn-danger"  (click) = "odbijZahtev(zahtev)">Odbij</button>
-              </td>
-            </ng-container>
-            </tr>
-          </tbody>
-        </table>
 
+      <table mat-table [dataSource] = "models" class="mat-elevation-z8" *ngIf = "postojiModel">
+        <ng-container matColumnDef="ime">
+          <th mat-header-cell *matHeaderCellDef> Ime </th>
+          <td mat-cell *matCellDef="let zahtev"> {{zahtev.ime}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="prezime">
+          <th mat-header-cell *matHeaderCellDef> Prezime </th>
+          <td mat-cell *matCellDef="let zahtev"> {{zahtev.prezime}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> Email </th>
+          <td mat-cell *matCellDef="let zahtev"> {{zahtev.email}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="Status">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let zahtev" style="padding-left: 10%;">
+              <button mat-mini-fab color="primary" (click)="prihvatiZahtev(zahtev)" matTooltip="Prihvati zahtev">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+              </button>
+              <button mat-mini-fab color="warn" (click)="odbijZahtev(zahtev)" matTooltip="Odbij zahtev">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </mat-cell>
+      </ng-container>
+        
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+      </table>
       </div>
     </div>
+    </div>
     <div class="container">
-      <button class="btn btn-primary pull-left" (click)="getTest()"> Napravi sifarnik dijagnoza</button>
-      <button class="btn btn-primary pull-right" [routerLink]="['/login']">Odjavite se</button>
+      <button mat-raised-button color="primary" (click)="getTest()"> Napravi sifarnik dijagnoza</button>
+      <button class="btn btn-primary pull-right" mat-raised-button color="primary" [routerLink]="['/login']">Odjavite se</button>
     </div>
 
-
-  </div>
 
 </body>
 </html>

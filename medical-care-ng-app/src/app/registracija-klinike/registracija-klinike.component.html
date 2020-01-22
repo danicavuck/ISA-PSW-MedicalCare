@@ -5,77 +5,77 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
   <title>Registracija klinike</title>
 </head>
   <body>
     <div class="container col-xs-12 col-md-8 col-md-offset-3">
       <div class="jumbotron">
         <div class="text-center">
-          <h1>Registrujte kliniku</h1>
+          <div class="mat-display-2">Dodavanje klinike</div>
         </div>
-
         <div class="alert alert-danger" *ngIf="errorStatus" style="text-align: center">
-          <h4>{{errorStatus}}</h4>
+          <div class="mat-display-1">{{errorStatus}}</div>
         </div>
-        <div *ngIf="isLoading" style="text-align: center">
-          <app-loading-spinner></app-loading-spinner>
-        </div>
-
-        <form name="form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
-
-          <div class="form-group">
-            <label for="naziv">Naziv</label>
-            <input type="text" id="naziv" class="form-control" name="naziv"  [(ngModel)]="model.naziv" required>
-          </div>
-          <div class="form-group">
-            <label for="adresaPrebivalista">Adresa</label>
-            <input type="text" id="adresa" class="form-control" name="adresa"  [(ngModel)]="model.adresa" required>
-          </div>
-
-          <div class="form-group">
-            <label for="grad">Opis</label>
-            <input type="text" id="opis" class="form-control" name="opis"   [(ngModel)]="model.opis" required>
-          </div>
+        <form name="form" class="my-form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()">
+  
+          <mat-form-field class="full-width">
+            <mat-label>Naziv</mat-label>
+            <input class="input" type="text" id="naziv" name="naziv" [(ngModel)]="model.naziv" matInput required>
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+            <mat-label>Adresa</mat-label>
+            <input class="input" type="text" id="adresa" name="adresa" [(ngModel)]="model.adresa" matInput required>
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+            <mat-label>Opis</mat-label>
+            <input class="input" type="text" id="opis" name="opis" [(ngModel)]="model.opis" matInput required>
+          </mat-form-field>
+  
           
-          <div class = "form-group">
-          <label for="lekari">Odaberite lekare</label>
-          <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" [(ngModel)] = "model.selLekari" >
-          <option *ngFor="let lekar of lekari; let i = index">{{lekar.ime}} {{lekar.prezime}}</option>
-          </select><!-- End -->
-        </div>
-           <div class = "form-group">
-            <label for="sestre">Odaberite medicinske sestre</label>
-            <!-- Multiselect dropdown -->
-            <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" [(ngModel)] = "model.selSestre">
-             <option *ngFor="let sestra of sestre; let i = index">{{sestra.ime}} {{sestra.prezime}}</option>
-             </select><!-- End -->
-           </div>
-           <div class = "form-group">
-              <label for="sale">Odaberite sale</label>
-              <!-- Multiselect dropdown -->
-              <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" [(ngModel)] = "model.selSale" >
-               <option *ngFor="let sala of sale; let i = index">{{sala.brojSale}}</option>   
-               </select><!-- End -->
-             </div>
-             <div class = "form-group">
-              <label for="admini">Odaberite admine klinike</label>
-              <!-- Multiselect dropdown -->
-              <select multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100" [(ngModel)] = "model.selAdmini">
-               <option *ngFor="let admin of admini; let i = index">{{admin.ime}} {{admin.prezime}}</option>
-              </select><!-- End -->
-               </div>
-          <button type="submit" class="btn btn-primary pull-left" [disabled]="!f.valid" routerLink="/adminkc">
+          <mat-form-field class="full-width" >
+            <mat-label style="margin-bottom: 30px;">Lekari</mat-label>
+            <mat-select required name="lekar" multiple [(ngModel)]="model.selLekari" >
+                <mat-option *ngFor="let lekar of lekari" value={{lekar.id}}>
+                    {{lekar.ime}} {{lekar.prezime}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" >
+            <mat-label style="margin-bottom: 30px;">Medicinske sestre</mat-label>
+            <mat-select required name="sestra" multiple [(ngModel)]="model.selSestre"  >
+                <mat-option *ngFor="let sestra of sestre" value={{sestra.id}}>
+                    {{sestra.ime}} {{sestra.prezime}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="full-width" >
+            <mat-label style="margin-bottom: 30px;">Sale</mat-label>
+            <mat-select required name="sala" multiple [(ngModel)]="model.selSale" >
+                <mat-option *ngFor="let sala of sale" value={{sala.id}}>
+                    {{sala.brojSale}} 
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" >
+            <mat-label style="margin-bottom: 30px;">Admini</mat-label>
+            <mat-select required name="admin" multiple [(ngModel)]="model.selAdmini" >
+                <mat-option *ngFor="let admin of admini" value={{admin.id}}>
+                    {{admin.ime}} {{admin.prezime}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+  
+          <button type="submit" mat-raised-button color="primary" class="pull-left" [disabled]="!f.valid">
             <i class="fa fa-user-plus"></i>
-            <span> Registrujte kliniku</span>
+            <span> Dodaj admina klinike</span>
           </button>
-
-
-          <button type="button" class="btn btn-light pull-right" routerLink="/adminkc">
-            <i class="fa fa-sign-in"></i>
-            <span> Vratite se</span>
-          </button>
-
+  
+          <button type="button" mat-stroked-button class="pull-right" routerLink="/adminklinike">Nazad</button>
         </form>
       </div>
     </div>

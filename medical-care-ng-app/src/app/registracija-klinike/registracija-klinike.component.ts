@@ -9,14 +9,14 @@ import { Router } from '@angular/router';
 })
 export class RegistracijaKlinikeComponent implements OnInit {
   
-  model : KlinikaDTO = {
+  model : KlinikaBazicnoDTO = {
     naziv : "",
     adresa : "",
     opis : "",
-    selLekari : "",
-    selSestre : "",
-    selSale : "",
-    selAdmini: ""
+    selLekari : [],
+    selSestre : [],
+    selSale : [],
+    selAdmini: []
   };
 
   lekari : Set<LekarDTO>;
@@ -39,31 +39,42 @@ export class RegistracijaKlinikeComponent implements OnInit {
     this.isLoading = true;
     console.log(this.model);
 
-      // let apiEndpoint = "http://localhost:8080/adminkc/dodajKliniku";
-      
-      // this.http.post(apiEndpoint, this.model,
-      //   {responseType: 'text'}).subscribe( data => {
-      //   setTimeout(() =>
-      //   {
-      //     this.router.navigateByUrl('/adminkc');
-      //     this.isLoading = false;
-      //   },2000);
-      // }, err =>{
-      //   setTimeout(()=>{
-      //     this.isLoading = false;
-      //     switch (err.error) {
-      //       case 'Klinika sa tim nazivom vec postoji':
-      //         this.errorStatus = "Klinika s tim nazivom vec postoji";
-      //         break;
-      //       case 'Internal server error':
-      //         this.errorStatus = "Greska na serverskoj strani";
-      //         break;
-      //       default: this.errorStatus = "Greska pri registraciji";
-      //     }
-      //   },1000);
-
-      // });
+    if(this.isFormValid()){
+      let apiEndpoint = "http://localhost:8080/klinika/dodajKliniku";
     
+      this.http.post(apiEndpoint, this.model,
+        {responseType: 'text'}).subscribe( data => {
+        setTimeout(() =>
+        {
+          this.router.navigateByUrl('/adminkc');
+          this.isLoading = false;
+        },2000);
+      }, err =>{
+        setTimeout(()=>{
+          this.isLoading = false;
+          switch (err.error) {
+            case 'Klinika sa tim nazivom vec postoji':
+              this.errorStatus = "Klinika s tim nazivom vec postoji";
+              break;
+            case 'Internal server error':
+              this.errorStatus = "Greska na serverskoj strani";
+              break;
+            default: this.errorStatus = "Greska pri registraciji";
+          }
+        },1000);
+
+      });
+    }
+    
+  }
+
+  isFormValid() {
+    // tslint:disable-next-line: max-line-length
+    if (this.model.naziv !== '' && this.model.adresa !== '' && this.model.opis !== '') {
+      return true;
+    }
+
+    return false;
   }
 
   async getLekari(){
@@ -103,7 +114,7 @@ async getSale(){
 
 }
 async getAdmini(){
-  const apiEndPoint = 'http://localhost:8080/klinika/lekari';
+  const apiEndPoint = 'http://localhost:8080/klinika/admini';
   
  this.http.get(apiEndPoint,{responseType : 'json'})
  .subscribe((data) => {
@@ -120,28 +131,32 @@ async getAdmini(){
 
 
 export interface LekarDTO{
+  id : number;
   ime : string,
   prezime : string;
 }
 export interface MedicinskaSestraDTO{
+  id : number;
   ime : string,
   prezime : string;
 }
 
 export interface SalaDTO{
+ id : number;
  brojSale: number;
 }
 export interface AdminKlinikeDTO{
+  id : number;
   ime : string,
   prezime : string;
 }
 
-export interface KlinikaDTO{
+export interface KlinikaBazicnoDTO{
   naziv : string;
   adresa : string;
   opis : string;
-  selLekari : string;
-  selSestre : string;
-  selSale : string;
-  selAdmini : string;
+  selLekari : Array<number>;
+  selSestre : Array<number>;
+  selSale : Array<number>;
+  selAdmini : Array<number>;
 }

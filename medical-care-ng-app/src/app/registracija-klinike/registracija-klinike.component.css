@@ -1,5 +1,13 @@
 
-
+.my-form{
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+   
+  .full-width {
+    width: 100%;
+  }
 .bootstrap-select .bs-ok-default::after {
     width: 0.3em;
     height: 0.6em;
