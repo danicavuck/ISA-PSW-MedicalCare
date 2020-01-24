@@ -47,6 +47,13 @@ import { PreglediNaCekanjuComponent } from './admin-klinike/pregledi-na-cekanju/
 import { ZahteviZaOdsustvoComponent } from './admin-klinike/zahtevi-za-odsustvo/zahtevi-za-odsustvo.component';
 import { MedicinskaSestraReceptiComponent } from './medicinska-sestra-recepti/medicinska-sestra-recepti.component';
 import { RazlogOdbijanjaZahtevaComponent } from './razlog-odbijanja-zahteva/razlog-odbijanja-zahteva.component';
+import { RazlogOdbijanjaServiceComponent } from './services/razlog-odbijanja-service/razlog-odbijanja-service.component';
+import { AdminkcSifarnikDijagnozaComponent } from './admin-kc/adminkc-sifarnik-dijagnoza/adminkc-sifarnik-dijagnoza.component';
+import { AdminkcSifarnikLekovaComponent } from './admin-kc/adminkc-sifarnik-lekova/adminkc-sifarnik-lekova.component';
+import { DodajDijagnozuComponent } from './admin-kc/adminkc-sifarnik-dijagnoza/dodaj-dijagnozu/dodaj-dijagnozu.component';
+import { DijagnozaServiceComponent } from './services/dijagnoza-service/dijagnoza-service.component';
+import { DodajLekComponent } from './admin-kc/adminkc-sifarnik-lekova/dodaj-lek/dodaj-lek.component';
+import { LekServiceComponent } from './services/lek-service/lek-service.component';
 
 
 
@@ -73,8 +80,10 @@ const appRouts: Routes = [
   { path: 'medsestra', component: MedicinskaSestraComponent },
   { path: 'medsestra/svirecepti', component : MedicinskaSestraReceptiComponent},
   { path: 'adminkc', component : AdminKcComponent},
-  { path: 'registracija-admina', component : RegistracijaAdminaKlinikeComponent},
-  { path: 'registracija-klinike', component : RegistracijaKlinikeComponent},
+  { path: 'adminkc/registracija-admina', component : RegistracijaAdminaKlinikeComponent},
+  { path: 'adminkc/registracija-klinike', component : RegistracijaKlinikeComponent},
+  { path: 'adminkc/sifarnik-dijagnoza', component:AdminkcSifarnikDijagnozaComponent},
+  { path: 'adminkc/sifarnik-lekova',component: AdminkcSifarnikLekovaComponent},
   { path: '', redirectTo : '/login', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent },
 ];
@@ -114,6 +123,15 @@ const appRouts: Routes = [
     PacijentDetaljnijeComponent,
     PreglediNaCekanjuComponent,
     ZahteviZaOdsustvoComponent,
+    MedicinskaSestraReceptiComponent,
+    RazlogOdbijanjaZahtevaComponent,
+    RazlogOdbijanjaServiceComponent,
+    AdminkcSifarnikDijagnozaComponent,
+    AdminkcSifarnikLekovaComponent,
+    DodajDijagnozuComponent,
+    DijagnozaServiceComponent,
+    DodajLekComponent,
+    LekServiceComponent,
   ],
   imports: [
     BrowserModule,
@@ -131,6 +149,6 @@ const appRouts: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [SalaDialogComponent, LekarDialogComponent,RazlogOdbijanjaZahtevaComponent],
+  entryComponents: [SalaDialogComponent, LekarDialogComponent,RazlogOdbijanjaZahtevaComponent,DodajDijagnozuComponent,DodajLekComponent],
 })
 export class AppModule { }

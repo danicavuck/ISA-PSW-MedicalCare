@@ -26,8 +26,12 @@ public class MedicinskaSestraController {
     private Authorization authorization;
     private String[] role = {"med_sestra"};
 
+    @Autowired
+    public MedicinskaSestraController(Authorization authorization){this.authorization = authorization;}
+
     @RequestMapping(value = "/recepti", method = RequestMethod.GET)
     public ResponseEntity<?> getRecepti() {
+
         List<ReceptDTO> temp = receptService.getAllActive();
 
         return new ResponseEntity<>(temp, HttpStatus.OK);

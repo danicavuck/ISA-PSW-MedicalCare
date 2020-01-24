@@ -4,6 +4,7 @@ import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { MatDialog, MatDialogConfig,MatDialogRef } from '@angular/material';
 import { RazlogOdbijanjaZahtevaComponent } from '../razlog-odbijanja-zahteva/razlog-odbijanja-zahteva.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { RazlogOdbijanjaServiceComponent } from '../services/razlog-odbijanja-service/razlog-odbijanja-service.component';
 
 
 
@@ -20,53 +21,21 @@ export class AdminKcComponent implements OnInit {
   private models : Array<RegistracijaPacijentaDTO>;
   private model : RegistracijaPacijentaDTO;
 
-  private poruka : string;
  
   private temp : RegistracijaPacijentaDTO
   private postojiModel = false;
   private admin : LoginViewModel;
   private columnsToDisplay: string[] = ['ime','prezime','email','Status'];
 
-  private formBuilder: FormBuilder;
-  private dialogRef: MatDialogRef<RazlogOdbijanjaZahtevaComponent>;
-  private form: FormGroup;
 
 
-
-
-  constructor(private router: Router, private http: HttpClient, public dialog: MatDialog ) { }
-  save() {
-    this.dialogRef.close(this.form.value);
-}
-
-close() {
-    this.dialogRef.close();
-  }
-
-  openDialog() {
-
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-
-  
-    const dialogRef = this.dialog.open(RazlogOdbijanjaZahtevaComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(value => {
-      console.log(`Dialog sent: ${value}`); 
-    });
-  }
-
+  constructor(private dataService : RazlogOdbijanjaServiceComponent,private router: Router, private http: HttpClient, public dialog: MatDialog ) { }
 
 
   ngOnInit() {
      this.getZahtevi();
      
   }
-
-
-
 
   async getZahtevi(){
     const apiEndPoint = 'http://localhost:8080/adminkc/zahtevi';
@@ -87,15 +56,11 @@ close() {
 async prihvatiZahtev(model:RegistracijaPacijentaDTO){
   const url = 'http://localhost:8080/adminkc/prihvatiZahtev';
   
-  console.log('prihvacen')
-  model.aktivan = false;
-  
-  this.http.put(url,model.id)
+  this.http.put(url,model, { withCredentials: true })
   .subscribe((data) => {
-   
   },err => {
-    console.log('greska pri prihvatanju');
-    console.log(err);
+    this.ngOnInit();
+    console.log(err)
   });
 
  
@@ -104,18 +69,28 @@ async prihvatiZahtev(model:RegistracijaPacijentaDTO){
 async odbijZahtev(model:RegistracijaPacijentaDTO){
   const url = 'http://localhost:8080/adminkc/odbijZahtev';
   
-    this.openDialog();
+  const dialogConfig = new MatDialogConfig();
 
-    
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = true;
 
-    // this.http.put(url,model.id)
-    // .subscribe((data) => {
-    
-    // },err => {
-    // console.log('greska pri odbijanju');
-    // console.log(err);
-    // });
+
+  const dialogRef = this.dialog.open(RazlogOdbijanjaZahtevaComponent, dialogConfig);
+
+  dialogRef.afterClosed().subscribe(value => {
+    if(value == true){
+      model.poruka = this.dataService.getData().razlog;
+      this.http.put(url,model,{ withCredentials: true })
+    .subscribe((data) => {
+     
+    },err => {
+    this.ngOnInit();
+    });
   
+    }
+  });
+
+    
 
 }
 

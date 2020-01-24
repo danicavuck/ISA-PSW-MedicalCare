@@ -17,5 +17,6 @@ public class RegistracijaPacijentaDTO {
     private String email;
     private boolean aktivan;
     private boolean odobren = false;
+    private String poruka;
 
 }

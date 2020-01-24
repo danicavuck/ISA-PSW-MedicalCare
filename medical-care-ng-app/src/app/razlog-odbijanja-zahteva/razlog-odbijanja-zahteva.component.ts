@@ -1,6 +1,7 @@
 //app.component.ts
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { RazlogOdbijanjaServiceComponent } from '../services/razlog-odbijanja-service/razlog-odbijanja-service.component';
 
 
 @Component({
@@ -10,9 +11,23 @@ import { MatDialog } from '@angular/material';
 })
 export class RazlogOdbijanjaZahtevaComponent implements OnInit {
 
+  private data : Data = {
+    razlog : ""
+  };
 
-  constructor() { }
+  constructor(private dataService : RazlogOdbijanjaServiceComponent) { }
 
   ngOnInit() {
   }
+
+  async onSubmit() {
+    console.log(this.data);
+    this.dataService.setData(this.data);
+
+  }
 };
+
+
+export interface Data {
+  razlog : string;
+}

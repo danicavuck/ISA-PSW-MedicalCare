@@ -36,6 +36,12 @@ public class KlinikaController {
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
+    @GetMapping("/klinikeSve")
+    public ResponseEntity<?> getKlinikeSve(HttpSession session) {
+
+        ArrayList<KlinikaDTO> klinike = KlinikaService.getKlinikeSve(session);
+        return new ResponseEntity<>(klinike, HttpStatus.OK);
+    }
 
     @GetMapping("/lekari")
     public ResponseEntity<?> getLekari() {

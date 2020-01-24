@@ -14,9 +14,10 @@
   <mat-toolbar color="primary" class="navbar">
     <div>Medical Care</div>
     <div>
-      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/registracija-klinike']">Registruj kliniku</a></span>
-      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/registracija-admina']">Registruj admina klinike</a></span>
-      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/adminkc']">Pocetna strana</a></span>
+      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['registracija-klinike']">Registruj kliniku</a></span>
+      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['registracija-admina']">Registruj admina klinike</a></span>
+      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['sifarnik-dijagnoza']">Sifarnik dijagnoza</a></span>
+      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['sifarnik-lekova']">Sifarnik lekova</a></span>
     </div>
   </mat-toolbar>
   <div class="container">
@@ -60,7 +61,7 @@
     </div>
     </div>
     <div class="container">
-      <button mat-raised-button color="primary" (click)="getTest()"> Napravi sifarnik dijagnoza</button>
+ 
       <button class="btn btn-primary pull-right" mat-raised-button color="primary" [routerLink]="['/login']">Odjavite se</button>
     </div>
 
