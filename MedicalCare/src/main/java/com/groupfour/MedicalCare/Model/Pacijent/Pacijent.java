@@ -49,6 +49,8 @@ public class Pacijent {
     private String brojTelefona;
     @Column(name = DbColumnConstants.PACIJENT_BROJOSIGURANJA)
     private String brojOsiguranja;
+    @Column(name = DbColumnConstants.PACIJENT_PRVO_LOGOVANJE)
+    private boolean prvoLogovanje;
 
     @ManyToMany
     @JoinTable(
