@@ -50,7 +50,7 @@ public class LekarController {
         {
             return LekarService.dodavanjeNovogLekara(dodavanjeLekaraDTO, session);
         }
-        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("null", HttpStatus.UNAUTHORIZED);
     }
 
     @PutMapping

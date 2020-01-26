@@ -11,4 +11,5 @@ import java.util.ArrayList;
 public interface PregledRepository extends JpaRepository<Pregled, Integer> {
     ArrayList<Pregled> findAll();
     ArrayList<Pregled> findPregledBySala(Sala sala);
+    Pregled findPregledById(int id);
 }

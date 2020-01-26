@@ -20,6 +20,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -66,7 +67,7 @@ public class PregledService {
         if(klinikaId != -1)
         {
             for (Pregled p : pregledi) {
-                if(p.getSala().getKlinika().getId() == klinikaId)
+                if(p.getSala().getKlinika().getId() == klinikaId && p.isAktivan())
                     preglediDTO.add(mapirajPregledDTO(p));
             }
             return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
@@ -95,7 +96,7 @@ public class PregledService {
     public static PregledDTO mapirajPregledDTO(Pregled pregled) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
         PregledDTO pregledDTO =
-                PregledDTO.builder().trajanjePregleda(pregled.getTrajanjePregleda()).cena(pregled.getCena()).popust(pregled.getPopust()).sala(pregled.getSala().getNazivSale()).tipPregleda(pregled.getTipPregleda().getTipPregleda()).build();
+                PregledDTO.builder().trajanjePregleda(pregled.getTrajanjePregleda()).cena(pregled.getCena()).popust(pregled.getPopust()).sala(pregled.getSala().getId()).tipPregleda(pregled.getTipPregleda().getTipPregleda()).id(pregled.getId()).build();
         Set<Lekar> lekari = pregled.getLekari();
 
         logger.info("Lekari pocetak termina kraj termina i ostalo:\n"+ lekari.toString());
@@ -116,27 +117,32 @@ public class PregledService {
         return pregledDTO;
     }
 
-    public static void kreirajNoviPregled(PregledDTO pregledDTO) {
+    public static ResponseEntity<?> kreirajNoviPregled(PregledDTO pregledDTO) {
         TipPregleda tipPregleda = tipPregledaRepository.findByTipPregleda(pregledDTO.getTipPregleda());
-        Sala sala = salaRepository.findByNazivSale(pregledDTO.getSala());
+        Sala sala = salaRepository.findById(pregledDTO.getSala());
         Lekar lekar = lekarRepository.findLekarById(pregledDTO.getLekar());
-        int popust = pregledDTO.getPopust();
-        int cena = pregledDTO.getCena();
-        int trajanje = pregledDTO.getTrajanjePregleda();
-        LocalDateTime datumVreme = pregledDTO.getDatumVreme();
+        if(tipPregleda != null && sala != null && lekar != null){
+            int popust = pregledDTO.getPopust();
+            int cena = pregledDTO.getCena();
+            int trajanje = pregledDTO.getTrajanjePregleda();
+            LocalDateTime datumVreme = pregledDTO.getDatumVreme();
+            int pocetakTermina = datumVreme.getHour();
+            int krajTermina = datumVreme.plusMinutes(trajanje).getHour();
 
-        Pregled pregled = Pregled.builder().aktivan(true).cena(cena).popust(popust).sala(sala).tipPregleda(tipPregleda).trajanjePregleda(trajanje).terminPregleda(datumVreme).build();
+            if(lekar.getPocetakRadnogVremena() < pocetakTermina && lekar.getKrajRadnogVremena() > krajTermina)
+            {
+                Pregled pregled = Pregled.builder().aktivan(true).cena(cena).popust(popust).sala(sala).tipPregleda(tipPregleda).trajanjePregleda(trajanje).terminPregleda(datumVreme).build();
 
-        System.out.println(pregled);
+                pregledRepository.save(pregled);
+                lekar.dodajPregled(pregled);
+                lekarRepository.save(lekar);
+                return new ResponseEntity<>("Uspesno dodavanje pregleda", HttpStatus.CREATED);
+            }
 
-        // Rucno cu cuvati entitete jer Cascading nije cuvao polja za pregled kada sam ga dodavao kroz lekara
-        pregledRepository.save(pregled);
-        lekar.dodajPregled(pregled);
-        lekarRepository.save(lekar);
-
+        }
+        return new ResponseEntity<>("Nije moguce dodati pregled datom lekaru", HttpStatus.FORBIDDEN);
     }
 
-    // Pretpostavka za LekarID = 1, kao i za klinikaId = 5
     public static ResponseEntity<?> zapocniNoviPregled(PregledDTO pregledDTO, HttpSession session) {
         int[] klinikaIdLekarID = nadjiIdKlinike(session);
         if(klinikaIdLekarID[0] != -1 && klinikaIdLekarID[1] != -1)
@@ -236,6 +242,17 @@ public class PregledService {
                 return admin;
         }
         return null;
+    }
+
+    public static ResponseEntity<?> obrisiPregled(PregledDTO pregledDTO){
+        Pregled pregled = pregledRepository.findPregledById(pregledDTO.getId());
+        if(pregled != null)
+        {
+            pregled.setAktivan(false);
+            pregledRepository.save(pregled);
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
 }

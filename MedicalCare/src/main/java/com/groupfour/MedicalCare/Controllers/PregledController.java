@@ -34,6 +34,16 @@ public class PregledController {
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> obrisiPregled(@RequestBody PregledDTO pregledDTO, HttpSession session){
+        String[] adminKlinike = {"adminklinike"};
+        if(authorization.hasPermisson(session, adminKlinike))
+        {
+            return PregledService.obrisiPregled(pregledDTO);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
     @GetMapping(value = "/pacijent/{pacijentId}")
     public ResponseEntity<?> dobavliPregledeZaPacijenta(@PathVariable(value = "pacijentId") Integer pacijentId,
                                                         HttpSession session) {
@@ -45,9 +55,8 @@ public class PregledController {
     }
 
     @PostMapping
-    public ResponseEntity<String> kreirajNoviPregled(@RequestBody PregledDTO pregledDTO) {
-        PregledService.kreirajNoviPregled(pregledDTO);
-        return new ResponseEntity<>(pregledDTO.toString(), HttpStatus.CREATED);
+    public ResponseEntity<?> kreirajNoviPregled(@RequestBody PregledDTO pregledDTO) {
+        return PregledService.kreirajNoviPregled(pregledDTO);
     }
 
     @PostMapping(value = "/zapocni")

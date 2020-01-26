@@ -102,7 +102,21 @@ public class LekarService {
         Klinika klinika = klinikaRepository.findById(idKlinike);
         if(klinika != null)
         {
-            return Lekar.builder().ime(dodavanjeLekaraDTO.getIme()).prezime(dodavanjeLekaraDTO.getPrezime()).lozinka(PasswordCheck.hash(dodavanjeLekaraDTO.getLozinka())).email(dodavanjeLekaraDTO.getEmail()).aktivan(true).klinika(klinika).prvoLogovanje(true).build();
+            Lekar lekar =
+                    Lekar.builder().ime(dodavanjeLekaraDTO.getIme()).prezime(dodavanjeLekaraDTO.getPrezime()).lozinka(PasswordCheck.hash(dodavanjeLekaraDTO.getLozinka())).email(dodavanjeLekaraDTO.getEmail()).aktivan(true).klinika(klinika).prvoLogovanje(true).build();
+            try {
+                String pocetak = dodavanjeLekaraDTO.getRadnoVreme();
+                String[] parsiranje = pocetak.split("-");
+                int pocetakTermina = Integer.parseInt(parsiranje[0]);
+                int krajTermina = Integer.parseInt(parsiranje[1]);
+                lekar.setPocetakRadnogVremena(pocetakTermina);
+                lekar.setKrajRadnogVremena(krajTermina);
+            } catch (Exception e)
+            {
+                logger.error("Neuspesno parsiranje radnog vremena");
+                return null;
+            }
+            return  lekar;
         }
         logger.error("Klinika nije pronadjena!");
         return null;

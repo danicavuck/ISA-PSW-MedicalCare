@@ -11,5 +11,5 @@ import java.util.ArrayList;
 public interface SalaRepository extends JpaRepository<Sala, Integer> {
     ArrayList<Sala> findAll();
     Sala findByNazivSale(String nazivSale);
-    ArrayList<Sala> findByKlinika(Klinika klinika);
+    Sala findById(int id);
 }

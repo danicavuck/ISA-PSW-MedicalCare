@@ -59,6 +59,8 @@ public final class DbColumnConstants {
     public static final String LEKAR_KLINIKA = "klinika";
     public static final String LEKAR_AKTIVAN = "aktivan";
     public static final String LEKAR_PRVO_LOGOVANJE = "prvo_logovanje";
+    public static final String LEKAR_POCETAK = "pocetak_rv";
+    public static final String LEKAR_KRAJ = "kraj_rv";
 
     // Medicninska Sestra
     public static final String MEDICINSKA_SESTRA_ID = "id_med_sestra";
