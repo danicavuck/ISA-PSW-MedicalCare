@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+</head>
+
+<body>
+
+    <div class="container">
+     
+        <div class="jumbotron">
+            <div class="text-center">
+                <h4>Formiranje zahteva za odsustvo</h4>
+
+                <form name="form" #f="ngForm" novalidate class="pregledi-form" (ngSubmit)="onSubmit()"
+                    style="text-align: left;">
+
+                    <div class="form-group" style="margin-top: 5%;">
+                        <label for="vreme">Odaberite vremenski interval odsustva </label>
+                        <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control" readonly="true"
+                            style="background: #fff;" [(ngModel)]="odsustvo.datumVreme" name="vreme" [selectMode]="'range'" [min]="min">
+                        <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+                    </div>
+
+                    <div style="margin-bottom: 30px;">
+                        <button type="button" mat-flat-button class="pull-left"
+                            [routerLink]="['/medsestra']">Nazad</button>
+                        <button type="submit" mat-raised-button color="primary" class="pull-right"
+                            [disabled]="!f.valid">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            <span> Slanje zahteva</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
