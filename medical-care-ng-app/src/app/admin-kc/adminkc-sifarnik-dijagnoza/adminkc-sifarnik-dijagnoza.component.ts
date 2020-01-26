@@ -60,9 +60,7 @@ export class AdminkcSifarnikDijagnozaComponent implements OnInit {
     
       }
     });
-  
- 
- 
+
   }
 }
 

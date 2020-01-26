@@ -54,6 +54,7 @@ import { DodajDijagnozuComponent } from './admin-kc/adminkc-sifarnik-dijagnoza/d
 import { DijagnozaServiceComponent } from './services/dijagnoza-service/dijagnoza-service.component';
 import { DodajLekComponent } from './admin-kc/adminkc-sifarnik-lekova/dodaj-lek/dodaj-lek.component';
 import { LekServiceComponent } from './services/lek-service/lek-service.component';
+import { OdsustvaComponent } from './medicinska-sestra/odsustva/odsustva.component';
 
 
 
@@ -79,6 +80,7 @@ const appRouts: Routes = [
   { path: 'lekar/pacijent', component : PacijentDetaljnijeComponent},
   { path: 'medsestra', component: MedicinskaSestraComponent },
   { path: 'medsestra/svirecepti', component : MedicinskaSestraReceptiComponent},
+  { path: 'medsestra/odsustva', component : OdsustvaComponent},
   { path: 'adminkc', component : AdminKcComponent},
   { path: 'adminkc/registracija-admina', component : RegistracijaAdminaKlinikeComponent},
   { path: 'adminkc/registracija-klinike', component : RegistracijaKlinikeComponent},
@@ -132,6 +134,7 @@ const appRouts: Routes = [
     DijagnozaServiceComponent,
     DodajLekComponent,
     LekServiceComponent,
+    OdsustvaComponent,
   ],
   imports: [
     BrowserModule,

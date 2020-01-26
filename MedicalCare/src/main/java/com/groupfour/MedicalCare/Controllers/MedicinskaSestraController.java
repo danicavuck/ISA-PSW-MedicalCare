@@ -1,17 +1,17 @@
 package com.groupfour.MedicalCare.Controllers;
 
+import com.groupfour.MedicalCare.Model.DTO.OdsustvoDTO;
 import com.groupfour.MedicalCare.Model.DTO.ReceptDTO;
 import com.groupfour.MedicalCare.Model.Dokumenti.Recept;
+import com.groupfour.MedicalCare.Service.MedicinskaSestraService;
+import com.groupfour.MedicalCare.Service.OdsustvaService;
 import com.groupfour.MedicalCare.Service.ReceptService;
 import com.groupfour.MedicalCare.Utill.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -50,6 +50,16 @@ public class MedicinskaSestraController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @RequestMapping(value = "/dodajOdsustvo",method = RequestMethod.POST)
+    public ResponseEntity<?> dodajZahtevZaOdsustvo(@RequestBody OdsustvoDTO odsustvoDTO, HttpSession session){
+        if(authorization.hasPermisson(session,role)){
+            return MedicinskaSestraService.dodajNoviZahtevZaOdsustvoMedicinskeSestre(odsustvoDTO,session);
+        }
+
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+    }
+
 
 
 }
