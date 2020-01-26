@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div class="jumbotron" style="text-align: center;">
+    <h2 class="mat-display-1">Promena lozinke pri prvom logovanju</h2>
+    <form class="forma">
+      <mat-form-field class="full-width">
+          <mat-label>Stara lozinka</mat-label>
+          <input class="input" type="password" id="staraLozinka" name="staraLozinka" [(ngModel)]="model.staraLozinka" matInput>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+          <mat-label>Nova lozinka</mat-label>
+          <input class="input" type="password" id="novaLozinka" name="novaLozinka" [(ngModel)]="model.novaLozinka" matInput>
+          <mat-hint>Naredna polja se moraju podudarati</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+          <mat-label>Potvrda</mat-label>
+          <input class="input" type="password" id="potvrdaLozinke" name="potvrdaLozinke" [(ngModel)]="potvrdaLozinke" matInput>
+      </mat-form-field>
+      
+      <button mat-flat-button color="accent" class="pull pull-left" [routerLink]="['/login']"> Nazad</button>
+
+      <button type="submit" mat-raised-button color="primary" class="pull pull-right" (click)="izmeniPodatke()">
+          <i class="fa fa-plus"></i>
+          <span> Izmena lozinke</span>
+      </button>
+</form>
+  </div>
+</body>
+</html>

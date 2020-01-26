@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin home</title>
+</head>
+<body>
+    <app-navbar></app-navbar>
+    <div class="jumbotron" style="text-align: center;">
+        <h2 class="mat-display-1">Azuriranje licnih podataka</h2>
+            <form class="forma">
+                <mat-form-field class="full-width">
+                  <mat-label>Ime</mat-label>
+                  <input class="input" type="text" id="ime" name="ime" [(ngModel)]="model.ime" matInput required>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Prezime</mat-label>
+                    <input class="input" type="text" id="prezime" name="prezime" [(ngModel)]="model.prezime" matInput required>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input class="input" type="email" id="email" name="email" [(ngModel)]="model.email" matInput required email>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Stara lozinka</mat-label>
+                    <input class="input" type="password" id="staraLozinka" name="staraLozinka" [(ngModel)]="model.staraLozinka" matInput>
+                    <mat-hint>Naredna polja popunjavati iskljucivo ukoliko zelite da promenite lozinku</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>Nova lozinka</mat-label>
+                    <input class="input" type="password" id="novaLozinka" name="novaLozinka" [(ngModel)]="model.novaLozinka" matInput>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>Potvrda</mat-label>
+                    <input class="input" type="password" id="potvrdaLozinke" name="potvrdaLozinke" [(ngModel)]="potvrdaLozinke" matInput>
+                </mat-form-field>
+                
+                <button mat-flat-button color="accent" class="pull pull-left" [routerLink]="['/adminklinike/klinika']"> Nazad</button>
+
+                <button type="submit" mat-raised-button color="primary" class="pull pull-right" (click)="izmeniPodatke()">
+                    <i class="fa fa-plus"></i>
+                    <span> Izmena podataka</span>
+                </button>
+        </form>
+    </div>
+</body>
+</html>
