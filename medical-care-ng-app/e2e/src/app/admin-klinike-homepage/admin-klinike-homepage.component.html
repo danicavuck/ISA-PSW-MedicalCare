@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Admin</title>
+</head>
+<body>
+
+  <app-navbar></app-navbar>
+
+  <div class="container">
+    <div class="jumbotron">
+      
+      <div class="text-center">
+        <h2 class="mat-display-1">Klinika</h2>
+
+        <table mat-table [dataSource]="models" class="mat-elevation-z8" *ngIf="!filtriraj" matSort>
+          <ng-container matColumnDef="Naziv">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Naziv</mat-header-cell>
+              <mat-cell *matCellDef="let klinika"> {{klinika.naziv}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Adresa">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Adresa</mat-header-cell>
+              <mat-cell *matCellDef="let klinika"> {{klinika.adresa}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Opis">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Opis</mat-header-cell>
+              <mat-cell *matCellDef="let klinika"> {{klinika.opis}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Akcije">
+              <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
+              <mat-cell *matCellDef="let klinika" style="padding-left: 10%;">
+                  <button mat-mini-fab color="primary" (click)="onDetaljnije(klinika)" routerLink="/adminklinike/klinika" matTooltip="Vise informacija o klinici">
+                      <i class="fa fa-info" aria-hidden="true"></i>
+                  </button>
+              </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+      </table>
+
+      </div>
+    </div>
+    <div class="container">
+      <button mat-raised-button color='primary' class="pull-left" [routerLink]="['/login']" (click)="onLogout()">Odjavite se</button>
+    </div>
+
+  </div>
+</body>
+</html>
