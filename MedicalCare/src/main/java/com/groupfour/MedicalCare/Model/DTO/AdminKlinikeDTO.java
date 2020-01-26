@@ -11,10 +11,9 @@ import org.springframework.stereotype.Component;
 @Builder
 @ToString
 public class AdminKlinikeDTO {
-    int id;
-    String ime;
-    String prezime;
-    String email;
-    String lozinka;
-    int id_klinike;
+    private String ime;
+    private String prezime;
+    private String email;
+    private String staraLozinka;
+    private String novaLozinka;
 }

@@ -34,6 +34,8 @@ public class MedicinskaSestra {
     private String prezime;
     @Column(name = DbColumnConstants.MEDICINSKA_SESTRA_LOZINKA)
     private String lozinka;
+    @Column(name = DbColumnConstants.MEDICINSKA_SESTRA_PRVO_LOGOVANJE)
+    private boolean prvoLogovanje;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = DbColumnConstants.MEDICINSKA_SESTRA_KLINIKA)

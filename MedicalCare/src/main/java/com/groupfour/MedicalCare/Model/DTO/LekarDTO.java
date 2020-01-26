@@ -15,4 +15,5 @@ public class LekarDTO {
     private String ime;
     private String prezime;
     private String email;
+    private float prosecnaOcena;
 }

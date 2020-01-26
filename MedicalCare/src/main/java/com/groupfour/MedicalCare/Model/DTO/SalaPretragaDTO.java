@@ -13,4 +13,5 @@ import java.util.Date;
 public class SalaPretragaDTO {
     private String nazivSale;
     private Date datum;
+    private int id;
 }

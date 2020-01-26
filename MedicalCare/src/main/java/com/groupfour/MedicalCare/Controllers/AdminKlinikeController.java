@@ -1,26 +1,38 @@
 package com.groupfour.MedicalCare.Controllers;
 
-import com.groupfour.MedicalCare.Model.DTO.KlinikaDTO;
-import com.groupfour.MedicalCare.Service.KlinikaService;
+import com.groupfour.MedicalCare.Model.DTO.AdminKlinikeDTO;
+import com.groupfour.MedicalCare.Service.AdminKlinikeService;
+import com.groupfour.MedicalCare.Utill.Authorization;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @CrossOrigin(allowCredentials = "true")
 @RequestMapping("/adminklinike")
 public class AdminKlinikeController {
+    private Authorization authorization;
+    private String[] role = {"adminklinike"};
 
-    @GetMapping("/klinike")
-    public ResponseEntity<List<KlinikaDTO>> getKlinike(HttpSession session) {
-        ArrayList<KlinikaDTO> klinike = KlinikaService.getKlinike(session);
-        return new ResponseEntity<>(klinike, HttpStatus.OK);
+    @Autowired
+    public AdminKlinikeController(Authorization authorization) {
+        this.authorization = authorization;
+    }
+
+    @PutMapping
+    public ResponseEntity<?> azuriranjeLicnihPodataka(@RequestBody AdminKlinikeDTO adminKlinikeDTO,
+                                                      HttpSession session){
+        if(authorization.hasPermisson(session, role))
+        {
+            return AdminKlinikeService.azurirajPodatkeAdmina(adminKlinikeDTO, session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 }

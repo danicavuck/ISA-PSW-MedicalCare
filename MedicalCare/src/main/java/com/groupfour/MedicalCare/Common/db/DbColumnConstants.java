@@ -14,6 +14,7 @@ public final class DbColumnConstants {
     public static final String PACIJENT_TELEFON = "telefon";
     public static final String PACIJENT_BROJOSIGURANJA = "broj_osiguranja";
     public static final String PACIJENT_KARTON = "karton_id";
+    public static final String PACIJENT_PRVO_LOGOVANJE = "prvo_logovanje";
 
     // admin_kc
     public static final String ADMIN_KC_ID = "id_admin_kc";
@@ -57,6 +58,9 @@ public final class DbColumnConstants {
     public static final String LEKAR_PROSECNA_OCENA = "prosecna_ocena";
     public static final String LEKAR_KLINIKA = "klinika";
     public static final String LEKAR_AKTIVAN = "aktivan";
+    public static final String LEKAR_PRVO_LOGOVANJE = "prvo_logovanje";
+    public static final String LEKAR_POCETAK = "pocetak_rv";
+    public static final String LEKAR_KRAJ = "kraj_rv";
 
     // Medicninska Sestra
     public static final String MEDICINSKA_SESTRA_ID = "id_med_sestra";
@@ -65,6 +69,7 @@ public final class DbColumnConstants {
     public static final String MEDICINSKA_SESTRA_EMAIL = "email";
     public static final String MEDICINSKA_SESTRA_LOZINKA = "lozinka";
     public static final String MEDICINSKA_SESTRA_KLINIKA = "id_klinike";
+    public static final String MEDICINSKA_SESTRA_PRVO_LOGOVANJE = "prvo_logovanje";
 
     // Sala
     public static final String SALA_ID = "id_sala";

@@ -6,6 +6,7 @@ import com.groupfour.MedicalCare.Model.DTO.SalaPretragaDTO;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
+import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Repository.AdminKlinikeRepository;
 import com.groupfour.MedicalCare.Repository.KlinikaRepository;
 import com.groupfour.MedicalCare.Repository.LekarRepository;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class SalaService {
@@ -79,14 +82,29 @@ public class SalaService {
     }
 
     public static ResponseEntity<?> deleteSala(SalaPretragaDTO salaPretragaDTO) {
-        Sala sala = salaRepository.findByNazivSale(salaPretragaDTO.getNazivSale());
-        if(sala.getPregledi() != null || sala.getOperacije() != null)
+        if(dozvoljenoBrisanjeSale(salaPretragaDTO))
         {
-            return new ResponseEntity<>("Nije moguce brisanje sale.", HttpStatus.FORBIDDEN);
+            Sala sala = salaRepository.findByNazivSale(salaPretragaDTO.getNazivSale());
+            setujAktivnostSaleNaNulu(sala);
+            salaRepository.save(sala);
+            return new ResponseEntity<>("Sala je uspesno obrisana", HttpStatus.NO_CONTENT);
         }
-        setujAktivnostSaleNaNulu(sala);
-        salaRepository.save(sala);
-        return new ResponseEntity<>("Sala je uspesno obrisana", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+    }
+
+    public static boolean dozvoljenoBrisanjeSale(SalaPretragaDTO salaPretragaDTO){
+        Sala sala = salaRepository.findById(salaPretragaDTO.getId());
+        if(sala != null)
+        {
+            Set<Pregled> pregledi = sala.getPregledi();
+            for(Pregled pregled : pregledi)
+            {
+                if(pregled.isAktivan())
+                    return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     public static void addSala(SalaDodavanjeDTO salaDodavanjeDTO, HttpSession session) {

@@ -24,4 +24,6 @@ public class UserRole {
     private String user_email;
     @Column(name = DbColumnConstants.ROLE_DESCRIPTION)
     private String role;
+    @Transient
+    private boolean prvoLogovanje;
 }

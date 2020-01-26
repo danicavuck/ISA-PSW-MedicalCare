@@ -22,7 +22,7 @@ public class PacijentController {
         this.authorization = authorization;
     }
 
-    @GetMapping(value = "/{klinikaId}")
+    @GetMapping
     public ResponseEntity<?> dobaviPacijenteOdgovarajuceKlinike(HttpSession session){
         if(authorization.hasPermisson(session, role)){
             return PacijentService.dobaviPacijente(session);
