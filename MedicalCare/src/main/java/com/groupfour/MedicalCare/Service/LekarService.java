@@ -3,6 +3,7 @@ package com.groupfour.MedicalCare.Service;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.DodavanjeLekaraDTO;
 import com.groupfour.MedicalCare.Model.DTO.LekarDTO;
+import com.groupfour.MedicalCare.Model.DTO.LekarIzmenaPodatakaDTO;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Repository.AdminKlinikeRepository;
@@ -101,10 +102,58 @@ public class LekarService {
         Klinika klinika = klinikaRepository.findById(idKlinike);
         if(klinika != null)
         {
-            return Lekar.builder().ime(dodavanjeLekaraDTO.getIme()).prezime(dodavanjeLekaraDTO.getPrezime()).lozinka(PasswordCheck.hash(dodavanjeLekaraDTO.getLozinka())).email(dodavanjeLekaraDTO.getEmail()).aktivan(true).klinika(klinika).build();
+            Lekar lekar =
+                    Lekar.builder().ime(dodavanjeLekaraDTO.getIme()).prezime(dodavanjeLekaraDTO.getPrezime()).lozinka(PasswordCheck.hash(dodavanjeLekaraDTO.getLozinka())).email(dodavanjeLekaraDTO.getEmail()).aktivan(true).klinika(klinika).prvoLogovanje(true).build();
+            try {
+                String pocetak = dodavanjeLekaraDTO.getRadnoVreme();
+                String[] parsiranje = pocetak.split("-");
+                int pocetakTermina = Integer.parseInt(parsiranje[0]);
+                int krajTermina = Integer.parseInt(parsiranje[1]);
+                lekar.setPocetakRadnogVremena(pocetakTermina);
+                lekar.setKrajRadnogVremena(krajTermina);
+            } catch (Exception e)
+            {
+                logger.error("Neuspesno parsiranje radnog vremena");
+                return null;
+            }
+            return  lekar;
         }
         logger.error("Klinika nije pronadjena!");
         return null;
+    }
+
+    public static ResponseEntity<?> izmenaLicnihPodataka(LekarIzmenaPodatakaDTO lekarIzmenaPodatakaDTO,
+                                                         HttpSession session){
+        Lekar lekar = lekarRepository.findLekarById((int) session.getAttribute("id"));
+        if(lekar != null)
+        {
+            izmeniPodatke(lekar, lekarIzmenaPodatakaDTO);
+            lekarRepository.save(lekar);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    public static void izmeniPodatke(Lekar lekar, LekarIzmenaPodatakaDTO lekarIzmenaPodatakaDTO)
+    {
+        if(!lekarIzmenaPodatakaDTO.getIme().equals(""))
+            lekar.setIme(lekarIzmenaPodatakaDTO.getIme());
+        if(!lekarIzmenaPodatakaDTO.getPrezime().equals(""))
+            lekar.setPrezime(lekarIzmenaPodatakaDTO.getPrezime());
+        if(!lekarIzmenaPodatakaDTO.getEmail().equals(""))
+            lekar.setEmail(lekarIzmenaPodatakaDTO.getEmail());
+        if(trebaIzmenitiLozinku(lekar, lekarIzmenaPodatakaDTO))
+            lekar.setLozinka(PasswordCheck.hash(lekarIzmenaPodatakaDTO.getNovaLozinka()));
+    }
+
+    private static boolean trebaIzmenitiLozinku(Lekar lekar, LekarIzmenaPodatakaDTO lekarIzmenaPodatakaDTO) {
+        boolean zadovoljavajuce = false;
+        if(!lekarIzmenaPodatakaDTO.getNovaLozinka().equals("") && PasswordCheck.verifyHash(lekarIzmenaPodatakaDTO.getStaraLozinka() ,
+                lekar.getLozinka()))
+        {
+            zadovoljavajuce = true;
+        }
+        return zadovoljavajuce;
     }
 
 }

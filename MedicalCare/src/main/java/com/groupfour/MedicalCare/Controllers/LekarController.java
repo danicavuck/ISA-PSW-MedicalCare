@@ -2,6 +2,7 @@ package com.groupfour.MedicalCare.Controllers;
 
 import com.groupfour.MedicalCare.Model.DTO.DodavanjeLekaraDTO;
 import com.groupfour.MedicalCare.Model.DTO.LekarDTO;
+import com.groupfour.MedicalCare.Model.DTO.LekarIzmenaPodatakaDTO;
 import com.groupfour.MedicalCare.Service.LekarService;
 import com.groupfour.MedicalCare.Utill.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,16 @@ public class LekarController {
         if(authorization.hasPermisson(session, roles))
         {
             return LekarService.dodavanjeNovogLekara(dodavanjeLekaraDTO, session);
+        }
+        return new ResponseEntity<>("null", HttpStatus.UNAUTHORIZED);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> izmeniPodatkeLekara(@RequestBody LekarIzmenaPodatakaDTO lekarIzmenaPodatakaDTO,
+                                                 HttpSession session){
+        if(authorization.hasPermisson(session, new String[] {"lekar"}))
+        {
+            return LekarService.izmenaLicnihPodataka(lekarIzmenaPodatakaDTO, session);
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }

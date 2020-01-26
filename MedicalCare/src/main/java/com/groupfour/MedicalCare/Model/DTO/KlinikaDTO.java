@@ -25,4 +25,5 @@ public class KlinikaDTO {
     private Set<MedicinskaSestra> sestre;
     private Set<Sala> sale;
     private Set<AdminKlinike> admini;
+    private float prosecnaOcena;
 }

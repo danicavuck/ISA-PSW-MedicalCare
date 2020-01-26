@@ -18,7 +18,7 @@ public class PregledDTO {
     private int trajanjePregleda;
     private int cena;
     private int popust;
-    private String sala;
+    private int sala;
     private String tipPregleda;
     private int lekar;
     private String lekarImeIPrezime;

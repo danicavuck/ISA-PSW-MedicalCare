@@ -1,7 +1,7 @@
 package com.groupfour.MedicalCare.Controllers;
 
-import com.groupfour.MedicalCare.Model.DTO.AdminKlinikeDTO;
-import com.groupfour.MedicalCare.Service.AdminKlinikeService;
+import com.groupfour.MedicalCare.Model.DTO.MedSestraIzmenaPodatakaDTO;
+import com.groupfour.MedicalCare.Service.MedicinskaSestraService;
 import com.groupfour.MedicalCare.Utill.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,22 +16,21 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @CrossOrigin(allowCredentials = "true")
-@RequestMapping("/adminklinike")
-public class AdminKlinikeController {
+@RequestMapping("/medicinskesestre")
+public class MedicinskaSestraController {
     private Authorization authorization;
-    private String[] role = {"adminklinike"};
+    private String[] roles = {"med_sestra"};
 
     @Autowired
-    public AdminKlinikeController(Authorization authorization) {
+    public MedicinskaSestraController(Authorization authorization){
         this.authorization = authorization;
     }
 
     @PutMapping
-    public ResponseEntity<?> azuriranjeLicnihPodataka(@RequestBody AdminKlinikeDTO adminKlinikeDTO,
-                                                      HttpSession session){
-        if(authorization.hasPermisson(session, role))
+    public ResponseEntity<?> azuriranjePodatakaMedicinskeSestre(@RequestBody MedSestraIzmenaPodatakaDTO medSestraIzmenaPodatakaDTO, HttpSession session) {
+        if(authorization.hasPermisson(session, roles))
         {
-            return AdminKlinikeService.azurirajPodatkeAdmina(adminKlinikeDTO, session);
+            return MedicinskaSestraService.azurirajPodatkeMedicinskeSestre(medSestraIzmenaPodatakaDTO, session);
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }

@@ -43,7 +43,12 @@ public class Lekar {
     private float prosecnaOcena;
     @Column(name = DbColumnConstants.LEKAR_AKTIVAN)
     private boolean aktivan;
-
+    @Column(name = DbColumnConstants.LEKAR_PRVO_LOGOVANJE)
+    private boolean prvoLogovanje;
+    @Column(name = DbColumnConstants.LEKAR_POCETAK)
+    private int pocetakRadnogVremena;
+    @Column(name = DbColumnConstants.LEKAR_KRAJ)
+    private int krajRadnogVremena;
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = DbColumnConstants.LEKAR_KLINIKA)
     @JsonIgnoreProperties("listaLekara")
