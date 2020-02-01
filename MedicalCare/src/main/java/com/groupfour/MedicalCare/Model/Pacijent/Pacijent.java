@@ -25,7 +25,7 @@ import java.util.Set;
 @Builder
 @ToString
 @Table(name = DbTableConstants.PACIJENT)
-@JsonIgnoreProperties({ "klinika", "lozinka", "listaPregleda"})
+@JsonIgnoreProperties({ "klinika", "lozinka", "listaPregleda", "listaOperacija"})
 public class Pacijent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

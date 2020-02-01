@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -82,7 +81,7 @@ public class SalaService {
     }
 
     public static ResponseEntity<?> deleteSala(SalaPretragaDTO salaPretragaDTO) {
-        if(dozvoljenoBrisanjeSale(salaPretragaDTO))
+        if(dozvoljenoBrisanjeIliMenjanjeSale(salaPretragaDTO))
         {
             Sala sala = salaRepository.findByNazivSale(salaPretragaDTO.getNazivSale());
             setujAktivnostSaleNaNulu(sala);
@@ -92,7 +91,7 @@ public class SalaService {
         return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
     }
 
-    public static boolean dozvoljenoBrisanjeSale(SalaPretragaDTO salaPretragaDTO){
+    public static boolean dozvoljenoBrisanjeIliMenjanjeSale(SalaPretragaDTO salaPretragaDTO){
         Sala sala = salaRepository.findById(salaPretragaDTO.getId());
         if(sala != null)
         {
@@ -184,5 +183,24 @@ public class SalaService {
             System.out.println("Sala " + sala.getNazivSale() + " nije pronadjena");
             System.out.println("Neuspesno setovanje aktivnosti na 0");
         }
+    }
+
+    public static ResponseEntity<?> azurirajPodatkeSale(SalaPretragaDTO salaPretragaDTO, HttpSession session){
+        Sala sala = salaRepository.findById(salaPretragaDTO.getId());
+        if(sala != null)
+        {
+            if(dozvoljenoBrisanjeIliMenjanjeSale(salaPretragaDTO))
+            {
+                if(!salaPretragaDTO.getNazivSale().equals(""))
+                {
+                    sala.setNazivSale(salaPretragaDTO.getNazivSale());
+                    salaRepository.save(sala);
+                }
+                return new ResponseEntity<>(null, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 }

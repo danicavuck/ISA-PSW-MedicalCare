@@ -116,7 +116,7 @@ public class OdsustvaService {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    // Za sada ce vracati sve zahteve, nezavisno od parametra klinikaId
+
     public static ResponseEntity<?> obrisiZahtevZaOdsustvoLekaraZaKliniku(OdsustvaZaAdminaDTO odsustvaZaAdminaDTO,
                                                                           HttpSession session) {
         int klinikaId = vratiIDKlinike(session);
@@ -126,12 +126,52 @@ public class OdsustvaService {
             for(OdsustvoLekara odsustvo : odsustvaLekara) {
                 if(odsustvo.getId() == odsustvaZaAdminaDTO.getIdOdsustva() && odsustvo.getLekar().getKlinika().getId() == klinikaId) {
                     odsustvo.setAktivno(false);
+                    posaljiNegativniMejlLekaru(odsustvaZaAdminaDTO, odsustvo.getLekar());
                     odsustvoLekaraRepository.save(odsustvo);
                     return new ResponseEntity<>("Uspesno brisanje", HttpStatus.NO_CONTENT);
                 }
             }
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    public static void posaljiNegativniMejlLekaru(OdsustvaZaAdminaDTO odsustvo, Lekar lekar){
+        String formatiranaPoruka = "<html><body>" +
+                "<p>Postovani,</p>" +
+                "<p>Vas zahtav za odsustvom od " + odsustvo.getPocetakOdsustva()
+                + " do " + odsustvo.getKrajOdsustva() +  " je odbijen uz obrazlozenje: " +
+                odsustvo.getOpis()+
+                "</p>" + "<p>Srdacan pozdrav,</p><p>Medical Care</p>" +
+                "</body></html>";
+        customEmailSender.sendMail(new String[]{lekar.getEmail()}, "Odbijen zahtev za odsustvom", formatiranaPoruka);
+    }
+
+    public static ResponseEntity<?> potvrdiZahtevZaOdsustvoLekaraZaKliniku(OdsustvaZaAdminaDTO odsustvaZaAdminaDTO,
+                                                                           HttpSession session){
+        int klinikaId = vratiIDKlinike(session);
+        if(klinikaId != -1)
+        {
+            ArrayList<OdsustvoLekara> odsustvaLekara = odsustvoLekaraRepository.findAll();
+            for(OdsustvoLekara odsustvo : odsustvaLekara) {
+                if(odsustvo.getId() == odsustvaZaAdminaDTO.getIdOdsustva() && odsustvo.getLekar().getKlinika().getId() == klinikaId) {
+                    odsustvo.setAktivno(false);
+                    posaljiPozitivniMejlLekaru(odsustvaZaAdminaDTO, odsustvo.getLekar());
+                    odsustvoLekaraRepository.save(odsustvo);
+                    return new ResponseEntity<>("Uspesno brisanje", HttpStatus.NO_CONTENT);
+                }
+            }
+        }
+        return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+    }
+
+    public static void posaljiPozitivniMejlLekaru(OdsustvaZaAdminaDTO odsustvo, Lekar lekar){
+        String formatiranaPoruka = "<html><body>" +
+                "<p>Postovani,</p>" +
+                "<p>Vas zahtav za odsustvom od " + odsustvo.getPocetakOdsustva()
+                + " do " + odsustvo.getKrajOdsustva() +  " je odobren." +
+                "</p>" + "<p>Srdacan pozdrav,</p><p>Medical Care</p>" +
+                "</body></html>";
+        customEmailSender.sendMail(new String[]{lekar.getEmail()}, "Odobren zahtev za odsustvom", formatiranaPoruka);
     }
 
     public static int vratiIDKlinike(HttpSession session)

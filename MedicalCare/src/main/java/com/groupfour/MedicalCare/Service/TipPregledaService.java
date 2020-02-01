@@ -1,14 +1,14 @@
 package com.groupfour.MedicalCare.Service;
 
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
+import com.groupfour.MedicalCare.Model.DTO.PregledDTO;
 import com.groupfour.MedicalCare.Model.DTO.TipPregledaDTO;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
+import com.groupfour.MedicalCare.Model.Pregled.Pregled;
+import com.groupfour.MedicalCare.Model.Pregled.PreglediNaCekanju;
 import com.groupfour.MedicalCare.Model.Pregled.TipPregleda;
-import com.groupfour.MedicalCare.Repository.AdminKlinikeRepository;
-import com.groupfour.MedicalCare.Repository.LekarRepository;
-import com.groupfour.MedicalCare.Repository.MedicinskaSestraRepository;
-import com.groupfour.MedicalCare.Repository.TipPregledaRepository;
+import com.groupfour.MedicalCare.Repository.*;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,15 +26,20 @@ public class TipPregledaService {
     private static AdminKlinikeRepository adminKlinikeRepository;
     private static LekarRepository lekarRepository;
     private static MedicinskaSestraRepository medicinskaSestraRepository;
+    private static PregledRepository pregledRepository;
+    private static PreglediNaCekanjuRepository preglediNaCekanjuRepository;
     private static Logger logger = LoggerFactory.getLogger(TipPregledaService.class);
 
     @Autowired
     public TipPregledaService(TipPregledaRepository tRepo, AdminKlinikeRepository akRepository,
-                              LekarRepository lRepository, MedicinskaSestraRepository mSestraRepository) {
+                              LekarRepository lRepository, MedicinskaSestraRepository mSestraRepository,
+                              PregledRepository pRepository, PreglediNaCekanjuRepository pNaCekanjuRepository) {
         tipPregledaRepository = tRepo;
         adminKlinikeRepository = akRepository;
         lekarRepository = lRepository;
         medicinskaSestraRepository = mSestraRepository;
+        pregledRepository = pRepository;
+        preglediNaCekanjuRepository = pNaCekanjuRepository;
     }
 
     public static ResponseEntity<?> vratiTipovePregleda(HttpSession session) {
@@ -151,6 +156,56 @@ public class TipPregledaService {
         }
         logger.info("Nije pronadjen admin klinike");
         return klinikaId;
+    }
+
+    public static ResponseEntity<?> azurirajTipPregleda(TipPregledaDTO tipPregledaDTO){
+        TipPregleda tipPregleda = tipPregledaRepository.findById(tipPregledaDTO.getId());
+        if(tipPregleda != null)
+        {
+            if(dozvoljenoBrisanjeIliModifikacija(tipPregleda))
+            {
+                if(!tipPregledaDTO.getTipPregleda().equals(""))
+                {
+                    tipPregleda.setTipPregleda(tipPregledaDTO.getTipPregleda());
+                    tipPregledaRepository.save(tipPregleda);
+                    return new ResponseEntity<>(null, HttpStatus.OK);
+                }
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    public static boolean dozvoljenoBrisanjeIliModifikacija(TipPregleda tipPregleda){
+        ArrayList<Pregled> pregledi = pregledRepository.findAll();
+        for(Pregled p : pregledi)
+        {
+            if(p.getTipPregleda().getId() == tipPregleda.getId() && p.isAktivan())
+                return false;
+        }
+        ArrayList<PreglediNaCekanju> preglediNaCekanju = preglediNaCekanjuRepository.findAll();
+        for(PreglediNaCekanju p : preglediNaCekanju)
+        {
+            if(p.getTipPregleda().getId() == tipPregleda.getId() && p.isAktivan())
+                return false;
+        }
+        return true;
+    }
+
+    public static ResponseEntity<?> obrisiTipPregleda(TipPregledaDTO tipPregledaDTO){
+        TipPregleda tipPregleda = tipPregledaRepository.findById(tipPregledaDTO.getId());
+        if(tipPregleda != null)
+        {
+            if(dozvoljenoBrisanjeIliModifikacija(tipPregleda))
+            {
+                tipPregleda.setAktivan(false);
+                tipPregledaRepository.save(tipPregleda);
+                return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
 }

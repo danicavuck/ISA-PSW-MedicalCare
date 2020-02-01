@@ -11,4 +11,5 @@ import java.util.ArrayList;
 public interface OperacijaRepository extends JpaRepository<Operacija, Integer> {
     ArrayList<Operacija> findAll();
     ArrayList<Operacija> findOperacijaBySala(Sala sala);
+    Operacija findOperacijaById(int id);
 }

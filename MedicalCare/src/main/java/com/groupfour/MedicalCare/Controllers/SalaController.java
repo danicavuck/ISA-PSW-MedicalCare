@@ -58,4 +58,13 @@ public class SalaController {
     public ResponseEntity<?> saleSearch(@RequestBody SalaPretragaDTO salaPretragaDTO, HttpSession session) {
         return SalaService.pretraziSaluPoBrojuSale(salaPretragaDTO);
     }
+
+    @PutMapping
+    public ResponseEntity<?> azurirajPodatkeSale(@RequestBody SalaPretragaDTO salaPretragaDTO, HttpSession session){
+        if(authorization.hasPermisson(session, roles))
+        {
+            return SalaService.azurirajPodatkeSale(salaPretragaDTO, session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
 }

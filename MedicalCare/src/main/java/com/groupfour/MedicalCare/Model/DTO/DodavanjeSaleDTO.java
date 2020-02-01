@@ -10,10 +10,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Builder
 @ToString
-public class OdsustvaZaAdminaDTO {
-    private int idOdsustva;
-    private String pocetakOdsustva;
-    private String krajOdsustva;
-    private String lekar;
-    private String opis;
+public class DodavanjeSaleDTO {
+    private int salaId;
+    private int operacijaId;
 }

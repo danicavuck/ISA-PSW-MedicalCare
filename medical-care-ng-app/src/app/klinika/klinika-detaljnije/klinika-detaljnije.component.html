@@ -92,6 +92,9 @@
                                 <button mat-mini-fab color="primary" (click)="kalendarDialog(sala)" matTooltip="Kalendar zauzeca" style="margin-right: 5px;">
                                     <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
+                                <button mat-mini-fab color="primary" (click)="editSala(sala)" matTooltip="Izmena sale" style="margin-right: 2px;" [routerLink]="['/adminklinike/sala']">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </button>
                                 <button mat-mini-fab color="warn" (click)="openDialog(sala)" matTooltip="Obrisi salu">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </button>
@@ -143,7 +146,33 @@
                         <mat-row *matRowDef="let row; columns: preglediColumns;"></mat-row>
                     </table>
                     <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator>
-                    <button mat-raised-button color="primary" style="width: 100%;" [routerLink]="['/adminklinike/pregledinacekanju']">Pregledi na cekanju</button>
+                    <button mat-raised-button color="primary" style="width: 100%; margin-top: 5px;" [routerLink]="['/adminklinike/pregledinacekanju']">Pregledi na cekanju</button>
+                    <button mat-raised-button color="primary" style="width: 100%; margin-top: 5px;" [routerLink]="['/adminklinike/operacijenacekanju']">Operacije na cekanju</button>
+                </div>
+
+                <div>
+                    <mat-divider style="margin: 30px 0 10px 0;"></mat-divider>
+                    <div class="mat-h1">Tipovi pregleda</div>
+                    <table mat-table [dataSource]="tipoviPregleda" class="mat-elevation-z8">
+                        <ng-container matColumnDef="tipPregleda">
+                            <mat-header-cell *matHeaderCellDef>Tip Pregleda</mat-header-cell>
+                            <mat-cell *matCellDef="let pregled"> {{pregled.tipPregleda}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Akcije">
+                            <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
+                            <mat-cell *matCellDef="let pregled" style="padding-left: 10%;">
+                                <button mat-mini-fab color="primary" (click)="editTipPregleda(pregled)" matTooltip="Izmena tipa pregleda" style="margin-right: 5px;" [routerLink]="['/adminklinike/izmenatipa']">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </button>
+                                <button mat-mini-fab color="warn" (click)="obrisiTip(pregled)" matTooltip="Obrisi tip pregleda">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="tipoviPregledaColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: tipoviPregledaColumns;"></mat-row>
+                    </table>
                 </div>
                 
     

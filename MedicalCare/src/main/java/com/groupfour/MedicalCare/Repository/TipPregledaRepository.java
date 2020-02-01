@@ -10,4 +10,5 @@ public interface TipPregledaRepository extends JpaRepository<TipPregleda, Intege
     ArrayList<TipPregleda> findAll();
     ArrayList<TipPregleda> findTipPregledaByKlinikaId(int klinikaId);
     TipPregleda findByTipPregleda(String tipPregleda);
+    TipPregleda findById(int id);
 }

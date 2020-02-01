@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 
 @Service
@@ -83,7 +84,7 @@ public class LekarService {
         }
         return new ResponseEntity<>("Neuspesno brisanje lekara", HttpStatus.BAD_REQUEST);
     }
-
+    @Transactional
     public static ResponseEntity<?> dodavanjeNovogLekara(DodavanjeLekaraDTO dodavanjeLekaraDTO, HttpSession session){
         if(!EmailUniqueness.isEmailUniqe(dodavanjeLekaraDTO.getEmail())){
             return new ResponseEntity<>("Lekar sa datom mejl adresom vec postoji", HttpStatus.BAD_REQUEST);
