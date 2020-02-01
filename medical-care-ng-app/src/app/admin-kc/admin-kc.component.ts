@@ -40,7 +40,7 @@ export class AdminKcComponent implements OnInit {
   async getZahtevi(){
     const apiEndPoint = 'http://localhost:8080/adminkc/zahtevi';
     
-   this.http.get(apiEndPoint,{responseType : 'json'})
+   this.http.get(apiEndPoint, {withCredentials : true})
    .subscribe((data) => {
      this.postojiModel = true;
      this.models = data as Array<RegistracijaPacijentaDTO>;

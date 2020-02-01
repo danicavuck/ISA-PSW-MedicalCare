@@ -22,7 +22,7 @@ export class MedicinskaSestraReceptiComponent implements OnInit {
   async getRecepti(){
     const apiEndPoint = 'http://localhost:8080/medsestra/recepti';
     
-   this.http.get(apiEndPoint,{responseType : 'json'})
+   this.http.get(apiEndPoint,{withCredentials : true})
    .subscribe((data) => {
      this.postojiModel = true;
      this.models = data as Array<ReceptDTO>;
@@ -57,6 +57,5 @@ export interface ReceptDTO{
   id : number;
   idLeka : string;
   idMedSestre : number
-
 
 }

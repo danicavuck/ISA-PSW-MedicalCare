@@ -1,5 +1,7 @@
 package com.groupfour.MedicalCare.Model.DTO;
 
+import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
+import com.groupfour.MedicalCare.Repository.LekarRepository;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +20,10 @@ public class KlinikaBazicnoDTO {
     private String naziv;
     private String adresa;
     private String opis;
-    private int[] lekari_id;
-    private int[] sestre_id;
-    private int[] sale_id;
-    private int[] admini_id;
+    private int[] selLekari;
+    private int[] selSestre;
+    private int[] selSale;
+    private int[] selAdmini;
+
+
 }

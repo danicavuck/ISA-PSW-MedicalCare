@@ -1,8 +1,7 @@
 package com.groupfour.MedicalCare.Controllers;
 
 
-import com.groupfour.MedicalCare.Model.DTO.KlinikaDTO;
-import com.groupfour.MedicalCare.Model.DTO.LekarDTO;
+import com.groupfour.MedicalCare.Model.DTO.*;
 import com.groupfour.MedicalCare.Service.KlinikaService;
 import com.groupfour.MedicalCare.Utill.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import java.util.List;
 @RequestMapping("/klinika")
 public class KlinikaController {
     private Authorization authorization;
-    private String[] roles = {"adminklinike"};
+    private String[] roles = {"adminklinike","adminkc"};
     @Autowired
     public KlinikaController(Authorization authorization) {
         this.authorization = authorization;
@@ -39,15 +38,56 @@ public class KlinikaController {
     @GetMapping("/klinikeSve")
     public ResponseEntity<?> getKlinikeSve(HttpSession session) {
 
-        ArrayList<KlinikaDTO> klinike = KlinikaService.getKlinikeSve(session);
-        return new ResponseEntity<>(klinike, HttpStatus.OK);
+        if(authorization.hasPermisson(session,roles)) {
+            ArrayList<KlinikaSveDTO> klinike = KlinikaService.getKlinikeSve(session);
+            return new ResponseEntity<>(klinike, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/lekari")
-    public ResponseEntity<?> getLekari() {
-        List<LekarDTO> lekari = KlinikaService.getLekari();
-        return new ResponseEntity<>(lekari, HttpStatus.OK);
+    public ResponseEntity<?> getLekari(HttpSession session) {
+
+        if(authorization.hasPermisson(session,roles)) {
+            List<LekarDTO> lekari = KlinikaService.getLekari(session);
+            return new ResponseEntity<>(lekari, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
     }
+
+    @GetMapping("/medsestre")
+    public ResponseEntity<?> getSestre(HttpSession session) {
+
+        if(authorization.hasPermisson(session,roles)) {
+            List<MedSestraSveDTO> sestre = KlinikaService.getSestre(session);
+            return new ResponseEntity<>(sestre, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+    }
+
+    @GetMapping("/admini")
+    public ResponseEntity<?> getAdminiKlinike(HttpSession session) {
+
+        if(authorization.hasPermisson(session,roles)) {
+            List<AdminKlinikeSveDTO> admini = KlinikaService.getAdminiKlinike(session);
+            return new ResponseEntity<>(admini, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+    }
+
+
+    @GetMapping("/sale")
+    public ResponseEntity<?> getSale(HttpSession session) {
+
+        if(authorization.hasPermisson(session,roles)) {
+            List<SalaSveDTO> sale = KlinikaService.getSale(session);
+            return new ResponseEntity<>(sale, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+    }
+
+
 
     @PutMapping
     public ResponseEntity<?> updateKlinika(@RequestBody KlinikaDTO klinikaDTO, HttpSession session) {

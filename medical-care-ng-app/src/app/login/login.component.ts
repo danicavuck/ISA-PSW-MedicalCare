@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
           setTimeout(() => {
             this.userDTO = data as UserDTO;
             switch (this.userDTO.role) {
-              case 'adminkc': this.router.navigateByUrl('/adminkc');
+              case 'admin_kc': this.router.navigateByUrl('/adminkc');
                               break;
               case 'admin_klinike':
                 if (this.userDTO.prvoLogovanje === false){

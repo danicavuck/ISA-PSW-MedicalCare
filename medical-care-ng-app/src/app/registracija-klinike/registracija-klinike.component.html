@@ -55,7 +55,7 @@
             <mat-label style="margin-bottom: 30px;">Sale</mat-label>
             <mat-select required name="sala" multiple [(ngModel)]="model.selSale" >
                 <mat-option *ngFor="let sala of sale" value={{sala.id}}>
-                    {{sala.brojSale}} 
+                   {{sala.nazivSale}}
                 </mat-option>
             </mat-select>
           </mat-form-field>

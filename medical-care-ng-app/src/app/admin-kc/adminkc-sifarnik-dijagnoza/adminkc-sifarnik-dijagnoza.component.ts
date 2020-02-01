@@ -26,7 +26,7 @@ export class AdminkcSifarnikDijagnozaComponent implements OnInit {
   async getDijagnoze(){
     const apiEndPoint = 'http://localhost:8080/adminkc/dijagnoze';
     
-   this.http.get(apiEndPoint,{responseType : 'json'})
+   this.http.get(apiEndPoint,{ withCredentials : true})
    .subscribe((data) => {
 
      this.models = data as Array<DijagnozaDTO>;

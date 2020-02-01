@@ -3,6 +3,7 @@ package com.groupfour.MedicalCare.Service;
 import com.groupfour.MedicalCare.Model.DTO.PacijentDTO;
 import com.groupfour.MedicalCare.Model.DTO.UserRole;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
+import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
 import com.groupfour.MedicalCare.Repository.PacijentRepository;
 import com.groupfour.MedicalCare.Utill.EmailUniqueness;
 import com.groupfour.MedicalCare.Utill.HibernateUtil;
@@ -23,34 +24,35 @@ public class RegisterService {
     public RegisterService(PacijentRepository pRepo) {
         pacijentRepository = pRepo;
     }
+    public static ResponseEntity<String> registerPacijent(@RequestBody RegistracijaPacijenta registracijaPacijenta) {
+        if (EmailUniqueness.isEmailUniqe(registracijaPacijenta.getEmail())) {
 
-    public static ResponseEntity<String> registerPacijent(@RequestBody PacijentDTO pacijentDTO) {
-        if (EmailUniqueness.isEmailUniqe(pacijentDTO.getEmail())) {
-            return napraviNoviNalogPacijentu(pacijentDTO);
+            return napraviZahtevZaRegistraciju(registracijaPacijenta);
         }
         return new ResponseEntity<>("Email address already taken", HttpStatus.FORBIDDEN);
     }
 
-    public static ResponseEntity<String> napraviNoviNalogPacijentu(PacijentDTO pacijentDTO) {
-        Pacijent pacijent = napraviNovogPacijenta(pacijentDTO);
-        UserRole userRole = UserRole.builder().user_email(pacijentDTO.getEmail()).role("pacijent").build();
-        if (sacuvajUBazuPacijentaIRolu(pacijent, userRole)) {
+    public static ResponseEntity<String> napraviZahtevZaRegistraciju(RegistracijaPacijenta registracijaPacijenta){
+        RegistracijaPacijenta reg = napraviNovuRegistraciju(registracijaPacijenta);
+        if (sacuvajUBazuRegistraciju(reg)) {
             return new ResponseEntity<>("Instance created", HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Internal server eror", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public static Pacijent napraviNovogPacijenta(PacijentDTO pacijentDTO) {
-        return Pacijent.builder().email(pacijentDTO.getEmail()).lozinka(PasswordCheck.hash(pacijentDTO.getLozinka())).ime(pacijentDTO.getIme()).prezime(pacijentDTO.getPrezime()).adresa(pacijentDTO.getAdresa()).grad(pacijentDTO.getGrad()).drzava(pacijentDTO.getDrzava()).brojTelefona(pacijentDTO.getBrojTelefona()).brojOsiguranja(pacijentDTO.getBrojOsiguranja()).build();
 
+
+    public static RegistracijaPacijenta napraviNovuRegistraciju(RegistracijaPacijenta registracijaPacijenta){
+        return RegistracijaPacijenta.builder().brojTelefona(registracijaPacijenta.getBrojTelefona()).adresa(registracijaPacijenta.getAdresa()).email(registracijaPacijenta.getEmail()).lozinka(PasswordCheck.hash(registracijaPacijenta.getLozinka())).grad(registracijaPacijenta.getGrad()).drzava(registracijaPacijenta.getDrzava()).prezime(registracijaPacijenta.getPrezime()).ime(registracijaPacijenta.getIme()).brojOsiguranja(registracijaPacijenta.getBrojOsiguranja()).odobren(registracijaPacijenta.isOdobren()).aktivan(registracijaPacijenta.isAktivan()).build();
     }
 
-    public static boolean sacuvajUBazuPacijentaIRolu(Pacijent pacijent, UserRole userRole) {
+
+
+    public static boolean sacuvajUBazuRegistraciju(RegistracijaPacijenta registracijaPacijenta) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         if (session.isOpen()) {
             session.beginTransaction();
-            session.save(userRole);
-            session.save(pacijent);
+            session.save(registracijaPacijenta);
             session.getTransaction().commit();
             session.close();
             return true;
@@ -58,4 +60,6 @@ public class RegisterService {
 
         return false;
     }
+
+
 }

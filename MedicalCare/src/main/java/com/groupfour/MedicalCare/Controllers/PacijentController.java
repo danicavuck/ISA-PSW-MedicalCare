@@ -47,6 +47,10 @@ public class PacijentController {
         {
             return PacijentService.dobaviPacijenteZaLekara(session);
         }
+        else if(authorization.hasPermisson(session, new String[] {"med_sestra"})){
+            return PacijentService.dobaviPacijenteZaMedicinskuSestru(session);
+        }
+
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 

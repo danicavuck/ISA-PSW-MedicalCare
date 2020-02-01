@@ -1,6 +1,7 @@
 package com.groupfour.MedicalCare.Controllers;
 
 import com.groupfour.MedicalCare.Model.DTO.PacijentDTO;
+import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
 import com.groupfour.MedicalCare.Repository.PacijentRepository;
 import com.groupfour.MedicalCare.Service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class RegisterController {
     }
 
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody PacijentDTO pacijentDTO) {
-        return RegisterService.registerPacijent(pacijentDTO);
+    public ResponseEntity<String> register(@RequestBody RegistracijaPacijenta registracijaPacijenta) {
+        return RegisterService.registerPacijent(registracijaPacijenta);
     }
 }

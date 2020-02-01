@@ -40,10 +40,10 @@ export class RegistracijaKlinikeComponent implements OnInit {
     console.log(this.model);
 
     if(this.isFormValid()){
-      let apiEndpoint = "http://localhost:8080/klinika/dodajKliniku";
+      let apiEndpoint = "http://localhost:8080/adminkc/dodajKliniku";
     
       this.http.post(apiEndpoint, this.model,
-        {responseType: 'text'}).subscribe( data => {
+        {responseType: 'text', withCredentials: true}).subscribe( data => {
         setTimeout(() =>
         {
           this.router.navigateByUrl('/adminkc');
@@ -80,7 +80,7 @@ export class RegistracijaKlinikeComponent implements OnInit {
   async getLekari(){
     const apiEndPoint = 'http://localhost:8080/klinika/lekari';
     
-   this.http.get(apiEndPoint,{responseType : 'json'})
+   this.http.get(apiEndPoint,{ withCredentials: true })
    .subscribe((data) => {
      this.lekari = data as Set<LekarDTO>;
    },err => {
@@ -92,7 +92,7 @@ export class RegistracijaKlinikeComponent implements OnInit {
 async getSestre(){
   const apiEndPoint = 'http://localhost:8080/klinika/medsestre';
   
- this.http.get(apiEndPoint,{responseType : 'json'})
+ this.http.get(apiEndPoint,{ withCredentials: true })
  .subscribe((data) => {
    this.sestre = data as Set<MedicinskaSestraDTO>;
  },err => {
@@ -104,7 +104,7 @@ async getSestre(){
 async getSale(){
   const apiEndPoint = 'http://localhost:8080/klinika/sale';
   
- this.http.get(apiEndPoint,{responseType : 'json'})
+ this.http.get(apiEndPoint,{ withCredentials: true })
  .subscribe((data) => {
    this.sale = data as Set<SalaDTO>;
  },err => {
@@ -116,7 +116,7 @@ async getSale(){
 async getAdmini(){
   const apiEndPoint = 'http://localhost:8080/klinika/admini';
   
- this.http.get(apiEndPoint,{responseType : 'json'})
+ this.http.get(apiEndPoint,{ withCredentials: true })
  .subscribe((data) => {
    this.admini = data as Set<AdminKlinikeDTO>;
  },err => {
@@ -134,6 +134,8 @@ export interface LekarDTO{
   id : number;
   ime : string,
   prezime : string;
+  email : string;
+  prosecnaOcena : number
 }
 export interface MedicinskaSestraDTO{
   id : number;
@@ -143,7 +145,7 @@ export interface MedicinskaSestraDTO{
 
 export interface SalaDTO{
  id : number;
- brojSale: number;
+ nazivSale: string;
 }
 export interface AdminKlinikeDTO{
   id : number;

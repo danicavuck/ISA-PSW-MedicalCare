@@ -1,9 +1,6 @@
 package com.groupfour.MedicalCare.Controllers;
 
-import com.groupfour.MedicalCare.Model.DTO.DijagnozaDTO;
-import com.groupfour.MedicalCare.Model.DTO.KlinikaDTO;
-import com.groupfour.MedicalCare.Model.DTO.LekDTO;
-import com.groupfour.MedicalCare.Model.DTO.RegistracijaPacijentaDTO;
+import com.groupfour.MedicalCare.Model.DTO.*;
 import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
 import com.groupfour.MedicalCare.Service.AdminKCService;
 import com.groupfour.MedicalCare.Service.RegistracijaPacijentaService;
@@ -43,33 +40,33 @@ public class AdminKCController {
     public ResponseEntity<?> getZahteviZaRegistraciju(HttpSession session) {
         System.out.println(session.getAttribute("role"));
         System.out.println(session.getAttribute("id"));
-     //   if(authorization.hasPermisson(session,role)) {
+          if(authorization.hasPermisson(session,role)) {
             return new ResponseEntity<>(registracijaPacijentaService.getAllActive(session), HttpStatus.OK);
-       // }
+        }
 
-        //return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+       return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value = "/dijagnoze", method = RequestMethod.GET)
     public ResponseEntity<?> getDijagnoze(HttpSession session) {
         System.out.println(session.getAttribute("role"));
         System.out.println(session.getAttribute("id"));
-        //   if(authorization.hasPermisson(session,role)) {
+        if(authorization.hasPermisson(session,role)) {
         return new ResponseEntity<>(adminKCService.getDijagnoze(session), HttpStatus.OK);
-        // }
+         }
 
-    //return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value = "/lekovi", method = RequestMethod.GET)
     public ResponseEntity<?> getLekovi(HttpSession session) {
         System.out.println(session.getAttribute("role"));
         System.out.println(session.getAttribute("id"));
-        //   if(authorization.hasPermisson(session,role)) {
-        return new ResponseEntity<>(adminKCService.getLekovi(session), HttpStatus.OK);
-        // }
+        if(authorization.hasPermisson(session,role)) {
+            return new ResponseEntity<>(adminKCService.getLekovi(session), HttpStatus.OK);
+        }
 
-        //return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
     }
 
 
@@ -94,10 +91,18 @@ public class AdminKCController {
         return new ResponseEntity<String>("Zahtev nije odbijen!",HttpStatus.UNAUTHORIZED);
     }
 
-    @PostMapping("/dodajKliniku")
-    public ResponseEntity<?> dodajKliniku(@RequestBody KlinikaDTO klinikaDTO,HttpSession session) {
+    @RequestMapping(value = "/dodajKliniku", method = RequestMethod.POST)
+    public ResponseEntity<?> dodajKliniku(@RequestBody KlinikaBazicnoDTO klinikaBazicnoDTO, HttpSession session) {
         if(authorization.hasPermisson(session,role)) {
-            return adminKCService.dodajKliniku(klinikaDTO,session);
+            return adminKCService.dodajKliniku(klinikaBazicnoDTO,session);
+        }
+        return new ResponseEntity<>("Dodavanje nije dozvoljeno!",HttpStatus.UNAUTHORIZED);
+    }
+
+    @RequestMapping(value = "/dodajAdminaKlinike", method = RequestMethod.POST)
+    public ResponseEntity<?> dodajAdminaKlinike(@RequestBody AdminKlinikeBazicnoDTO klinikaBazicnoDTO, HttpSession session) {
+        if(authorization.hasPermisson(session,role)) {
+            return adminKCService.dodajAdminaKlinike(klinikaBazicnoDTO,session);
         }
         return new ResponseEntity<>("Dodavanje nije dozvoljeno!",HttpStatus.UNAUTHORIZED);
     }

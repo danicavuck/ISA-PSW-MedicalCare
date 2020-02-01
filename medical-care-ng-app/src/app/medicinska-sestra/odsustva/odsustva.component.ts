@@ -26,7 +26,7 @@ export class OdsustvaComponent implements OnInit {
   async onSubmit() {
     const apiEndpoint = 'http://localhost:8080/medsestra/dodajOdsustvo';
     this.inkrementDatuma();
-    this.http.post(apiEndpoint, this.odsustvo, {responseType: 'text'}).subscribe(data => {
+    this.http.post(apiEndpoint, this.odsustvo, {responseType: 'text', withCredentials: true}).subscribe(data => {
       console.log('Uspesno slanje zahteva za odsustvo');
     }, err => {
       console.log('Neuspesno slanje zahteva za odsustvo');
