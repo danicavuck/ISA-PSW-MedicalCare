@@ -10,23 +10,24 @@ import { Router } from '@angular/router';
 })
 export class RegistracijaAdminaKlinikeComponent implements OnInit {
 
-   private model: AdminKlinike = {
+   private model: AdminKlinikeBazicnoDTO = {
      ime : '',
      prezime : '',
      email : '',
      lozinka : '',
-     id_klinike : 0
+     id_klinika : 0
       
    }
-   private klinike : Array<KlinikaDTO>
+   
+   klinike : Array<KlinikaSveDTO>;
    private lozinkaPonovo: string = null;
    errorStatus: string = null;
   constructor(private http : HttpClient, private router:Router) {
-    this.getKlinike();
+    
    }
 
   ngOnInit() {
-   
+    this.getKlinike();
   }
 
   passwordsMatch() {
@@ -44,10 +45,10 @@ export class RegistracijaAdminaKlinikeComponent implements OnInit {
 
   async onSubmit() {
     if (this.isFormValid()) {
-      const apiEndpoint = 'http://localhost:8080/adminklinike';
+      const apiEndpoint = 'http://localhost:8080/adminkc/dodajAdminaKlinike';
 
       this.http.post(apiEndpoint, this.model,
-        {responseType: 'text'}).subscribe( data => {
+        {responseType: 'text',withCredentials:true}).subscribe( data => {
           console.log('Uspesno dodavanje admina klinike');
           this.router.navigateByUrl('/adminkc');
         }, error => {
@@ -62,9 +63,9 @@ export class RegistracijaAdminaKlinikeComponent implements OnInit {
   async getKlinike(){
     const apiEndPoint = 'http://localhost:8080/klinika/klinikeSve';
     
-   this.http.get(apiEndPoint,{responseType : 'json'})
+   this.http.get(apiEndPoint,{ withCredentials: true })
    .subscribe((data) => {
-     this.klinike = data as Array<KlinikaDTO>;
+     this.klinike = data as Array<KlinikaSveDTO>;
    },err => {
      console.log('greska pri izlistavanju klinika');
      console.log(err);
@@ -74,15 +75,15 @@ export class RegistracijaAdminaKlinikeComponent implements OnInit {
 
 }
 
-export interface KlinikaDTO{
-  id : string
+export interface KlinikaSveDTO{
   naziv : string;
+  id : number;
 }
 
-export interface AdminKlinike{
+export interface AdminKlinikeBazicnoDTO{
   ime: string;
   prezime: string;
   email: string;
   lozinka: string;
-  id_klinike: number;
+  id_klinika: number;
 }

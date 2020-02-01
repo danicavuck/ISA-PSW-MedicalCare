@@ -17,6 +17,7 @@ import { MedicinskaSestraComponent } from './medicinska-sestra/medicinska-sestra
 import { AdminKcComponent } from './admin-kc/admin-kc.component';
 import { RegistracijaAdminaKlinikeComponent } from './registracija-admina-klinike/registracija-admina-klinike.component';
 import { RegistracijaKlinikeComponent } from './registracija-klinike/registracija-klinike.component';
+
 import { DefinisanjePregledaComponent } from './definisanje-pregleda/definisanje-pregleda.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

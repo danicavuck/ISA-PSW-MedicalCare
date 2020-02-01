@@ -17,13 +17,13 @@ export class AdminkcSifarnikLekovaComponent implements OnInit {
   constructor(public dialog: MatDialog,private dataService : LekServiceComponent,private router: Router, private http: HttpClient) { }
   private model : LekDTO;
   ngOnInit() {
-    this.getDijagnoze();
+    this.getLekovi();
   }
 
-  async getDijagnoze(){
+  async getLekovi(){
     const apiEndPoint = 'http://localhost:8080/adminkc/lekovi';
     
-   this.http.get(apiEndPoint,{responseType : 'json'})
+   this.http.get(apiEndPoint,{ withCredentials : true})
    .subscribe((data) => {
 
      this.models = data as Array<LekDTO>;

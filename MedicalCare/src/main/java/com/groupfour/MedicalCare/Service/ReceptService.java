@@ -32,10 +32,9 @@ public class ReceptService {
     public List<ReceptDTO> getAllActive() {
         List<ReceptDTO> temp = new ArrayList<>();
         List<Recept> all = receptRepository.findAll();
-        //System.out.println(all.size());
+        System.out.println(all.size());
         for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).isAktivan()) {
-                //System.out.println(all.get(i).getIme());
+            if (all.get(i).isAktivan() && !all.get(i).isOvereno()){
                 temp.add(mapiranjeRecepta(all.get(i)));
             }
         }

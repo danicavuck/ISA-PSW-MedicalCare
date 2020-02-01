@@ -48,8 +48,8 @@
           </mat-form-field>
 
           <mat-form-field class="full-width" >
-            <mat-label style="margin-bottom: 30px;">Koje klinike ce admin biti</mat-label>
-            <mat-select required name="klinika"  [(ngModel)]="model.id_klinike">
+            <mat-label style="margin-bottom: 30px;">Klinike</mat-label>
+            <mat-select required name="klinika" [(ngModel)]="model.id_klinika"  >
                 <mat-option *ngFor="let klinika of klinike" value={{klinika.id}}>
                     {{klinika.naziv}}
                 </mat-option>

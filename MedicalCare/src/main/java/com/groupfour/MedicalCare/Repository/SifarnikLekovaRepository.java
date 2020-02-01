@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SifarnikLekovaRepository extends JpaRepository<SifarnikLekova,Integer> {
     public SifarnikLekova findByKodLeka(String kod);
+    SifarnikLekova findSifarnikLekovaById(int id);
 }

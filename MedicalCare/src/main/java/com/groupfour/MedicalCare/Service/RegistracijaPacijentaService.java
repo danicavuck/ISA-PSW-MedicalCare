@@ -28,12 +28,12 @@ public class RegistracijaPacijentaService {
     }
 
     public List<RegistracijaPacijenta> getAllActive(HttpSession session) {
-//        AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
-//
-//        if(adminKlinickogCentra == null){
-//            logger.error("Nje pronadjen admin klinickog entra");
-//            return  null;
-//        }
+        AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
+
+        if(adminKlinickogCentra == null){
+            logger.error("Nje pronadjen admin klinickog entra");
+            return  null;
+        }
 
         List<RegistracijaPacijenta> temp = new ArrayList<>();
         List<RegistracijaPacijenta> all = registracijaPacijentaRepository.findAll();
