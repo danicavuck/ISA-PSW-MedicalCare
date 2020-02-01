@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Registracija</title>
+</head>
+
+<body>
+  <div class="container col-xs-12 col-md-8 col-md-offset-3">
+    <div class="jumbotron">
+      <div class="text-center">
+        <div class="mat-display-2">Napravite nalog</div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="errorStatus" style="text-align: center">
+        <div class="mat-display-1">{{errorStatus}}</div>
+      </div>
+      <div *ngIf="isLoading" style="text-align: center">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+
+      <form name="form" class="my-form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()"
+        *ngIf="!isLoading">
+
+        <mat-form-field class="full-width">
+          <mat-label>Ime</mat-label>
+          <input class="input" type="text" id="ime" name="ime" [(ngModel)]="model.ime" matInput required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Prezime</mat-label>
+          <input class="input" type="text" id="prezime" name="prezime" [(ngModel)]="model.prezime" matInput required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Adresa prebivalista</mat-label>
+          <input class="input" type="text" id="adresaPrebivalista" name="adresaPrebivalista"
+            [(ngModel)]="model.adresaPrebivalista" matInput required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Grad</mat-label>
+          <input class="input" type="text" id="grad" name="grad" [(ngModel)]="model.grad" matInput required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Drzava</mat-label>
+          <input class="input" type="text" id="drzava" name="drzava" [(ngModel)]="model.drzava" matInput required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Broj telefona</mat-label>
+          <input class="input" type="text" id="telefon" name="telefon" [(ngModel)]="model.telefon" matInput required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Broj osiguranja</mat-label>
+          <input class="input" type="text" id="brojOsiguranja" name="brojOsiguranja" [(ngModel)]="model.brojOsiguranja"
+            matInput required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Email</mat-label>
+          <input class="input" type="email" id="email" name="email" [(ngModel)]="model.email" matInput required email>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Lozinka</mat-label>
+          <input class="input" type="password" id="lozinka" name="lozinka" [(ngModel)]="model.lozinka" matInput
+            required>
+          <mat-hint>Minimalno 6 karaktera</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Potvrdite unetu lozinku</mat-label>
+          <input class="input" type="password" id="lozinkaPonovo" name="lozinkaPonovo" [(ngModel)]="lozinkaPonovo"
+            matInput required>
+          <mat-hint>Lozinke se moraju poklapati</mat-hint>
+        </mat-form-field>
+
+        <button type="submit" mat-raised-button color="primary" class="pull-left" [disabled]="!f.valid">
+          <i class="fa fa-user-plus"></i>
+          <span> Registrujte se</span>
+        </button>
+
+        <button type="button" mat-stroked-button class="pull-right" routerLink="/login">
+          <i class="fa fa-sign-in"></i>
+          <span> Prijavi se</span>
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>
+
+</body>
+
+</html>
