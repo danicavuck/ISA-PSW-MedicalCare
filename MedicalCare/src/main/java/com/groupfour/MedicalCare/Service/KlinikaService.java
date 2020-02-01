@@ -41,13 +41,22 @@ public class KlinikaService {
         AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
         ArrayList<KlinikaDTO> klinikeDTO = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
-        if(adminKlinike == null)
+           if(adminKlinike == null)
         {
             logger.error("Nije pronadjen admin klinike");
             return null;
         }
 
         klinikeDTO.add(mapper.map(adminKlinike.getKlinika(), KlinikaDTO.class));
+        return klinikeDTO;
+    }
+
+
+    public static ArrayList<KlinikaDTO> getKlinikeSve(HttpSession session) {
+        ArrayList<KlinikaDTO> klinikeDTO = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+
+        klinikeDTO.add(mapper.map(klinikaRepository.findAll(), KlinikaDTO.class));
         return klinikeDTO;
     }
 

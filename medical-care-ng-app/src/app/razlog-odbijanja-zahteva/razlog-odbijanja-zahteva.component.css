@@ -1,0 +1,11 @@
+input[type="text"] {
+    border: solid 1px dimgrey;
+    width: 400px;
+ 
+    padding-left: 0.8ch;
+  }
+  
+  input:focus {
+    outline: none;
+
+  }

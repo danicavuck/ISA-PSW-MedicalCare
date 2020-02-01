@@ -17,7 +17,6 @@ import { MedicinskaSestraComponent } from './medicinska-sestra/medicinska-sestra
 import { AdminKcComponent } from './admin-kc/admin-kc.component';
 import { RegistracijaAdminaKlinikeComponent } from './registracija-admina-klinike/registracija-admina-klinike.component';
 import { RegistracijaKlinikeComponent } from './registracija-klinike/registracija-klinike.component';
-
 import { DefinisanjePregledaComponent } from './definisanje-pregleda/definisanje-pregleda.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -45,6 +44,16 @@ import { PacijentServiceComponent } from './services/pacijent-service/pacijent-s
 import { PacijentDetaljnijeComponent } from './lekar/pacijent-detaljnije/pacijent-detaljnije.component';
 import { PreglediNaCekanjuComponent } from './admin-klinike/pregledi-na-cekanju/pregledi-na-cekanju.component';
 import { ZahteviZaOdsustvoComponent } from './admin-klinike/zahtevi-za-odsustvo/zahtevi-za-odsustvo.component';
+import { MedicinskaSestraReceptiComponent } from './medicinska-sestra-recepti/medicinska-sestra-recepti.component';
+import { RazlogOdbijanjaZahtevaComponent } from './razlog-odbijanja-zahteva/razlog-odbijanja-zahteva.component';
+import { RazlogOdbijanjaServiceComponent } from './services/razlog-odbijanja-service/razlog-odbijanja-service.component';
+import { AdminkcSifarnikDijagnozaComponent } from './admin-kc/adminkc-sifarnik-dijagnoza/adminkc-sifarnik-dijagnoza.component';
+import { AdminkcSifarnikLekovaComponent } from './admin-kc/adminkc-sifarnik-lekova/adminkc-sifarnik-lekova.component';
+import { DodajDijagnozuComponent } from './admin-kc/adminkc-sifarnik-dijagnoza/dodaj-dijagnozu/dodaj-dijagnozu.component';
+import { DijagnozaServiceComponent } from './services/dijagnoza-service/dijagnoza-service.component';
+import { DodajLekComponent } from './admin-kc/adminkc-sifarnik-lekova/dodaj-lek/dodaj-lek.component';
+import { LekServiceComponent } from './services/lek-service/lek-service.component';
+import { OdsustvaComponent } from './medicinska-sestra/odsustva/odsustva.component';
 import { DetailsComponent } from './admin-klinike/details/details.component';
 import { PrvoLogovanjeComponent } from './prvo-logovanje/prvo-logovanje.component';
 import { LekarDetaljnijeComponent } from './lekar/lekar-detaljnije/lekar-detaljnije.component';
@@ -76,6 +85,13 @@ const appRouts: Routes = [
   { path: 'lekar/pacijent', component : PacijentDetaljnijeComponent},
   { path: 'lekar/detaljnije', component : LekarDetaljnijeComponent},
   { path: 'medsestra', component: MedicinskaSestraComponent },
+  { path: 'medsestra/svirecepti', component : MedicinskaSestraReceptiComponent},
+  { path: 'medsestra/odsustva', component : OdsustvaComponent},
+  { path: 'adminkc', component : AdminKcComponent},
+  { path: 'adminkc/registracija-admina', component : RegistracijaAdminaKlinikeComponent},
+  { path: 'adminkc/registracija-klinike', component : RegistracijaKlinikeComponent},
+  { path: 'adminkc/sifarnik-dijagnoza', component:AdminkcSifarnikDijagnozaComponent},
+  { path: 'adminkc/sifarnik-lekova',component: AdminkcSifarnikLekovaComponent},
   { path: 'medsestra/detaljnije', component: MedSestraDetaljnijeComponent },
   { path: 'adminkc', component : AdminKcComponent},
   { path: 'prvologovanje', component: PrvoLogovanjeComponent },
@@ -120,6 +136,16 @@ const appRouts: Routes = [
     PacijentDetaljnijeComponent,
     PreglediNaCekanjuComponent,
     ZahteviZaOdsustvoComponent,
+    MedicinskaSestraReceptiComponent,
+    RazlogOdbijanjaZahtevaComponent,
+    RazlogOdbijanjaServiceComponent,
+    AdminkcSifarnikDijagnozaComponent,
+    AdminkcSifarnikLekovaComponent,
+    DodajDijagnozuComponent,
+    DijagnozaServiceComponent,
+    DodajLekComponent,
+    LekServiceComponent,
+    OdsustvaComponent,
     DetailsComponent,
     PrvoLogovanjeComponent,
     LekarDetaljnijeComponent,
@@ -142,6 +168,6 @@ const appRouts: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [SalaDialogComponent, LekarDialogComponent],
+  entryComponents: [SalaDialogComponent, LekarDialogComponent,RazlogOdbijanjaZahtevaComponent,DodajDijagnozuComponent,DodajLekComponent],
 })
 export class AppModule { }

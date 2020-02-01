@@ -5,14 +5,68 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Medicinska sestra</title>
+  <title>Medicinska Sestra</title>
 </head>
 <body>
 <div class="text-center">
-  <app-med-sestra-navbar></app-med-sestra-navbar>
-  <div class="jumbotron" style="text-align: center;">
-    <h2 class="mat-display-1">Dobro dosli!</h2>
+  <mat-toolbar color="primary" class="navbar">
+    <div>Medical Care</div>
+    <div>
+      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/odsustva']">Novi zahtev za odsustvo</a></span>
+      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/kalendar']">Kalendar</a></span>
+      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['svirecepti']">Recepti</a></span>
+      
+    </div>
+  </mat-toolbar>
+  <h2 class="mat-display-1">Pacijenti klinike</h2>
 
+  <form name="form" #f="ngForm" class="my-form" novalidate (ngSubmit)="pretraziPacijente()">
+    <mat-form-field class="f  orm-input1">
+        <mat-label>Ime i prezime pacijenta</mat-label>
+        <input class="input" type="text" id="naziv" matInput name="naziv" placeholder="Ime i Prezime"
+            [(ngModel)]="pacijentPretraga" required>
+    </mat-form-field>
+    <button type="submit" mat-stroked-button [disabled]="!f.valid">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        <span> Pretrazi</span>
+    </button>
+
+    <div class="col">
+        <mat-form-field class="form-input2">
+            <mat-label>Filter</mat-label>
+            <input (keyup)="applyFilter($event.target.value)" matInput>
+        </mat-form-field>
+    </div>
+    </form>
+
+  <table mat-table [dataSource]="modelsDataSource" class="mat-elevation-z8" *ngIf="!filtriraj" matSort>
+    <ng-container matColumnDef="ime">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Ime</mat-header-cell>
+        <mat-cell *matCellDef="let pacijent"> {{pacijent.ime}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="prezime">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Prezime</mat-header-cell>
+        <mat-cell *matCellDef="let pacijent"> {{pacijent.prezime}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+        <mat-cell *matCellDef="let pacijent"> {{pacijent.email}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Akcije">
+        <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
+        <mat-cell *matCellDef="let pacijent" style="padding-left: 10%;">
+            <button mat-mini-fab color="primary" (click)="onDetaljnije(pacijent)" routerLink="/lekar/pacijent" matTooltip="Vise informacija o pacijentu">
+                <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+        </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+</table>
+<mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator>
     <button mat-raised-button color="primary" class="pull pull-left" (click)="odjava()" [routerLink]="['/login']">Odjava</button>
   </div>
 </div>

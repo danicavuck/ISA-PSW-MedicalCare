@@ -1,30 +1,45 @@
 package com.groupfour.MedicalCare.Service;
 
+import com.groupfour.MedicalCare.Model.Administrator.AdminKlinickogCentra;
 import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
+import com.groupfour.MedicalCare.Repository.AdminKCRepository;
 import com.groupfour.MedicalCare.Repository.RegistracijaPacijentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class RegistracijaPacijentaService {
 
-    @Autowired
+    private AdminKCRepository adminKCRepository;
     private RegistracijaPacijentaRepository registracijaPacijentaRepository;
+    private static Logger logger = LoggerFactory.getLogger(AdminKlinickogCentra.class);
 
-    public RegistracijaPacijentaService(RegistracijaPacijentaRepository registracijaPacijentaRepository) {
+    @Autowired
+    public RegistracijaPacijentaService(RegistracijaPacijentaRepository registracijaPacijentaRepository,AdminKCRepository adminkcRepo) {
         this.registracijaPacijentaRepository = registracijaPacijentaRepository;
+        this.adminKCRepository = adminkcRepo;
     }
 
-    public List<RegistracijaPacijenta> getAllActive() {
+    public List<RegistracijaPacijenta> getAllActive(HttpSession session) {
+//        AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
+//
+//        if(adminKlinickogCentra == null){
+//            logger.error("Nje pronadjen admin klinickog entra");
+//            return  null;
+//        }
+
         List<RegistracijaPacijenta> temp = new ArrayList<>();
         List<RegistracijaPacijenta> all = registracijaPacijentaRepository.findAll();
-        //System.out.println(all.size());
+
         for (int i = 0; i < all.size(); i++) {
             if (all.get(i).isAktivan()) {
-                //System.out.println(all.get(i).getIme());
                 temp.add(all.get(i));
             }
         }
