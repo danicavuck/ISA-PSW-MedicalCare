@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { AgmCoreModule } from '@agm/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -57,6 +58,7 @@ import { IzmenaTipaPregledaComponent } from './admin-klinike/izmena-tipa-pregled
 import { DodavanjeOperacijaComponent } from './lekar/dodavanje-operacija/dodavanje-operacija.component';
 import { OperacijeNaCekanjuComponent } from './admin-klinike/operacije-na-cekanju/operacije-na-cekanju.component';
 import { CalendarComponent } from './sale/calendar/calendar.component';
+import { LekarCalendarComponent } from './lekar/lekar-calendar/lekar-calendar.component';
 
 
 
@@ -85,7 +87,7 @@ const appRouts: Routes = [
   { path: 'lekar/zakazivanje', component : PregledIOperacijeComponent},
   { path: 'lekar/operacije', component : DodavanjeOperacijaComponent},
   { path: 'lekar/odsustva', component : OdsustvaIOdmorComponent},
-  { path: 'lekar/kalendar', component : RadniKalendarComponent},
+  { path: 'lekar/kalendar', component : LekarCalendarComponent},
   { path: 'lekar/pacijent', component : PacijentDetaljnijeComponent},
   { path: 'lekar/detaljnije', component : LekarDetaljnijeComponent},
   { path: 'medsestra', component: MedicinskaSestraComponent },
@@ -144,6 +146,7 @@ const appRouts: Routes = [
     DodavanjeOperacijaComponent,
     OperacijeNaCekanjuComponent,
     CalendarComponent,
+    LekarCalendarComponent,
   ],
   imports: [
     BrowserModule,
@@ -158,6 +161,9 @@ const appRouts: Routes = [
     AngularDateTimePickerModule,
     MaterialModule,
     FullCalendarModule,
+    AgmCoreModule.forRoot(
+      {apiKey: 'AIzaSyBiRvZ7NUPcXpFCE9YaO6ts9sDJh7cg7gs'}
+    ),
     RouterModule.forRoot(appRouts)
   ],
   providers: [BrisanjeOdsustvaComponent],

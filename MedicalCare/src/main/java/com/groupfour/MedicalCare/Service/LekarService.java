@@ -4,8 +4,11 @@ import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.DodavanjeLekaraDTO;
 import com.groupfour.MedicalCare.Model.DTO.LekarDTO;
 import com.groupfour.MedicalCare.Model.DTO.LekarIzmenaPodatakaDTO;
+import com.groupfour.MedicalCare.Model.DTO.LekarKalendarDTO;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
+import com.groupfour.MedicalCare.Model.Pregled.Operacija;
+import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Repository.AdminKlinikeRepository;
 import com.groupfour.MedicalCare.Repository.KlinikaRepository;
 import com.groupfour.MedicalCare.Repository.LekarRepository;
@@ -21,7 +24,10 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Set;
 
 @Service
 public class LekarService {
@@ -78,12 +84,25 @@ public class LekarService {
     public static ResponseEntity<?> brisanjeLekara(LekarDTO lekarDTO){
         Lekar lekar = lekarRepository.findLekarById(lekarDTO.getId());
         if(lekar != null){
+            if(lekarImaAktivnePreglede(lekar))
+                return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+
             lekar.setAktivan(false);
             lekarRepository.save(lekar);
             return new ResponseEntity<>("Uspesno izbrisan lekar", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>("Neuspesno brisanje lekara", HttpStatus.BAD_REQUEST);
     }
+
+    public static boolean lekarImaAktivnePreglede(Lekar lekar){
+        Set<Pregled> pregledi = lekar.getSetPregleda();
+        for(Pregled pregled : pregledi) {
+            if(pregled.isAktivan())
+                return true;
+        }
+        return false;
+    }
+
     @Transactional
     public static ResponseEntity<?> dodavanjeNovogLekara(DodavanjeLekaraDTO dodavanjeLekaraDTO, HttpSession session){
         if(!EmailUniqueness.isEmailUniqe(dodavanjeLekaraDTO.getEmail())){
@@ -155,6 +174,37 @@ public class LekarService {
             zadovoljavajuce = true;
         }
         return zadovoljavajuce;
+    }
+
+    public static ResponseEntity<?> preglediIOperacijeZaRadniKalendar(HttpSession session) {
+        Lekar lekar = lekarRepository.findLekarById((int) session.getAttribute("id"));
+        if(lekar != null)
+        {
+            Set<Pregled> pregledi = lekar.getSetPregleda();
+            Set<Operacija> operacije = lekar.getListaOperacija();
+            ArrayList<LekarKalendarDTO> lekarKalendarDTOS = new ArrayList<>();
+            LekarKalendarDTO lekarKalendarDTO = new LekarKalendarDTO();
+
+            for(Pregled pregled : pregledi) {
+                if(pregled.isAktivan())
+                {
+                        lekarKalendarDTO.setStart(pregled.getTerminPregleda());
+                        lekarKalendarDTO.setTitle(pregled.getTipPregleda().getTipPregleda());
+                        lekarKalendarDTOS.add(lekarKalendarDTO);
+                }
+            }
+
+            for(Operacija operacija : operacije) {
+                if(operacija.isAktivan())
+                {
+                    lekarKalendarDTO.setStart(operacija.getTerminOperacije());
+                    lekarKalendarDTO.setTitle("Operacija");
+                    lekarKalendarDTOS.add(lekarKalendarDTO);
+                }
+            }
+            return new ResponseEntity<>(lekarKalendarDTOS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
 }

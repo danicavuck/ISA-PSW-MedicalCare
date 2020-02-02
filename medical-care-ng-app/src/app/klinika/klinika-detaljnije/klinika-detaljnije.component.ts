@@ -15,9 +15,12 @@ import { TipPregledaService } from 'src/app/services/tip-pregleda.service';
 })
 
 export class KlinikaDetaljnijeComponent implements OnInit {
+  private latitude = 45.2671;
+  private longitude = 19.8335;
+
   private displayColumns: string[] = ['nazivSale', 'Akcije'];
   private lekariColumns: string[] = ['ime', 'prezime', 'prosecnaOcena', 'email', 'Akcije'];
-  private preglediColumns: string[] = ['Broj Sale', 'Tip pregleda', 'Pocetak pregleda', 'Kraj pregleda', 'Lekar', 'Akcije'];
+  private preglediColumns: string[] = ['Broj Sale', 'Tip pregleda', 'Pocetak pregleda', 'Kraj pregleda', 'Lekar', 'Cena', 'Akcije'];
   private tipoviPregledaColumns: string[] = ['tipPregleda', 'Akcije'];
 
   private tipoviPregleda: Array<TipPregleda>;
@@ -220,10 +223,10 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     };
     const apiEndpoint = 'http://localhost:8080/lekari';
     this.http.delete(apiEndpoint, options).subscribe((data) => {
-      console.log('Uspenso brisanje lekara');
+      this.snackBar.open('Uspesno brisanje lekara', 'X', {duration: 3000});
       this.getLekareInitialy();
     }, err => {
-      console.log(err);
+      this.snackBar.open('Lekar se ne moze izbrisati ako ima aktivne preglede', 'X', {duration: 7000});
     });
   }
 
@@ -233,6 +236,12 @@ export class KlinikaDetaljnijeComponent implements OnInit {
 
   async editSala(sala) {
       this.salaService.setSala(sala);
+  }
+
+  async onMapClick(event) {
+    console.log(event);
+    this.latitude = event.coords.lat;
+    this.longitude = event.coords.lng;
   }
 }
 

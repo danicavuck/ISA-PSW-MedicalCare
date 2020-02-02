@@ -107,7 +107,7 @@
 
                 <div style="text-align: center;" style="margin-top: 10%;">
                     <mat-divider style="margin: 10px 0 10px 0;"></mat-divider>
-                    <div class="mat-h1">Pregledi</div>
+                    <div class="mat-h1">Pregledi / Cenovnik</div>
                     <table mat-table [dataSource]="preglediDataSource" class="mat-elevation-z8">
                         <ng-container matColumnDef="Broj Sale">
                             <mat-header-cell *matHeaderCellDef>Broj Sale</mat-header-cell>
@@ -132,6 +132,11 @@
                         <ng-container matColumnDef="Lekar">
                             <mat-header-cell *matHeaderCellDef>Lekar</mat-header-cell>
                             <mat-cell *matCellDef="let pregled"> {{pregled.lekarImeIPrezime}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Cena">
+                            <mat-header-cell *matHeaderCellDef>Cena</mat-header-cell>
+                            <mat-cell *matCellDef="let pregled"> {{pregled.cena}} RSD </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="Akcije">
@@ -174,10 +179,12 @@
                         <mat-row *matRowDef="let row; columns: tipoviPregledaColumns;"></mat-row>
                     </table>
                 </div>
-                
-    
         </div>
         </div>
+        <agm-map [latitude]="latitude" [longitude]="longitude" (mapClick)=onMapClick($event)>
+            <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+        </agm-map>
+
         <div class="container" style="margin-bottom: 20%;">
         <button mat-stroked-button color="primary" type="button" class="pull-left" [routerLink]="['/adminklinike']">Nazad</button>
         <button mat-raised-button color="primary" class="pull-right" [routerLink]="['/login']">Odjavite se</button>
