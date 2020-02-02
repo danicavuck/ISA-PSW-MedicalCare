@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -55,6 +56,7 @@ import { BrisanjeOdsustvaComponent } from './dialozi/brisanje-odsustva/brisanje-
 import { IzmenaTipaPregledaComponent } from './admin-klinike/izmena-tipa-pregleda/izmena-tipa-pregleda.component';
 import { DodavanjeOperacijaComponent } from './lekar/dodavanje-operacija/dodavanje-operacija.component';
 import { OperacijeNaCekanjuComponent } from './admin-klinike/operacije-na-cekanju/operacije-na-cekanju.component';
+import { CalendarComponent } from './sale/calendar/calendar.component';
 
 
 
@@ -76,6 +78,8 @@ const appRouts: Routes = [
   { path: 'adminklinike/details', component: DetailsComponent},
   { path: 'adminklinike/izmenatipa', component: IzmenaTipaPregledaComponent},
   { path: 'adminklinike/sala', component: IzmenaSaleComponent},
+  { path: 'adminklinike/sala/calendar', component: CalendarComponent},
+  { path: 'adminklinike/calendar', component: AdminCalendarComponent},
   { path: 'lekar', component: LekarComponent },
   { path: 'lekar/dodavanjepregleda', component : DodavanjePregledaComponent},
   { path: 'lekar/zakazivanje', component : PregledIOperacijeComponent},
@@ -139,6 +143,7 @@ const appRouts: Routes = [
     IzmenaTipaPregledaComponent,
     DodavanjeOperacijaComponent,
     OperacijeNaCekanjuComponent,
+    CalendarComponent,
   ],
   imports: [
     BrowserModule,
@@ -152,6 +157,7 @@ const appRouts: Routes = [
     OwlNativeDateTimeModule,
     AngularDateTimePickerModule,
     MaterialModule,
+    FullCalendarModule,
     RouterModule.forRoot(appRouts)
   ],
   providers: [BrisanjeOdsustvaComponent],

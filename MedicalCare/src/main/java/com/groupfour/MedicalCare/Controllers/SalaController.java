@@ -67,4 +67,14 @@ public class SalaController {
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
+
+    @GetMapping(value = "/{salaId}")
+    public ResponseEntity<?> dobaviPregledeIOperacijeZaSalu(@PathVariable(value = "salaId") Integer salaId,
+                                                            HttpSession session){
+        if(authorization.hasPermisson(session, new String[]{"adminklinike", "lekar", "med_sestra"}))
+        {
+            return SalaService.preglediIOperacijeZaSalu(salaId);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
 }

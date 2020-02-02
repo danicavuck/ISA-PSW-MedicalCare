@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FullCalendarModule } from '@fullcalendar/angular'; // for FullCalendar!
-
+import dayGridPlugin from '@fullcalendar/daygrid';
 
 @Component({
   selector: 'app-admin-calendar',
@@ -9,17 +8,7 @@ import { FullCalendarModule } from '@fullcalendar/angular'; // for FullCalendar!
 })
 export class AdminCalendarComponent implements OnInit {
 
-  calendarOptions = {
-    buttonText: {
-      prevYear: new Date().getFullYear() - 1,
-      nextYear: new Date().getFullYear() + 1,
-    },
-    header: {
-      left: 'month, agendaWeek, agendaDay',
-      center: 'title',
-      right: 'today, prevYear, prev, next, nextYear'
-    }
-  };
+  calendarPlugins = [dayGridPlugin];
 
   constructor() { }
 

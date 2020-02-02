@@ -20,9 +20,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Table(name = DbTableConstants.OPERACIJA)
-@JsonIgnoreProperties({"sala", "pacijent"})
+@JsonIgnoreProperties({"sala", "pacijent", "lekar"})
 public class Operacija {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,4 +49,9 @@ public class Operacija {
             inverseJoinColumns = @JoinColumn(name = DbColumnConstants.LEKAR_ID)
     )
     private Set<Lekar> lekar = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "Operacija: " + this.id;
+    }
 }

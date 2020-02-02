@@ -89,7 +89,7 @@
                         <ng-container matColumnDef="Akcije">
                             <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
                             <mat-cell *matCellDef="let sala" style="padding-left: 10%;">
-                                <button mat-mini-fab color="primary" (click)="kalendarDialog(sala)" matTooltip="Kalendar zauzeca" style="margin-right: 5px;">
+                                <button mat-mini-fab color="primary" matTooltip="Kalendar zauzeca" style="margin-right: 5px;" [routerLink]="['/adminklinike/sala/calendar']" (click)="editSala(sala)">
                                     <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                                 <button mat-mini-fab color="primary" (click)="editSala(sala)" matTooltip="Izmena sale" style="margin-right: 2px;" [routerLink]="['/adminklinike/sala']">
