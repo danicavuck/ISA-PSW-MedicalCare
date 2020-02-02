@@ -38,12 +38,11 @@ export class MedicinskaSestraReceptiComponent implements OnInit {
     console.log('prihvacen')
     
     
-    this.http.put(url,model.id)
+    this.http.put(url,model.id,{withCredentials : true})
     .subscribe((data) => {
-     
+      this.ngOnInit();
     },err => {
-      console.log('greska pri prihvatanju');
-      console.log(err);
+      this.ngOnInit();
     });
   
    
