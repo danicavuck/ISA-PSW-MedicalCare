@@ -1,6 +1,7 @@
 package com.groupfour.MedicalCare.Controllers;
 
 import com.groupfour.MedicalCare.Model.DTO.TipPregledaDTO;
+import com.groupfour.MedicalCare.Model.Pregled.TipPregleda;
 import com.groupfour.MedicalCare.Service.TipPregledaService;
 import com.groupfour.MedicalCare.Utill.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,24 @@ public class TipPregledaController {
         if(authorization.hasPermisson(session, roles))
         {
             return TipPregledaService.dodajNoviTipPregleda(tipPregledaDTO, session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> azurirajTipPregleda(@RequestBody TipPregledaDTO tipPregledaDTO, HttpSession session){
+        if(authorization.hasPermisson(session, roles))
+        {
+            return TipPregledaService.azurirajTipPregleda(tipPregledaDTO);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping("/brisanje")
+    public ResponseEntity<?> obrisiTipPregleda(@RequestBody TipPregledaDTO tipPregledaDTO, HttpSession session){
+        if(authorization.hasPermisson(session, roles))
+        {
+            return TipPregledaService.obrisiTipPregleda(tipPregledaDTO);
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }

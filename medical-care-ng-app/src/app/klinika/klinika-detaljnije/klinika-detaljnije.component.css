@@ -9,3 +9,8 @@ table {
 .paginator {
     margin-top: 1px;
 }
+
+agm-map {
+    height: 500px;
+    margin: 10px 10px 20px 10px;
+}

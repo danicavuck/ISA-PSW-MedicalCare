@@ -10,4 +10,5 @@ import lombok.*;
 @ToString
 public class TipPregledaDTO {
     private String tipPregleda;
+    private int id;
 }

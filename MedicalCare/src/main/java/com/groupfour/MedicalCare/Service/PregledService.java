@@ -10,6 +10,7 @@ import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Pregled.PreglediNaCekanju;
 import com.groupfour.MedicalCare.Model.Pregled.TipPregleda;
 import com.groupfour.MedicalCare.Repository.*;
+import com.groupfour.MedicalCare.Utill.CustomEmailSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,21 +42,21 @@ public class PregledService {
     private static LekarRepository lekarRepository;
     private static AdminKlinikeRepository adminKlinikeRepository;
     private static PacijentRepository pacijentRepository;
-    private static JavaMailSender javaMailSender;
+    private static CustomEmailSender customEmailSender;
     private static Logger logger = LoggerFactory.getLogger(PregledService.class);
 
     @Autowired
     public PregledService(PregledRepository pRepository, TipPregledaRepository tpRepository,
                           SalaRepository sRepository, LekarRepository lRepository,
                           PacijentRepository pacRepository, PreglediNaCekanjuRepository pNaCekanju,
-                          JavaMailSender javaMSender, AdminKlinikeRepository adminKlinikeRepo) {
+                          CustomEmailSender customEmail, AdminKlinikeRepository adminKlinikeRepo) {
         pregledRepository = pRepository;
         tipPregledaRepository = tpRepository;
         salaRepository = sRepository;
         lekarRepository = lRepository;
         pacijentRepository = pacRepository;
         preglediNaCekanjuRepository = pNaCekanju;
-        javaMailSender = javaMSender;
+        customEmailSender = customEmail;
         adminKlinikeRepository = adminKlinikeRepo;
     }
 
@@ -96,7 +97,7 @@ public class PregledService {
     public static PregledDTO mapirajPregledDTO(Pregled pregled) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
         PregledDTO pregledDTO =
-                PregledDTO.builder().trajanjePregleda(pregled.getTrajanjePregleda()).cena(pregled.getCena()).popust(pregled.getPopust()).sala(pregled.getSala().getId()).tipPregleda(pregled.getTipPregleda().getTipPregleda()).id(pregled.getId()).build();
+                PregledDTO.builder().trajanjePregleda(pregled.getTrajanjePregleda()).cena(pregled.getCena()).popust(pregled.getPopust()).sala(pregled.getSala().getNazivSale()).tipPregleda(pregled.getTipPregleda().getTipPregleda()).id(pregled.getId()).salaId(pregled.getSala().getId()).build();
         Set<Lekar> lekari = pregled.getLekari();
 
         logger.info("Lekari pocetak termina kraj termina i ostalo:\n"+ lekari.toString());
@@ -119,7 +120,7 @@ public class PregledService {
 
     public static ResponseEntity<?> kreirajNoviPregled(PregledDTO pregledDTO) {
         TipPregleda tipPregleda = tipPregledaRepository.findByTipPregleda(pregledDTO.getTipPregleda());
-        Sala sala = salaRepository.findById(pregledDTO.getSala());
+        Sala sala = salaRepository.findById(pregledDTO.getSalaId());
         Lekar lekar = lekarRepository.findLekarById(pregledDTO.getLekar());
         if(tipPregleda != null && sala != null && lekar != null){
             int popust = pregledDTO.getPopust();
@@ -160,7 +161,7 @@ public class PregledService {
             preglediNaCekanjuRepository.save(pregledNaCekanju);
 
             try{
-                posaljiMejlAdminu(lekar, pregledNaCekanju, session);
+                posaljiMejlAdminu(lekar, pregledNaCekanju);
             } catch (MailException exception){
                 logger.info("Neuspesno slanje mejla:" + exception.getMessage());
             }
@@ -193,7 +194,7 @@ public class PregledService {
     }
 
     @Async
-    public static void posaljiMejlAdminu(Lekar lekar, PreglediNaCekanju pregledNaCekanju, HttpSession session) throws MailException {
+    public static void posaljiMejlAdminu(Lekar lekar, PreglediNaCekanju pregledNaCekanju) throws MailException {
         AdminKlinike adminKlinike = nadjiAdminaKlinikePrekoKlinike(lekar.getKlinika());
         if(adminKlinike == null)
         {
@@ -201,21 +202,11 @@ public class PregledService {
             return;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
         String message =
                 "<h3>Sala za pregled</h3><p>Postovani,</p><p>Lekar " + lekar.getIme() + " " + lekar.getPrezime() + " " +
                         "zeli da zakaze pregled pacijentu za datum " + formatter.format(pregledNaCekanju.getTerminPregleda()) + "h</p><p>Molimo Vas da dodelite salu za pregled</p></br><p>Srdacan pozdrav,</p></p>Medical Care</p>";
-
-        try {
-            helper.setText(message, true);
-            helper.setTo(adminKlinike.getEmail());
-            helper.setSubject("Novi zahtev za pregled");
-            helper.setFrom(emailAddress);
-        } catch (MessagingException e) {
-            logger.info("Neuspesno slanje MimeMessage " + e.getMessage());
-        }
-        javaMailSender.send(mimeMessage);
+        String[] adminEmail = {adminKlinike.getEmail()};
+        customEmailSender.sendMail(adminEmail, "Novi zahtev za pregled", message);
         logger.info("Sending email from: " +  emailAddress);
     }
 

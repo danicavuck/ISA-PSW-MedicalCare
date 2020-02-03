@@ -111,6 +111,7 @@ export interface Lekar {
 
 export interface TipPregleda {
   tipPregleda: string;
+  id: number;
 }
 
 export interface Pregled {

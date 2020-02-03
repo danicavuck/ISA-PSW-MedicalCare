@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatDialog, MatSnackBar, MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { SalaDialogComponent } from 'src/app/dialozi/sala-dialog/sala-dialog.component';
 import { LekarDialogComponent } from 'src/app/dialozi/lekar-dialog/lekar-dialog.component';
+import { SalaServiceService } from 'src/app/services/sala-service.service';
+import { TipPregledaService } from 'src/app/services/tip-pregleda.service';
 
 
 @Component({
@@ -13,11 +15,17 @@ import { LekarDialogComponent } from 'src/app/dialozi/lekar-dialog/lekar-dialog.
 })
 
 export class KlinikaDetaljnijeComponent implements OnInit {
+  private latitude = 45.2671;
+  private longitude = 19.8335;
+
   private displayColumns: string[] = ['nazivSale', 'Akcije'];
   private lekariColumns: string[] = ['ime', 'prezime', 'prosecnaOcena', 'email', 'Akcije'];
-  private preglediColumns: string[] = ['Broj Sale', 'Tip pregleda', 'Pocetak pregleda', 'Kraj pregleda', 'Lekar', 'Akcije'];
+  private preglediColumns: string[] = ['Broj Sale', 'Tip pregleda', 'Pocetak pregleda', 'Kraj pregleda', 'Lekar', 'Cena', 'Akcije'];
+  private tipoviPregledaColumns: string[] = ['tipPregleda', 'Akcije'];
 
+  private tipoviPregleda: Array<TipPregleda>;
   private lekariDataSource;
+  private tipoviPregledaDataSource;
   private saleDataSource;
   private preglediDataSource;
 
@@ -37,12 +45,14 @@ export class KlinikaDetaljnijeComponent implements OnInit {
   @ViewChild(MatSort, {static: false}) saleSort: MatSort;
   @ViewChild(MatSort, {static: false}) preglediSort: MatSort;
   @ViewChild(MatPaginator, {static: false}) lekariPaginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) tipoviPregledaSort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) tipoviPregledaPaginator: MatPaginator;
   @ViewChild(MatPaginator, {static: false}) salePaginator: MatPaginator;
   @ViewChild(MatPaginator, {static: false}) preglediPaginator: MatPaginator;
 
   // tslint:disable-next-line: max-line-length
   constructor(private dataService: KlinikaServiceComponent, private http: HttpClient, private salaDialog: MatDialog, private snackBar: MatSnackBar,
-              private lekarDialog: MatDialog) {
+              private lekarDialog: MatDialog, private salaService: SalaServiceService, private tipPregledaService: TipPregledaService) {
     if (this.dataService.getData() !== undefined) {
       this.klinika = this.dataService.getData();
       this.klinikaStara = this.klinika;
@@ -52,6 +62,7 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     this.getLekareInitialy();
     this.getSaleInitialy();
     this.getPregledeInitialy();
+    this.getTipovePregledaInitialy();
    }
 
   ngOnInit() {
@@ -90,6 +101,10 @@ export class KlinikaDetaljnijeComponent implements OnInit {
       });
   }
 
+  async editTipPregleda(tipPregleda: TipPregleda) {
+    this.tipPregledaService.setTipPregleda(tipPregleda);
+  }
+
 
 
   async getSaleInitialy() {
@@ -100,6 +115,20 @@ export class KlinikaDetaljnijeComponent implements OnInit {
         this.sale = data as Array<SalePretraga>;
       }, err => {
         console.log('Greska pri pribavljanju sala: ');
+        console.log(err);
+      });
+  }
+
+  async getTipovePregledaInitialy() {
+    const apiEndpoint = 'http://localhost:8080/tippregleda';
+    this.http.get(apiEndpoint,
+      {responseType: 'json', withCredentials: true}).subscribe((data) => {
+        this.tipoviPregleda = data as Array<TipPregleda>;
+        this.tipoviPregledaDataSource = new MatTableDataSource(this.tipoviPregleda);
+        this.tipoviPregledaDataSource.sort = this.tipoviPregledaSort;
+        this.tipoviPregledaDataSource.paginator = this.tipoviPregledaPaginator;
+      }, err => {
+        console.log('Greska pri pribavljanju tipova pregleda: ');
         console.log(err);
       });
   }
@@ -174,6 +203,16 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     });
   }
 
+  async obrisiTip(tip: TipPregleda) {
+    const apiEndpoint = 'http://localhost:8080/tippregleda/brisanje';
+    this.http.post(apiEndpoint, tip, {withCredentials: true}).subscribe(data => {
+      console.log('Uspesno brisanje');
+      this.getTipovePregledaInitialy();
+    }, err => {
+      console.log('Tip se ne moze izbrisati jer sadrzi preglede/ preglede na cekanju');
+    });
+  }
+
   async obrisiLekara(lekar) {
     const options = {
       headers: new HttpHeaders({
@@ -184,15 +223,25 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     };
     const apiEndpoint = 'http://localhost:8080/lekari';
     this.http.delete(apiEndpoint, options).subscribe((data) => {
-      console.log('Uspenso brisanje lekara');
+      this.snackBar.open('Uspesno brisanje lekara', 'X', {duration: 3000});
       this.getLekareInitialy();
     }, err => {
-      console.log(err);
+      this.snackBar.open('Lekar se ne moze izbrisati ako ima aktivne preglede', 'X', {duration: 7000});
     });
   }
 
   async openSnackBar(message, action) {
     this.snackBar.open(message, action);
+  }
+
+  async editSala(sala) {
+      this.salaService.setSala(sala);
+  }
+
+  async onMapClick(event) {
+    console.log(event);
+    this.latitude = event.coords.lat;
+    this.longitude = event.coords.lng;
   }
 }
 
@@ -228,5 +277,10 @@ export interface Pregled {
   lekarImeIPrezime: string;
   pocetakTermina: string;
   krajTermina: string;
+}
+
+export interface TipPregleda {
+  tipPregleda: string;
+  id: number;
 }
 

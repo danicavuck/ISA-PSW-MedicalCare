@@ -46,6 +46,19 @@ public class OdsustvaController {
     // za brisanje
     @PostMapping(value = "/brisanje")
     public ResponseEntity<?> obrisiZahtevZaOdsustvoLekaraZaKliniku(@RequestBody OdsustvaZaAdminaDTO odsustvaZaAdminaDTO, HttpSession session) {
-        return OdsustvaService.obrisiZahtevZaOdsustvoLekaraZaKliniku(odsustvaZaAdminaDTO, session);
+        if(authorization.hasPermisson(session, role))
+        {
+            return OdsustvaService.obrisiZahtevZaOdsustvoLekaraZaKliniku(odsustvaZaAdminaDTO, session);
+        }
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping(value = "/odobravanje")
+    public ResponseEntity<?> odobriZahtevZaOdsustvoLekaraZaKliniku(@RequestBody OdsustvaZaAdminaDTO odsustvaZaAdminaDTO, HttpSession session){
+        if(authorization.hasPermisson(session, role))
+        {
+            return OdsustvaService.potvrdiZahtevZaOdsustvoLekaraZaKliniku(odsustvaZaAdminaDTO, session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 }

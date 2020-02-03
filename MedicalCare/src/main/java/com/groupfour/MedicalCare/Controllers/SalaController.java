@@ -58,4 +58,23 @@ public class SalaController {
     public ResponseEntity<?> saleSearch(@RequestBody SalaPretragaDTO salaPretragaDTO, HttpSession session) {
         return SalaService.pretraziSaluPoBrojuSale(salaPretragaDTO);
     }
+
+    @PutMapping
+    public ResponseEntity<?> azurirajPodatkeSale(@RequestBody SalaPretragaDTO salaPretragaDTO, HttpSession session){
+        if(authorization.hasPermisson(session, roles))
+        {
+            return SalaService.azurirajPodatkeSale(salaPretragaDTO, session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
+    @GetMapping(value = "/{salaId}")
+    public ResponseEntity<?> dobaviPregledeIOperacijeZaSalu(@PathVariable(value = "salaId") Integer salaId,
+                                                            HttpSession session){
+        if(authorization.hasPermisson(session, new String[]{"adminklinike", "lekar", "med_sestra"}))
+        {
+            return SalaService.preglediIOperacijeZaSalu(salaId);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
 }

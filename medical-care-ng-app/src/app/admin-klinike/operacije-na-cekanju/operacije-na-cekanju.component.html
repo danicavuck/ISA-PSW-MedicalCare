@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pregledi na cekanju</title>
+</head>
+<body>
+    <div class="jumbotron" style="text-align: center;">
+        <div class="pregledi" *ngIf="postojeOperacije">
+            <div class="mat-h1">Operacije na cekanju</div>
+                <table mat-table [dataSource]="operacije" class="mat-elevation-z8" matSort style="width: 100%;">
+                    <ng-container matColumnDef="pocetakTermina">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Pocetak operacije</mat-header-cell>
+                        <mat-cell *matCellDef="let operacija"> {{operacija.pocetakTermina}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="krajTermina">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Zavrsetak operacije</mat-header-cell>
+                        <mat-cell *matCellDef="let operacija"> {{operacija.krajTermina}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="sale">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Sale</mat-header-cell>
+                        <mat-cell *matCellDef="let sala">
+                            <mat-select [(ngModel)]="odabranaSala.id" required name="sale">
+                                <mat-option *ngFor="let sala of sale" value={{sala.id}}>
+                                    {{sala.nazivSale}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Akcije">
+                        <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
+                        <mat-cell *matCellDef="let operacija" style="padding-left: 10%;">
+                            <button mat-mini-fab color="primary" (click)="dodajSaluOperaciji(operacija)" matTooltip="Dodaj salu operaciji">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="operacijeColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: operacijeColumns;"></mat-row>
+                </table>
+        </div>
+        <div class="ne-postoje-pregledi" *ngIf="!postojeOperacije">
+            <div class="mat-h1">Trenutno nema operacija na cekanju</div>
+        </div>
+    </div>
+    <button mat-raised-button color='primary' [routerLink]="['/adminklinike/klinika']" class="pull left" style="margin-left: 5%;">Nazad</button>
+</body>
+</html>
