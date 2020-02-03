@@ -28,6 +28,7 @@ export class OdsustvaComponent implements OnInit {
     this.inkrementDatuma();
     this.http.post(apiEndpoint, this.odsustvo, {responseType: 'text', withCredentials: true}).subscribe(data => {
       console.log('Uspesno slanje zahteva za odsustvo');
+      this.router.navigateByUrl('/medsestra');
     }, err => {
       console.log('Neuspesno slanje zahteva za odsustvo');
     });

@@ -25,7 +25,7 @@ public class Recept {
     @Column(name = DbColumnConstants.RECEPT_OVEREN)
     private boolean overeno = false;
     @Column(name = DbColumnConstants.RECEPT_ID_LEKA)
-    private String idLeka;
+    private int idLeka;
     @Column(name = DbColumnConstants.RECEPT_AKTIVAN)
     private boolean aktivan = true;
 

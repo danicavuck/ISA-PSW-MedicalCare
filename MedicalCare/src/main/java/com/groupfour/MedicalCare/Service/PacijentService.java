@@ -165,8 +165,8 @@ public class PacijentService{
         if (session.isOpen()) {
             session.beginTransaction();
             Query query = session.createQuery("select key from pacijent_klinika where id_klinike = " + klinikaId);
-            System.out.println(query.getResultList());
             pacijentiKlinike = (ArrayList<PacijentKlinika.Key>) query.getResultList();
+            System.out.println(pacijentiKlinike.size());
             pacijenti = dobaviPacijenteIzTabele(pacijentiKlinike);
             session.getTransaction().commit();
             session.close();

@@ -55,14 +55,16 @@ export class MedicinskaSestraComponent implements OnInit {
   async applyFilter(filterValue: string) {
     this.modelsDataSource.filter = filterValue.trim().toLowerCase();
   }
-  async odjava() {
+ 
+  async odjaviSe() {
     const apiEndpoint = 'http://localhost:8080/odjava';
-    this.http.post(apiEndpoint, null, {withCredentials: true}).subscribe(data => {
-      console.log('Uspesna odjava');
+    this.http.post(apiEndpoint, {responseType: 'json', withCredentials: true}).subscribe(data => {
+      console.log('Uspesno odjavljivanje sa sistema');
     }, err => {
-      console.log('Neuspesna odjava');
+      console.log(err);
     });
   }
+
 
 }
 

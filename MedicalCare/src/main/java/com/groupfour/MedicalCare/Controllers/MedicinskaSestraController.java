@@ -63,7 +63,7 @@ public class MedicinskaSestraController {
 
 
 
-    @PutMapping
+    @RequestMapping(value = "/azurirajPodatke",method = RequestMethod.PUT)
     public ResponseEntity<?> azuriranjePodatakaMedicinskeSestre(@RequestBody MedSestraIzmenaPodatakaDTO medSestraIzmenaPodatakaDTO, HttpSession session) {
         if(authorization.hasPermisson(session, role))
         {

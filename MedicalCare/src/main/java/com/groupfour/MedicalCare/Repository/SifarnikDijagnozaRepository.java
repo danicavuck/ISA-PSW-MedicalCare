@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface SifarnikDijagnozaRepository extends JpaRepository<SifarnikDijagnoza,Integer> {
 
     public SifarnikDijagnoza findByKodBolesti(String kod);
+    SifarnikDijagnoza findSifarnikDijagnozaById(int id);
 }

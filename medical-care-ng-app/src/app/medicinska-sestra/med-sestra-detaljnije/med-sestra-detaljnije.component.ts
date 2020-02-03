@@ -20,7 +20,7 @@ export class MedSestraDetaljnijeComponent implements OnInit {
   }
 
   async izmeniPodatke() {
-    const apiEndpoint = 'http://localhost:8080/medicinskesestre';
+    const apiEndpoint = 'http://localhost:8080/medsestra/azurirajPodatke';
     this.http.put(apiEndpoint, this.model, {withCredentials: true, responseType: 'json'}).subscribe( data => {
       console.log('Uspesno izmenjeni podaci');
     }, err => {

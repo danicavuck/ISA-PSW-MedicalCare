@@ -96,6 +96,6 @@ public class Pacijent {
 
     public void dodajKarton(Karton karton) {
         this.zdravstveniKarton = karton;
-        karton.setPacijet(this);
+        karton.setPacijent(this);
     }
 }

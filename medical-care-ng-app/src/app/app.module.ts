@@ -60,6 +60,7 @@ import { PrvoLogovanjeComponent } from './prvo-logovanje/prvo-logovanje.componen
 import { LekarDetaljnijeComponent } from './lekar/lekar-detaljnije/lekar-detaljnije.component';
 import { MedSestraDetaljnijeComponent } from './medicinska-sestra/med-sestra-detaljnije/med-sestra-detaljnije.component';
 import { MedSestraNavbarComponent } from './medicinska-sestra/med-sestra-navbar/med-sestra-navbar.component';
+import { IzvestajOPregleduComponent } from './izvestaj-o-pregledu/izvestaj-o-pregledu.component';
 
 
 
@@ -94,10 +95,12 @@ const appRouts: Routes = [
   { path: 'adminkc/sifarnik-dijagnoza', component:AdminkcSifarnikDijagnozaComponent},
   { path: 'adminkc/sifarnik-lekova',component: AdminkcSifarnikLekovaComponent},
   { path: 'medsestra/detaljnije', component: MedSestraDetaljnijeComponent },
+
   { path: 'adminkc', component : AdminKcComponent},
   { path: 'prvologovanje', component: PrvoLogovanjeComponent },
   { path: 'registracija-admina', component : RegistracijaAdminaKlinikeComponent},
   { path: 'registracija-klinike', component : RegistracijaKlinikeComponent},
+  {path: 'izvestajOpregledu',component: IzvestajOPregleduComponent},
   { path: '', redirectTo : '/login', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent },
 ];
@@ -151,7 +154,8 @@ const appRouts: Routes = [
     PrvoLogovanjeComponent,
     LekarDetaljnijeComponent,
     MedSestraDetaljnijeComponent,
-    MedSestraNavbarComponent
+    MedSestraNavbarComponent,
+    IzvestajOPregleduComponent
   ],
   imports: [
     BrowserModule,

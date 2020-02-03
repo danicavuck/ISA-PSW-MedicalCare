@@ -15,6 +15,8 @@
       <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/odsustva']">Novi zahtev za odsustvo</a></span>
       <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/kalendar']">Kalendar</a></span>
       <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['svirecepti']">Recepti</a></span>
+      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/detaljnije']"><span> <i class="fa fa-user" aria-hidden="true"></i></span> </a></span>
+
       
     </div>
   </mat-toolbar>
@@ -67,6 +69,8 @@
     <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
 </table>
 <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator> 
+<button mat-raised-button color='primary' class="pull-left" style="margin: 0 0 30px 20px;" [routerLink]="['/login']" (click)="odjaviSe()">Odjava</button>
+
 </div>
 </body>
 </html>

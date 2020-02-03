@@ -241,6 +241,7 @@ public class AdminKCService {
         SifarnikLekova temp = sifarnikLekovaRepository.findByKodLeka(lekDTO.getKodLeka());
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
 
+
         if(adminKlinickogCentra == null){
             logger.error("Nije pronadjen admin klinickog centra");
             return new ResponseEntity<>("Nije nadjen admin klinickog centra",HttpStatus.UNAUTHORIZED);
@@ -262,8 +263,9 @@ public class AdminKCService {
 
     public List<SifarnikDijagnoza> getDijagnoze(HttpSession session) {
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
+        Lekar lekar = lekarRepository.findLekarById((int)session.getAttribute("id"));
 
-        if(adminKlinickogCentra == null){
+        if(adminKlinickogCentra == null && lekar == null){
             logger.error("Nije pronadjen admin klinickog centra");
             return null;
         }
@@ -281,8 +283,9 @@ public class AdminKCService {
     }
     public List<SifarnikLekova> getLekovi(HttpSession session) {
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
+        Lekar lekar = lekarRepository.findLekarById((int)session.getAttribute("id"));
 
-        if(adminKlinickogCentra == null){
+        if(adminKlinickogCentra == null && lekar == null){
             logger.error("Nije pronadjen admin klinickog centra");
             return null;
         }

@@ -51,7 +51,7 @@ public class AdminKCController {
     public ResponseEntity<?> getDijagnoze(HttpSession session) {
         System.out.println(session.getAttribute("role"));
         System.out.println(session.getAttribute("id"));
-        if(authorization.hasPermisson(session,role)) {
+        if(authorization.hasPermisson(session,new String[] {"lekar","adminkc"})) {
         return new ResponseEntity<>(adminKCService.getDijagnoze(session), HttpStatus.OK);
          }
 
@@ -62,7 +62,7 @@ public class AdminKCController {
     public ResponseEntity<?> getLekovi(HttpSession session) {
         System.out.println(session.getAttribute("role"));
         System.out.println(session.getAttribute("id"));
-        if(authorization.hasPermisson(session,role)) {
+        if(authorization.hasPermisson(session,new String[] {"lekar","adminkc"})) {
             return new ResponseEntity<>(adminKCService.getLekovi(session), HttpStatus.OK);
         }
 

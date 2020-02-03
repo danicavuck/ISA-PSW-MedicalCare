@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class MedicinskaSestraService {
@@ -65,7 +66,7 @@ public class MedicinskaSestraService {
         String message =
                 "<html><body><h3>Zahtev za odsustvo</h3><p>Postovani,</p><p>Lekar " + medicinskaSestra.getIme() + " " + medicinskaSestra.getPrezime() + " zeli da dobije odsustvo u periodu od " + pocetakOdsustva + " do " + krajOdsustva + "</p><p>Molimo Vas da razmotrite zahtev u dogledno vreme.</p><p>Srdacan pozdrav,</p><p>Medical Care</p></body></html>";
 
-        HashSet<AdminKlinike> adminiKlinike = (HashSet<AdminKlinike>) medicinskaSestra.getKlinika().getAdminiKlinike();
+        Set<AdminKlinike> adminiKlinike = medicinskaSestra.getKlinika().getAdminiKlinike();
         String[] adrese = new String[adminiKlinike.size()];
         int i = 0;
         for (AdminKlinike admin : adminiKlinike) {
