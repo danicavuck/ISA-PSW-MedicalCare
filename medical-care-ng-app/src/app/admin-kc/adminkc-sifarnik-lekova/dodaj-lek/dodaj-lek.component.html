@@ -1,0 +1,13 @@
+
+<mat-dialog-content>
+
+    <form name="form" class="my-form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()">
+      <label for="naziv">Naziv leka:</label>
+        <input  class="form-control" type="text" id="nazivLeka" name="nazivLeka" [(ngModel)]="data.nazivLeka" matInput required placeholder="Unesite naziv leka">
+        <label for="kod">Kod leka:</label>
+        <input  class="form-control" type="text" id="kodLeka" name="kodLeka" [(ngModel)]="data.kodLeka" matInput required placeholder="Unesite kod leka">
+        <button mat-button [mat-dialog-close] = 'true' type = "submit" [disabled]="!f.valid" > Dodaj </button>
+        <button mat-button mat-dialog-close> Otkazi </button>
+  </form>
+</mat-dialog-content>
+  

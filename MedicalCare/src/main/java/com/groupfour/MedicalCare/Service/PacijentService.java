@@ -63,6 +63,8 @@ public class PacijentService{
     public static ResponseEntity<?> dobaviPacijenteZaLekara(HttpSession session)
     {
         Lekar lekar = lekarRepository.findLekarById((int) session.getAttribute("id"));
+
+
         if(lekar != null)
         {
             int idKlinike = 0;
@@ -76,6 +78,8 @@ public class PacijentService{
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
         }
+
+
         logger.info("Nije pronadjen lekar.");
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
@@ -175,9 +179,11 @@ public class PacijentService{
 
     public static ArrayList<Pacijent> dobaviPacijenteIzTabele(ArrayList<PacijentKlinika.Key> pacijentKlinikaKey){
         ArrayList<Pacijent> pacijenti = new ArrayList<>();
-
         for(PacijentKlinika.Key key : pacijentKlinikaKey){
+            System.out.println(key);
             Pacijent pacijent = pacijentRepository.findPacijentById(key.getId_pacijent());
+
+            System.out.println(pacijent.getIme());
             if(pacijent != null){
                 pacijenti.add(pacijent);
             }

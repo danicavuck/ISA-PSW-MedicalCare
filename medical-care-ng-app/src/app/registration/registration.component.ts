@@ -20,8 +20,8 @@ export class RegistrationComponent implements OnInit {
     prezime : '',
     grad : '',
     drzava : '',
-    adresaPrebivalista : '',
-    telefon : '',
+    adresa : '',
+    brojTelefona : '',
     brojOsiguranja : ''
   };
 
@@ -61,7 +61,7 @@ export class RegistrationComponent implements OnInit {
 
   performCheck() {
     // tslint:disable-next-line: max-line-length
-    if (this.model.ime === '' || this.model.prezime === '' || this.model.lozinka === '' || this.model.brojOsiguranja === '' || this.model.telefon === '' || this.model.drzava === '' || this.model.adresaPrebivalista === '' || this.model.email === '') {
+    if (this.model.ime === '' || this.model.prezime === '' || this.model.lozinka === '' || this.model.brojOsiguranja === '' || this.model.brojTelefona === '' || this.model.drzava === '' || this.model.adresa === '' || this.model.email === '') {
       alert('Polja ne smeju biti prazna');
       return false;
     }
@@ -85,9 +85,9 @@ export interface RegistrationViewModel {
   lozinka: string;
   ime: string;
   prezime: string;
-  adresaPrebivalista: string;
+  adresa: string;
   grad: string;
   drzava: string;
-  telefon: string;
+  brojTelefona: string;
   brojOsiguranja: string;
 }

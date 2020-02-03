@@ -80,6 +80,10 @@ public class Klinika {
         this.spisakSala.add(sala);
         sala.setKlinika(this);
     }
+    public void dodajAdmina(AdminKlinike admin) {
+        this.adminiKlinike.add(admin);
+        admin.setKlinika(this);
+    }
 
     public void dodajOcenuKlinike(OcenaKlinike ocenaKlinike) {
         this.oceneKlinike.add(ocenaKlinike);

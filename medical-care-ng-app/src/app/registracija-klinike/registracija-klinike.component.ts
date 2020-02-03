@@ -9,14 +9,14 @@ import { Router } from '@angular/router';
 })
 export class RegistracijaKlinikeComponent implements OnInit {
   
-  model : KlinikaDTO = {
+  model : KlinikaBazicnoDTO = {
     naziv : "",
     adresa : "",
     opis : "",
-    selLekari : "",
-    selSestre : "",
-    selSale : "",
-    selAdmini: ""
+    selLekari : [],
+    selSestre : [],
+    selSale : [],
+    selAdmini: []
   };
 
   lekari : Set<LekarDTO>;
@@ -39,37 +39,48 @@ export class RegistracijaKlinikeComponent implements OnInit {
     this.isLoading = true;
     console.log(this.model);
 
-      // let apiEndpoint = "http://localhost:8080/adminkc/dodajKliniku";
-      
-      // this.http.post(apiEndpoint, this.model,
-      //   {responseType: 'text'}).subscribe( data => {
-      //   setTimeout(() =>
-      //   {
-      //     this.router.navigateByUrl('/adminkc');
-      //     this.isLoading = false;
-      //   },2000);
-      // }, err =>{
-      //   setTimeout(()=>{
-      //     this.isLoading = false;
-      //     switch (err.error) {
-      //       case 'Klinika sa tim nazivom vec postoji':
-      //         this.errorStatus = "Klinika s tim nazivom vec postoji";
-      //         break;
-      //       case 'Internal server error':
-      //         this.errorStatus = "Greska na serverskoj strani";
-      //         break;
-      //       default: this.errorStatus = "Greska pri registraciji";
-      //     }
-      //   },1000);
-
-      // });
+    if(this.isFormValid()){
+      let apiEndpoint = "http://localhost:8080/adminkc/dodajKliniku";
     
+      this.http.post(apiEndpoint, this.model,
+        {responseType: 'text', withCredentials: true}).subscribe( data => {
+        setTimeout(() =>
+        {
+          this.router.navigateByUrl('/adminkc');
+          this.isLoading = false;
+        },2000);
+      }, err =>{
+        setTimeout(()=>{
+          this.isLoading = false;
+          switch (err.error) {
+            case 'Klinika sa tim nazivom vec postoji':
+              this.errorStatus = "Klinika s tim nazivom vec postoji";
+              break;
+            case 'Internal server error':
+              this.errorStatus = "Greska na serverskoj strani";
+              break;
+            default: this.errorStatus = "Greska pri registraciji";
+          }
+        },1000);
+
+      });
+    }
+    
+  }
+
+  isFormValid() {
+    // tslint:disable-next-line: max-line-length
+    if (this.model.naziv !== '' && this.model.adresa !== '' && this.model.opis !== '') {
+      return true;
+    }
+
+    return false;
   }
 
   async getLekari(){
     const apiEndPoint = 'http://localhost:8080/klinika/lekari';
     
-   this.http.get(apiEndPoint,{responseType : 'json'})
+   this.http.get(apiEndPoint,{ withCredentials: true })
    .subscribe((data) => {
      this.lekari = data as Set<LekarDTO>;
    },err => {
@@ -81,7 +92,7 @@ export class RegistracijaKlinikeComponent implements OnInit {
 async getSestre(){
   const apiEndPoint = 'http://localhost:8080/klinika/medsestre';
   
- this.http.get(apiEndPoint,{responseType : 'json'})
+ this.http.get(apiEndPoint,{ withCredentials: true })
  .subscribe((data) => {
    this.sestre = data as Set<MedicinskaSestraDTO>;
  },err => {
@@ -93,7 +104,7 @@ async getSestre(){
 async getSale(){
   const apiEndPoint = 'http://localhost:8080/klinika/sale';
   
- this.http.get(apiEndPoint,{responseType : 'json'})
+ this.http.get(apiEndPoint,{ withCredentials: true })
  .subscribe((data) => {
    this.sale = data as Set<SalaDTO>;
  },err => {
@@ -103,9 +114,9 @@ async getSale(){
 
 }
 async getAdmini(){
-  const apiEndPoint = 'http://localhost:8080/klinika/lekari';
+  const apiEndPoint = 'http://localhost:8080/klinika/admini';
   
- this.http.get(apiEndPoint,{responseType : 'json'})
+ this.http.get(apiEndPoint,{ withCredentials: true })
  .subscribe((data) => {
    this.admini = data as Set<AdminKlinikeDTO>;
  },err => {
@@ -120,28 +131,34 @@ async getAdmini(){
 
 
 export interface LekarDTO{
+  id : number;
   ime : string,
   prezime : string;
+  email : string;
+  prosecnaOcena : number
 }
 export interface MedicinskaSestraDTO{
+  id : number;
   ime : string,
   prezime : string;
 }
 
 export interface SalaDTO{
- brojSale: number;
+ id : number;
+ nazivSale: string;
 }
 export interface AdminKlinikeDTO{
+  id : number;
   ime : string,
   prezime : string;
 }
 
-export interface KlinikaDTO{
+export interface KlinikaBazicnoDTO{
   naziv : string;
   adresa : string;
   opis : string;
-  selLekari : string;
-  selSestre : string;
-  selSale : string;
-  selAdmini : string;
+  selLekari : Array<number>;
+  selSestre : Array<number>;
+  selSale : Array<number>;
+  selAdmini : Array<number>;
 }

@@ -10,4 +10,5 @@ public interface LekarRepository extends JpaRepository<Lekar, Integer> {
     Lekar findLekarById(int id);
     ArrayList<Lekar> findAll();
 
+
 }

@@ -1,15 +1,17 @@
 package com.groupfour.MedicalCare.Controllers;
 
-import com.groupfour.MedicalCare.Model.DTO.KlinikaDTO;
+import com.groupfour.MedicalCare.Model.DTO.*;
 import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
 import com.groupfour.MedicalCare.Service.AdminKCService;
 import com.groupfour.MedicalCare.Service.RegistracijaPacijentaService;
+import com.groupfour.MedicalCare.Utill.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -17,46 +19,108 @@ import java.util.List;
 @RequestMapping("/adminkc")
 public class AdminKCController {
 
-    @Autowired
+    private Authorization authorization;
+    private String[] role = {"adminkc"};
+
+
     private AdminKCService adminKCService;
-    @Autowired
+
     private RegistracijaPacijentaService registracijaPacijentaService;
 
 
     @Autowired
-    public AdminKCController(AdminKCService adminKCService) {
+    public AdminKCController(AdminKCService adminKCService , RegistracijaPacijentaService rpRepo , Authorization auto) {
+        this.registracijaPacijentaService = rpRepo;
+        this.authorization = auto;
         this.adminKCService = adminKCService;
     }
 
 
     @RequestMapping(value = "/zahtevi", method = RequestMethod.GET)
-    public ResponseEntity<?> getZahteviZaRegistraciju() {
-        List<RegistracijaPacijenta> temp = registracijaPacijentaService.getAllActive();
+    public ResponseEntity<?> getZahteviZaRegistraciju(HttpSession session) {
+        System.out.println(session.getAttribute("role"));
+        System.out.println(session.getAttribute("id"));
+          if(authorization.hasPermisson(session,role)) {
+            return new ResponseEntity<>(registracijaPacijentaService.getAllActive(session), HttpStatus.OK);
+        }
 
-        return new ResponseEntity<>(registracijaPacijentaService.getAllActive(), HttpStatus.OK);
+       return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+    }
+
+    @RequestMapping(value = "/dijagnoze", method = RequestMethod.GET)
+    public ResponseEntity<?> getDijagnoze(HttpSession session) {
+        System.out.println(session.getAttribute("role"));
+        System.out.println(session.getAttribute("id"));
+        if(authorization.hasPermisson(session,role)) {
+        return new ResponseEntity<>(adminKCService.getDijagnoze(session), HttpStatus.OK);
+         }
+
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+    }
+
+    @RequestMapping(value = "/lekovi", method = RequestMethod.GET)
+    public ResponseEntity<?> getLekovi(HttpSession session) {
+        System.out.println(session.getAttribute("role"));
+        System.out.println(session.getAttribute("id"));
+        if(authorization.hasPermisson(session,role)) {
+            return new ResponseEntity<>(adminKCService.getLekovi(session), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
     }
 
 
     @RequestMapping(value = "/prihvatiZahtev", method = RequestMethod.PUT)
-    public ResponseEntity<?> prihvatiZahtev(@RequestBody Integer id) {
-        adminKCService.prihvatiZahtev(id);
-        System.out.println("prihvacen");
-        return new ResponseEntity<String>("Zahtev je prihvacen!", HttpStatus.OK);
+    public ResponseEntity<?> prihvatiZahtev(@RequestBody RegistracijaPacijentaDTO registracijaPacijentaDTO, HttpSession session) {
+        if (authorization.hasPermisson(session, role)) {
+            adminKCService.prihvatiZahtev(registracijaPacijentaDTO,session);
+           return new ResponseEntity<String>("Zahtev je prihvacen!", HttpStatus.OK);
+        }
+
+       return new ResponseEntity<String>("Zahtev nije prihvacen!", HttpStatus.UNAUTHORIZED);
 
     }
 
     @RequestMapping(value = "/odbijZahtev", method = RequestMethod.PUT)
-    public ResponseEntity<?> odbijZahtev(@RequestBody Integer id) {
-        System.out.println("odbijen");
-        adminKCService.odbijZahtev(id);
-        return new ResponseEntity<String>("Zahtev je odbijen!", HttpStatus.OK);
+    public ResponseEntity<?> odbijZahtev(@RequestBody RegistracijaPacijentaDTO registracijaPacijentaDTO, HttpSession session) {
+        if(authorization.hasPermisson(session,role)) {
+            adminKCService.odbijZahtev(registracijaPacijentaDTO,session);
+            return new ResponseEntity<String>("Zahtev je odbijen!", HttpStatus.OK);
+        }
 
+        return new ResponseEntity<String>("Zahtev nije odbijen!",HttpStatus.UNAUTHORIZED);
     }
 
-    @PostMapping("/dodajKliniku")
-    public ResponseEntity<String> register(@RequestBody KlinikaDTO klinikaDTO) {
-        return adminKCService.dodajKliniku(klinikaDTO);
+    @RequestMapping(value = "/dodajKliniku", method = RequestMethod.POST)
+    public ResponseEntity<?> dodajKliniku(@RequestBody KlinikaBazicnoDTO klinikaBazicnoDTO, HttpSession session) {
+        if(authorization.hasPermisson(session,role)) {
+            return adminKCService.dodajKliniku(klinikaBazicnoDTO,session);
+        }
+        return new ResponseEntity<>("Dodavanje nije dozvoljeno!",HttpStatus.UNAUTHORIZED);
     }
 
+    @RequestMapping(value = "/dodajAdminaKlinike", method = RequestMethod.POST)
+    public ResponseEntity<?> dodajAdminaKlinike(@RequestBody AdminKlinikeBazicnoDTO klinikaBazicnoDTO, HttpSession session) {
+        if(authorization.hasPermisson(session,role)) {
+            return adminKCService.dodajAdminaKlinike(klinikaBazicnoDTO,session);
+        }
+        return new ResponseEntity<>("Dodavanje nije dozvoljeno!",HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping("/dodajDijagnozu")
+    public ResponseEntity<?> dodajDijagnozu(@RequestBody DijagnozaDTO dijagnozaDTO, HttpSession session) {
+        if(authorization.hasPermisson(session,role)) {
+            return adminKCService.dodajDijagnozu(dijagnozaDTO,session);
+        }
+        return new ResponseEntity<>("Dodavanje nije dozvoljeno!",HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping("/dodajLek")
+    public ResponseEntity<?> dodajLek(@RequestBody LekDTO lekDTO, HttpSession session) {
+        if(authorization.hasPermisson(session,role)) {
+            return adminKCService.dodajLek(lekDTO,session);
+        }
+        return new ResponseEntity<>("Dodavanje nije dozvoljeno!",HttpStatus.UNAUTHORIZED);
+    }
 
 }

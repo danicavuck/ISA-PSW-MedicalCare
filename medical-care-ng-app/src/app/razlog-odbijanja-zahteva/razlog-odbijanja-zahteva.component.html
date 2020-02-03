@@ -1,0 +1,11 @@
+
+<mat-dialog-content>
+
+    <form name="form" class="my-form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()">
+      <label for="naziv">Razlog:</label>
+      <input  class="form-control" type="text" id="razlog" name="razlog" [(ngModel)]="data.razlog" matInput required placeholder="Unesite razlog za odbijanje zahteva" style="width: 390px; height: 150px; border: 2px solid #999999; padding: 10px; ">
+      <button mat-button [mat-dialog-close] = 'true' type = "submit" > Posalji </button>
+      <button mat-button mat-dialog-close> Otkazi </button>
+  </form>
+</mat-dialog-content>
+  
