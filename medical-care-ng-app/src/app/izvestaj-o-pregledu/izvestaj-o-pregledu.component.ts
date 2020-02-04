@@ -31,7 +31,7 @@ export class IzvestajOPregleduComponent implements OnInit {
   async onSubmit() {
    
       const apiEndpoint = 'http://localhost:8080/izvestaj/dodajIzvestaj';
-
+      if (this.isFormValid()) {
       this.http.post(apiEndpoint, this.model,
         {responseType: 'text',withCredentials:true}).subscribe( data => {
           console.log('Uspesno dodavanje izvestaja o pregledu');
@@ -39,11 +39,23 @@ export class IzvestajOPregleduComponent implements OnInit {
           
         }, error => {
           console.log(this.model)
-         
+          this.errorStatus = '';
+          this.errorStatus = 'Nije validno popunjena forma';
         });
+      }else {
+          console.log('Forma nije validna');
+        }
    
       
-  }
+    }
+    isFormValid() {
+      // tslint:disable-next-line: max-line-length
+      if (this.model.informacijeOPregledu !== '' && this.model.idDijagnoza !== null && this.model.idLek !== null) {
+        return true;
+      }
+  
+      return false;
+    }
 
   async getLekove(){
     const apiEndPoint = 'http://localhost:8080/adminkc/lekovi';
