@@ -20,10 +20,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Table(name = DbTableConstants.OPERACIJA)
+@JsonIgnoreProperties({"sala", "pacijent", "lekar"})
 public class Operacija {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = DbColumnConstants.OPERACIJA_ID)
@@ -37,12 +36,10 @@ public class Operacija {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = DbColumnConstants.OPERACIJA_SALA)
-    @JsonIgnoreProperties("operacije")
     private Sala sala;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = DbColumnConstants.OPERACIJA_PACIJENT)
-    @JsonIgnoreProperties("listaOperacija")
     private Pacijent pacijent;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -53,5 +50,8 @@ public class Operacija {
     )
     private Set<Lekar> lekar = new HashSet<>();
 
-
+    @Override
+    public String toString() {
+        return "Operacija: " + this.id;
+    }
 }

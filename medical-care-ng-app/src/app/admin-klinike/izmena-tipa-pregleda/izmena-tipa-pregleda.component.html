@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Izmena tipa</title>
+</head>
+<body>
+    <app-navbar></app-navbar>
+    <div class="jumbotron" style="text-align: center;">
+        <h2 class="mat-display-1">Azuriranje tipa pregleda</h2>
+            <form class="forma">
+                <mat-form-field class="full-width">
+                  <mat-label>Naziv tipa pregleda</mat-label>
+                  <input class="input" type="text" id="ime" name="ime" [(ngModel)]="tipPregleda.tipPregleda" matInput required>
+                </mat-form-field>
+                
+                <button mat-flat-button color="accent" class="pull pull-left" [routerLink]="['/adminklinike/klinika']"> Nazad</button>
+                <button type="submit" mat-raised-button color="primary" class="pull pull-right" (click)="izmeniPodatke()">
+                    <i class="fa fa-plus"></i>
+                    <span> Izmena naziva</span>
+                </button>
+        </form>
+    </div>
+</body>
+</html>

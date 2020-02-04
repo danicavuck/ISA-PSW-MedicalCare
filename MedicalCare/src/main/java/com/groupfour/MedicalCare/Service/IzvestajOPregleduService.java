@@ -14,6 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class IzvestajOPregleduService {
@@ -24,37 +28,46 @@ public class IzvestajOPregleduService {
     private static LekarRepository lekarRepository;
     private static PacijentRepository pacijentRepository;
     private static KartonRepository kartonRepository;
+    private static ReceptRepository receptRepository;
     private static Logger logger = LoggerFactory.getLogger(Lekar.class);
 
     @Autowired
-    public IzvestajOPregleduService(SifarnikDijagnozaRepository sdRepo,SifarnikLekovaRepository slRepo,LekarRepository lRepo,PacijentRepository pRepo,KartonRepository kRepo,IzvestajOPregleduRepository izRepo){
+    public IzvestajOPregleduService(SifarnikDijagnozaRepository sdRepo,SifarnikLekovaRepository slRepo,LekarRepository lRepo,PacijentRepository pRepo,KartonRepository kRepo,IzvestajOPregleduRepository izRepo,ReceptRepository receptRepo){
         sifarnikDijagnozaRepository = sdRepo;
         sifarnikLekovaRepository = slRepo;
         lekarRepository = lRepo;
         pacijentRepository = pRepo;
         kartonRepository = kRepo;
         izvestajOPregleduRepository = izRepo;
+        receptRepository = receptRepo;
     }
 
     public ResponseEntity<?> dodajIzvestajOPregledu(IzvestajOPregleduDTO izvestajOPregleduDTO, HttpSession session) {
         Lekar lekar = lekarRepository.findLekarById((int) session.getAttribute("id"));
         Pacijent pacijent = pacijentRepository.findPacijentById(izvestajOPregleduDTO.getIdPacijent());
         Karton karton = kartonRepository.findKartonByPacijent(pacijent);
+        int[] id_lekova = izvestajOPregleduDTO.getIdLek();
+        Set<Recept> recepti = new HashSet<Recept>();
 
         if (lekar == null) {
             logger.error("Nije pronadjen lekar");
             return new ResponseEntity<>("Nije nadjen lekar", HttpStatus.UNAUTHORIZED);
         }
-
+        //pravi se toliko recepata koliko je prepisano lekova pacijentu
         if(pacijent != null){
-            SifarnikLekova lek = sifarnikLekovaRepository.findSifarnikLekovaById(izvestajOPregleduDTO.getIdLek());
+            for(int i = 0 ; i < id_lekova.length ; i++){
+                Recept r = Recept.builder().idLeka(id_lekova[i]).lekar(lekar).overeno(false).build();
+                recepti.add(r);
+                receptRepository.save(r);
+            }
             SifarnikDijagnoza dijagnoza = sifarnikDijagnozaRepository.findSifarnikDijagnozaById(izvestajOPregleduDTO.getIdDijagnoza());
-
-            Recept.builder().idLeka(izvestajOPregleduDTO.getIdLek()).lekar(lekar).overeno(false).build();
-            IzvestajOPregledu izvestaj = IzvestajOPregledu.builder().aktivan(true).informacijeOPregledu(izvestajOPregleduDTO.getInformacijeOPregledu()).sifarnikDijagnoza(dijagnoza).sifarnikLekova(lek).build();
+            IzvestajOPregledu izvestaj = IzvestajOPregledu.builder().aktivan(true).informacijeOPregledu(izvestajOPregleduDTO.getInformacijeOPregledu()).sifarnikDijagnoza(dijagnoza).recepti(recepti).lekar(lekar).build();
+            izvestajOPregleduRepository.save(izvestaj);
+            //izmene se upisuju u zdravstveni karton pacijenta
             karton.dodajDijagnozu(dijagnoza);
             karton.dodajIzvestaj(izvestaj);
-            izvestajOPregleduRepository.save(izvestaj);
+            kartonRepository.save(karton);
+
             return new ResponseEntity<>("Instance created", HttpStatus.CREATED);
         }
 

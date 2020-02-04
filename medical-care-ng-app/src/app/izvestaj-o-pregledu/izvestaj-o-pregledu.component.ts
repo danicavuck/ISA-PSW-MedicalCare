@@ -10,10 +10,10 @@ import { Router } from '@angular/router';
 export class IzvestajOPregleduComponent implements OnInit {
   
   private model: IzvestajOPregleduDTO = {
+   idPacijent : 0,
    informacijeOPregledu : "",
    idDijagnoza : 0,
-   idLek : 0
-
+   idLek : []
   }
 
   private dijagnoze: Array<DijagnozaDTO>;
@@ -39,8 +39,7 @@ export class IzvestajOPregleduComponent implements OnInit {
           
         }, error => {
           console.log(this.model)
-          this.errorStatus = '';
-          this.errorStatus = 'E-mail adresa je vec zauzeta';
+         
         });
    
       
@@ -89,10 +88,10 @@ export interface DijagnozaDTO{
 }
 
 export interface IzvestajOPregleduDTO{
+  idPacijent : number
   informacijeOPregledu : string;
   idDijagnoza : number;
-  idLek : number;
-
+  idLek : Array<number>;
 }
 
 

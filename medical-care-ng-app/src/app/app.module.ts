@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { AgmCoreModule } from '@agm/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -61,6 +63,14 @@ import { LekarDetaljnijeComponent } from './lekar/lekar-detaljnije/lekar-detaljn
 import { MedSestraDetaljnijeComponent } from './medicinska-sestra/med-sestra-detaljnije/med-sestra-detaljnije.component';
 import { MedSestraNavbarComponent } from './medicinska-sestra/med-sestra-navbar/med-sestra-navbar.component';
 import { IzvestajOPregleduComponent } from './izvestaj-o-pregledu/izvestaj-o-pregledu.component';
+import { IzmenaSaleComponent } from './sale/izmena-sale/izmena-sale.component';
+import { BrisanjeOdsustvaComponent } from './dialozi/brisanje-odsustva/brisanje-odsustva.component';
+import { IzmenaTipaPregledaComponent } from './admin-klinike/izmena-tipa-pregleda/izmena-tipa-pregleda.component';
+import { DodavanjeOperacijaComponent } from './lekar/dodavanje-operacija/dodavanje-operacija.component';
+import { OperacijeNaCekanjuComponent } from './admin-klinike/operacije-na-cekanju/operacije-na-cekanju.component';
+import { CalendarComponent } from './sale/calendar/calendar.component';
+import { LekarCalendarComponent } from './lekar/lekar-calendar/lekar-calendar.component';
+import { KalendarComponent } from './medicinska-sestra/kalendar/kalendar.component';
 
 
 
@@ -77,19 +87,25 @@ const appRouts: Routes = [
   { path: 'adminklinike/pregledpacijenata', component : PregledPacijenataComponent},
   { path: 'adminklinike/dodavanjelekara', component : DodavanjeLekaraComponent},
   { path: 'adminklinike/pregledinacekanju', component: PreglediNaCekanjuComponent},
+  { path: 'adminklinike/operacijenacekanju', component: OperacijeNaCekanjuComponent},
   { path: 'adminklinike/zahtevizaodsustvo', component: ZahteviZaOdsustvoComponent},
   { path: 'adminklinike/details', component: DetailsComponent},
+  { path: 'adminklinike/izmenatipa', component: IzmenaTipaPregledaComponent},
+  { path: 'adminklinike/sala', component: IzmenaSaleComponent},
+  { path: 'adminklinike/sala/calendar', component: CalendarComponent},
+  { path: 'adminklinike/calendar', component: AdminCalendarComponent},
   { path: 'lekar', component: LekarComponent },
   { path: 'lekar/dodavanjepregleda', component : DodavanjePregledaComponent},
   { path: 'lekar/zakazivanje', component : PregledIOperacijeComponent},
+  { path: 'lekar/operacije', component : DodavanjeOperacijaComponent},
   { path: 'lekar/odsustva', component : OdsustvaIOdmorComponent},
-  { path: 'lekar/kalendar', component : RadniKalendarComponent},
+  { path: 'lekar/kalendar', component : LekarCalendarComponent},
   { path: 'lekar/pacijent', component : PacijentDetaljnijeComponent},
   { path: 'lekar/detaljnije', component : LekarDetaljnijeComponent},
   { path: 'medsestra', component: MedicinskaSestraComponent },
   { path: 'medsestra/svirecepti', component : MedicinskaSestraReceptiComponent},
   { path: 'medsestra/odsustva', component : OdsustvaComponent},
-  { path: 'adminkc', component : AdminKcComponent},
+  { path: 'medsestra/kalendar',component : KalendarComponent},
   { path: 'adminkc/registracija-admina', component : RegistracijaAdminaKlinikeComponent},
   { path: 'adminkc/registracija-klinike', component : RegistracijaKlinikeComponent},
   { path: 'adminkc/sifarnik-dijagnoza', component:AdminkcSifarnikDijagnozaComponent},
@@ -100,7 +116,7 @@ const appRouts: Routes = [
   { path: 'prvologovanje', component: PrvoLogovanjeComponent },
   { path: 'registracija-admina', component : RegistracijaAdminaKlinikeComponent},
   { path: 'registracija-klinike', component : RegistracijaKlinikeComponent},
-  {path: 'izvestajOpregledu',component: IzvestajOPregleduComponent},
+  { path: 'izvestajOpregledu',component: IzvestajOPregleduComponent},
   { path: '', redirectTo : '/login', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent },
 ];
@@ -155,7 +171,16 @@ const appRouts: Routes = [
     LekarDetaljnijeComponent,
     MedSestraDetaljnijeComponent,
     MedSestraNavbarComponent,
-    IzvestajOPregleduComponent
+    IzmenaSaleComponent,
+    BrisanjeOdsustvaComponent,
+    IzmenaTipaPregledaComponent,
+    DodavanjeOperacijaComponent,
+    OperacijeNaCekanjuComponent,
+    CalendarComponent,
+    LekarCalendarComponent,
+    MedSestraNavbarComponent,
+    IzvestajOPregleduComponent,
+    KalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -169,10 +194,15 @@ const appRouts: Routes = [
     OwlNativeDateTimeModule,
     AngularDateTimePickerModule,
     MaterialModule,
+    FullCalendarModule,
+    AgmCoreModule.forRoot(
+      {apiKey: 'AIzaSyBiRvZ7NUPcXpFCE9YaO6ts9sDJh7cg7gs'}
+    ),
     RouterModule.forRoot(appRouts)
   ],
-  providers: [],
+  providers: [BrisanjeOdsustvaComponent],
   bootstrap: [AppComponent],
-  entryComponents: [SalaDialogComponent, LekarDialogComponent,RazlogOdbijanjaZahtevaComponent,DodajDijagnozuComponent,DodajLekComponent],
+  entryComponents: [SalaDialogComponent, LekarDialogComponent, RazlogOdbijanjaZahtevaComponent, DodajDijagnozuComponent, DodajLekComponent, BrisanjeOdsustvaComponent],
+
 })
 export class AppModule { }

@@ -15,4 +15,5 @@ public class OdsustvaZaAdminaDTO {
     private String pocetakOdsustva;
     private String krajOdsustva;
     private String lekar;
+    private String opis;
 }

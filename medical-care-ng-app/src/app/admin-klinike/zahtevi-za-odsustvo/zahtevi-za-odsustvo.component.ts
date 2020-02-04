@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatDialog } from '@angular/material';
+import { BrisanjeOdsustvaComponent } from 'src/app/dialozi/brisanje-odsustva/brisanje-odsustva.component';
+import { ZahtevServiceService } from 'src/app/services/zahtev-service.service';
 
 @Component({
   selector: 'app-zahtevi-za-odsustvo',
@@ -12,7 +14,8 @@ export class ZahteviZaOdsustvoComponent implements OnInit {
   private zahtevi: Array<Zahtev>;
   private zahteviDataSource;
   private postojeZahtevi = false;
-  constructor(private http: HttpClient) {
+  // tslint:disable-next-line: max-line-length
+  constructor(private http: HttpClient, private zahteviComponent: BrisanjeOdsustvaComponent, private zahtevDialog: MatDialog, private zahtevService: ZahtevServiceService) {
   }
 
   ngOnInit() {
@@ -34,7 +37,13 @@ export class ZahteviZaOdsustvoComponent implements OnInit {
   }
 
   async potvrdiZahtev(zahtev) {
-    console.log('Potvrda ' + zahtev.pocetakOdsustva);
+    const apiEndpoint = 'http://localhost:8080/odsustva/odobravanje';
+    this.http.post(apiEndpoint, zahtev, {withCredentials: true}).subscribe(data => {
+      console.log('Zahtev odobren');
+      this.ngOnInit();
+    }, err => {
+      console.log('Neuspeno odobravanje');
+    });
   }
 
   async obrisiZahtev(zahtev: Zahtev) {
@@ -47,6 +56,16 @@ export class ZahteviZaOdsustvoComponent implements OnInit {
     });
   }
 
+  async openDialogZahtev(zahtev: Zahtev) {
+    const odgovor = this.zahtevDialog.open(BrisanjeOdsustvaComponent);
+    odgovor.afterClosed().subscribe(result => {
+      if (result === 'true') {
+        zahtev.opis = this.zahtevService.getOpis();
+        this.obrisiZahtev(zahtev);
+      }
+    });
+  }
+
 }
 
 export interface Zahtev {
@@ -54,4 +73,5 @@ export interface Zahtev {
   pocetakOdsustva: string;
   krajOdsustva: string;
   lekar: string;
+  opis: string;
 }

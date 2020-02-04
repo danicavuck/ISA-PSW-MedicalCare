@@ -21,7 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Table(name = DbTableConstants.PREGLED)
-@JsonIgnoreProperties({"lekari"})
+@JsonIgnoreProperties({"lekari", "sala", "tipPregleda", "pacijent"})
 public class Pregled {
 
     @Id
@@ -70,6 +70,6 @@ public class Pregled {
 
     @Override
     public String toString() {
-        return "Pregled id: " + this.id + " Tip pregleda: " + this.tipPregleda.getTipPregleda();
+        return "Pregled id: " + this.id;
     }
 }

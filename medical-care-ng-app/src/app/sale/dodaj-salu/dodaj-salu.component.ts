@@ -33,10 +33,10 @@ export class DodajSaluComponent implements OnInit {
   }
 
   async getKlinike() {
-    const apiEndpoint = 'http://localhost:8080/adminklinike/klinike';
+    const apiEndpoint = 'http://localhost:8080/klinika/klinike';
 
     this.http.get(apiEndpoint,
-      {responseType: 'json'}).subscribe((data) => {
+      {responseType: 'json', withCredentials: true}).subscribe((data) => {
         this.models = data as Array<KlinikaDTO>;
         console.log(this.models);
       }, err => {

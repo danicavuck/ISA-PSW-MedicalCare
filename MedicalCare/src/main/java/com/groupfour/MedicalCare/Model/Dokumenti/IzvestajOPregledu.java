@@ -2,6 +2,7 @@ package com.groupfour.MedicalCare.Model.Dokumenti;
 
 import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Common.db.DbTableConstants;
+import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,8 +42,8 @@ public class IzvestajOPregledu {
     private SifarnikDijagnoza sifarnikDijagnoza;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = DbColumnConstants.IZVESTAJ_O_PREGLEDU_LEK)
-    private SifarnikLekova sifarnikLekova;
+    @JoinColumn(name = DbColumnConstants.IZVESTAJ_O_PREGLEDU_LEKAR)
+    private Lekar lekar;
 
 
 }

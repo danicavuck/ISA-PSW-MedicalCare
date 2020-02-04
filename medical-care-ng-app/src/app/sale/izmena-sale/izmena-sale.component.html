@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="jumbotron" style="text-align: center;">
+        <h2 class="mat-display-1">Azuriranje podataka sale</h2>
+            <form class="forma">
+                <mat-form-field class="full-width" style="margin-bottom: 10px;">
+                  <mat-label>Naziv Sale</mat-label>
+                  <input class="input" type="text" id="ime" name="ime" [(ngModel)]="model.nazivSale" matInput required>
+                  <mat-hint>Ova opcija je moguca samo ako sala ne sadrzi nijedan pregled</mat-hint>
+                </mat-form-field>
+                
+                <button mat-flat-button color="accent" class="pull pull-left" [routerLink]="['/adminklinike/klinika']"> Nazad</button>
+
+                <button type="submit" mat-raised-button color="primary" class="pull pull-right" (click)="izmeniPodatke()">
+                    <i class="fa fa-plus"></i>
+                    <span> Izmena podataka</span>
+                </button>
+        </form>
+    </div>
+</body>
+</html>

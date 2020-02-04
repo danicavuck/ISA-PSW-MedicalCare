@@ -42,6 +42,11 @@
         <mat-cell *matCellDef="let pacijent"> {{pacijent.prezime}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="brojOsiguranja">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Broj osiguranja</mat-header-cell>
+        <mat-cell *matCellDef="let pacijent"> {{pacijent.brojOsiguranja}} </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="email">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
         <mat-cell *matCellDef="let pacijent"> {{pacijent.email}} </mat-cell>

@@ -14,5 +14,5 @@ public class IzvestajOPregleduDTO {
     private String informacijeOPregledu;
     private int idPacijent;
     private int idDijagnoza;
-    private int idLek;
+    private int[] idLek;
 }

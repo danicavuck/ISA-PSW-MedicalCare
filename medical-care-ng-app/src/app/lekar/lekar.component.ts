@@ -10,7 +10,7 @@ import { PacijentServiceComponent } from '../services/pacijent-service/pacijent-
 })
 export class LekarComponent implements OnInit {
   private pacijentPretraga = '';
-  private displayColumns: string[] = ['ime', 'prezime', 'email', 'Akcije'];
+  private displayColumns: string[] = ['ime', 'prezime', 'brojOsiguranja', 'email', 'Akcije'];
   private models: Array<Pacijent>;
   private modelsDataSource;
 
@@ -71,4 +71,5 @@ export interface Pacijent {
   ime: string;
   prezime: string;
   email: string;
+  brojOsiguranja: string;
 }

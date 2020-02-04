@@ -62,4 +62,13 @@ public class LekarController {
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
+
+    @GetMapping(value = "/zauzece")
+    public ResponseEntity<?> dobaviPregledeIOperacijeZaRadniKalendar(HttpSession session){
+        if(authorization.hasPermisson(session, new String[] {"lekar"}))
+        {
+            return LekarService.preglediIOperacijeZaRadniKalendar(session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
 }

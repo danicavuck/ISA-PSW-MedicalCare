@@ -3,6 +3,7 @@ package com.groupfour.MedicalCare.Service;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinickogCentra;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.*;
+import com.groupfour.MedicalCare.Model.Dokumenti.Karton;
 import com.groupfour.MedicalCare.Model.Dokumenti.SifarnikDijagnoza;
 import com.groupfour.MedicalCare.Model.Dokumenti.SifarnikLekova;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
@@ -44,12 +45,13 @@ public class AdminKCService {
     private static MedicinskaSestraRepository medicinskaSestraRepository;
     private static AdminKlinikeRepository adminKlinikeRepository;
     private static SalaRepository salaRepository;
+    private static KartonRepository kartonRepository;
 
     private static CustomEmailSender customEmailSender;
 
     @Autowired
     public AdminKCService(AdminKCRepository aKCRepository, RegistracijaPacijentaRepository regRepo,
-                          KlinikaRepository kRepo , SifarnikDijagnozaRepository sfRepo,SifarnikLekovaRepository slRepo, LekarRepository lRepo, MedicinskaSestraRepository mRepo,AdminKlinikeRepository aRepo,SalaRepository sRepo, CustomEmailSender cmail) {
+                          KlinikaRepository kRepo , SifarnikDijagnozaRepository sfRepo,SifarnikLekovaRepository slRepo, LekarRepository lRepo, MedicinskaSestraRepository mRepo,AdminKlinikeRepository aRepo,SalaRepository sRepo, CustomEmailSender cmail,KartonRepository kartonRepo) {
         adminKCRepository = aKCRepository;
         registracijaPacijentaRepository = regRepo;
         klinikaRepository = kRepo;
@@ -59,6 +61,7 @@ public class AdminKCService {
         medicinskaSestraRepository = mRepo;
         adminKlinikeRepository = aRepo;
         salaRepository = sRepo;
+        kartonRepository = kartonRepo;
         customEmailSender = cmail;
     }
 
@@ -304,6 +307,10 @@ public class AdminKCService {
     public static ResponseEntity<String> napraviNoviNalogPacijentu(PacijentDTO pacijentDTO) {
         Pacijent pacijent = napraviNovogPacijenta(pacijentDTO);
         UserRole userRole = UserRole.builder().user_email(pacijentDTO.getEmail()).role("pacijent").build();
+        //kreiranje zdravstvenog kartona pacijenta
+        Karton karton = Karton.builder().aktivan(true).pacijent(pacijent).build();
+
+        pacijent.dodajKarton(karton);
         if (sacuvajUBazuPacijentaIRolu(pacijent, userRole)) {
             return new ResponseEntity<>("Instance created", HttpStatus.CREATED);
         }
