@@ -15,9 +15,20 @@ export class KalendarComponent implements OnInit {
   calendarPlugins = [dayGridPlugin, timeGridPlugin, list, bootstrap];
   calendarEvents: any[] = [];
 
-  constructor() { }
+  constructor(private http:HttpClient) {
+    this.getOdsustva();
+   }
 
   ngOnInit() {
+  }
+
+  async getOdsustva() {
+    const apiEndpoint = 'http://localhost:8080/medsestra/odsusva';
+    this.http.get(apiEndpoint, {withCredentials: true}).subscribe(data => {
+      this.calendarEvents = data as any;
+    }, err => {
+      console.log('Greska pri dobavljanju odsusava');
+    });
   }
 
 }

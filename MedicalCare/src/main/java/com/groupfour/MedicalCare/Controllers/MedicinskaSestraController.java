@@ -71,4 +71,13 @@ public class MedicinskaSestraController {
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
+
+    @GetMapping(value = "/odsusva")
+    public ResponseEntity<?> getOdsusvaZaRadniKalendar(HttpSession session){
+        if(authorization.hasPermisson(session,role))
+        {
+            return MedicinskaSestraService.odsustvaZaRadniKalendar(session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
 }
