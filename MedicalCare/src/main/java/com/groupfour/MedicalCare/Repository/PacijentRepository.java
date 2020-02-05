@@ -9,4 +9,5 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Integer> {
     Pacijent findUserByEmail(String email);
     Pacijent findPacijentById(Integer id);
     ArrayList<Pacijent> findPacijentByImeAndPrezime(String ime, String prezime);
+    Pacijent findPacijentByBrojOsiguranja(String brojOsiguranja);
 }

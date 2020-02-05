@@ -14,5 +14,6 @@ import java.time.LocalDateTime;
 @ToString
 public class SalaZauzeceDTO {
     private LocalDateTime start;
+    private LocalDateTime end;
     private String title;
 }

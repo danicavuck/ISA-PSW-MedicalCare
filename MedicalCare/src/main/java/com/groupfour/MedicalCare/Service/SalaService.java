@@ -213,12 +213,13 @@ public class SalaService {
             ArrayList<SalaZauzeceDTO> salaZauzeceDTO = new ArrayList<>();
             Set<Pregled> pregledi = sala.getPregledi();
             Set<Operacija> operacije = sala.getOperacije();
-            SalaZauzeceDTO salaDTO = new SalaZauzeceDTO();
 
             for(Pregled pregled : pregledi) {
                 if(pregled.isAktivan())
                 {
+                    SalaZauzeceDTO salaDTO = new SalaZauzeceDTO();
                     salaDTO.setStart(pregled.getTerminPregleda());
+                    salaDTO.setEnd(pregled.getTerminPregleda().plusMinutes(pregled.getTrajanjePregleda()));
                     salaDTO.setTitle(pregled.getTipPregleda().getTipPregleda());
                     salaZauzeceDTO.add(salaDTO);
                 }
@@ -227,7 +228,9 @@ public class SalaService {
             for(Operacija operacija : operacije) {
                 if(operacija.isAktivan())
                 {
+                    SalaZauzeceDTO salaDTO = new SalaZauzeceDTO();
                     salaDTO.setStart(operacija.getTerminOperacije());
+                    salaDTO.setEnd(operacija.getTerminOperacije().plusMinutes(operacija.getTrajanjeOperacije()));
                     salaDTO.setTitle("Operacija");
                     salaZauzeceDTO.add(salaDTO);
                 }

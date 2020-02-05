@@ -15,7 +15,7 @@
   <form name="form" #f="ngForm" class="my-form" novalidate (ngSubmit)="pretraziPacijente()">
     <mat-form-field class="form-input1">
         <mat-label>Ime i prezime pacijenta</mat-label>
-        <input class="input" type="text" id="naziv" matInput name="naziv" placeholder="Ime i Prezime"
+        <input class="input" type="text" id="naziv" matInput name="naziv" placeholder="Ime i Prezime/Broj osiguranja"
             [(ngModel)]="pacijentPretraga" required>
     </mat-form-field>
     <button type="submit" mat-stroked-button [disabled]="!f.valid">

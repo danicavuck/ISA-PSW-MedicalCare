@@ -155,6 +155,7 @@ public class OdsustvaService {
             for(OdsustvoLekara odsustvo : odsustvaLekara) {
                 if(odsustvo.getId() == odsustvaZaAdminaDTO.getIdOdsustva() && odsustvo.getLekar().getKlinika().getId() == klinikaId) {
                     odsustvo.setAktivno(false);
+                    odsustvo.setOdobren(true);
                     posaljiPozitivniMejlLekaru(odsustvaZaAdminaDTO, odsustvo.getLekar());
                     odsustvoLekaraRepository.save(odsustvo);
                     return new ResponseEntity<>("Uspesno brisanje", HttpStatus.NO_CONTENT);

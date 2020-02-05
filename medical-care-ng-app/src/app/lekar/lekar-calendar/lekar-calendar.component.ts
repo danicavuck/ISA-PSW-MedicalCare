@@ -34,5 +34,6 @@ export class LekarCalendarComponent implements OnInit {
 
 export interface Dogadjaj {
   start: Date;
+  end: Date;
   title: string;
 }

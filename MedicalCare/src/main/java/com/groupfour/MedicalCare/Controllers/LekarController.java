@@ -64,7 +64,7 @@ public class LekarController {
     }
 
     @GetMapping(value = "/zauzece")
-    public ResponseEntity<?> dobaviPregledeIOperacijeZaRadniKalendar(HttpSession session){
+    public ResponseEntity<?> informacijeZaRadniKalendar(HttpSession session){
         if(authorization.hasPermisson(session, new String[] {"lekar"}))
         {
             return LekarService.preglediIOperacijeZaRadniKalendar(session);

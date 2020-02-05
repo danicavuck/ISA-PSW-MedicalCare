@@ -10,7 +10,6 @@ import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Pregled.Operacija;
 import com.groupfour.MedicalCare.Repository.*;
 import com.groupfour.MedicalCare.Utill.CustomEmailSender;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,8 @@ public class OperacijaService {
 
             Operacija operacija =
                     Operacija.builder().pacijent(pacijent).lekar(lekari).terminOperacije(datumVreme).trajanjeOperacije(trajanje).aktivan(false).build();
-            posaljiMejlAdminu(lekar, datumVreme);
+            lekar.getListaOperacija().add(operacija);
+            posaljiMejlAdminima(lekar, datumVreme);
             operacijaRepository.save(operacija);
             return new ResponseEntity<>(null, HttpStatus.CREATED);
         }
@@ -87,33 +87,35 @@ public class OperacijaService {
         return klinikaIdLekarID;
     }
 
-    public static void posaljiMejlAdminu(Lekar lekar, LocalDateTime datumVreme) {
-        AdminKlinike adminKlinike = nadjiAdminaKlinikePrekoKlinike(lekar.getKlinika());
-        if(adminKlinike == null)
-        {
-            logger.error("Nije pronadjen admin klinike preko klinike");
-            return;
-        }
+    public static void posaljiMejlAdminima(Lekar lekar, LocalDateTime datumVreme) {
+        ArrayList<AdminKlinike> adminiKlinike = nadjiAdminaKlinikePrekoKlinike(lekar.getKlinika());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
         String message =
                 "<h3>Sala za pregled</h3><p>Postovani,</p><p>Lekar " + lekar.getIme() + " " + lekar.getPrezime() + " " +
                         "zeli da zakaze operaciju pacijenta za datum " + formatter.format(datumVreme) + "h. Molimo " +
                         "Vas da dodelite salu za operaciju</p><p>Srdacan pozdrav,</p></p>Medical Care</p>";
 
-        String[] adminEmail = {adminKlinike.getEmail()};
+        String[] adminEmail = new String[adminiKlinike.size()];
+        int i = 0;
+        for(AdminKlinike adminKlinike : adminiKlinike)
+        {
+            adminEmail[i] = adminKlinike.getEmail();
+            i++;
+        }
         customEmailSender.sendMail(adminEmail, "Zahtev za operaciju", message);
         logger.info("Sending email from: " +  emailAddress);
     }
 
-    public static AdminKlinike nadjiAdminaKlinikePrekoKlinike(Klinika klinika)
+    public static ArrayList<AdminKlinike> nadjiAdminaKlinikePrekoKlinike(Klinika klinika)
     {
         ArrayList<AdminKlinike> adminiKlinike = adminKlinikeRepository.findAll();
+        ArrayList<AdminKlinike> odabraniAdmini = new ArrayList<>();
         for(AdminKlinike admin : adminiKlinike)
         {
             if(admin.getKlinika().getId() == klinika.getId())
-                return admin;
+                odabraniAdmini.add(admin);
         }
-        return null;
+        return odabraniAdmini;
     }
 
     public static ResponseEntity<?> vratiOperacijeNaCekanjuZaOdgovarajucuKliniku(HttpSession session) {

@@ -9,6 +9,7 @@ import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Pregled.Operacija;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
+import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoLekara;
 import com.groupfour.MedicalCare.Repository.AdminKlinikeRepository;
 import com.groupfour.MedicalCare.Repository.KlinikaRepository;
 import com.groupfour.MedicalCare.Repository.LekarRepository;
@@ -182,13 +183,15 @@ public class LekarService {
         {
             Set<Pregled> pregledi = lekar.getSetPregleda();
             Set<Operacija> operacije = lekar.getListaOperacija();
+            Set<OdsustvoLekara> odsustvaLekara = lekar.getListaOdsusta();
             ArrayList<LekarKalendarDTO> lekarKalendarDTOS = new ArrayList<>();
-            LekarKalendarDTO lekarKalendarDTO = new LekarKalendarDTO();
 
             for(Pregled pregled : pregledi) {
                 if(pregled.isAktivan())
                 {
+                        LekarKalendarDTO lekarKalendarDTO = new LekarKalendarDTO();
                         lekarKalendarDTO.setStart(pregled.getTerminPregleda());
+                        lekarKalendarDTO.setEnd(pregled.getTerminPregleda().plusMinutes(pregled.getTrajanjePregleda()));
                         lekarKalendarDTO.setTitle(pregled.getTipPregleda().getTipPregleda());
                         lekarKalendarDTOS.add(lekarKalendarDTO);
                 }
@@ -197,11 +200,24 @@ public class LekarService {
             for(Operacija operacija : operacije) {
                 if(operacija.isAktivan())
                 {
+                    LekarKalendarDTO lekarKalendarDTO = new LekarKalendarDTO();
                     lekarKalendarDTO.setStart(operacija.getTerminOperacije());
+                    lekarKalendarDTO.setEnd(operacija.getTerminOperacije().plusMinutes(operacija.getTrajanjeOperacije()));
                     lekarKalendarDTO.setTitle("Operacija");
                     lekarKalendarDTOS.add(lekarKalendarDTO);
                 }
             }
+            for(OdsustvoLekara odsustvo : odsustvaLekara){
+                if(odsustvo.isAktivno() && odsustvo.isOdobren())
+                {
+                    LekarKalendarDTO lekarKalendarDTO = new LekarKalendarDTO();
+                    lekarKalendarDTO.setStart(odsustvo.getPocetakOdsustva());
+                    lekarKalendarDTO.setEnd(odsustvo.getKrajOdsustva());
+                    lekarKalendarDTO.setTitle("Odsustvo");
+                    lekarKalendarDTOS.add(lekarKalendarDTO);
+                }
+            }
+
             return new ResponseEntity<>(lekarKalendarDTOS, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
