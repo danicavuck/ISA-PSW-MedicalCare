@@ -5,6 +5,7 @@ import com.groupfour.MedicalCare.Model.DTO.UserRole;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
+import com.groupfour.MedicalCare.Repository.KlinikaRepository;
 import com.groupfour.MedicalCare.Repository.MedicinskaSestraRepository;
 import com.groupfour.MedicalCare.Utill.HibernateUtil;
 import com.groupfour.MedicalCare.Utill.PasswordCheck;
@@ -21,10 +22,12 @@ import java.util.Set;
 public class MedicalCareApplication {
 
     private static MedicinskaSestraRepository medicinskaSestraRepository;
+    private static KlinikaRepository klinikaRepository;
 
     @Autowired
-    public MedicalCareApplication(MedicinskaSestraRepository mRepo){
+    public MedicalCareApplication(MedicinskaSestraRepository mRepo,KlinikaRepository klinikaRepo){
         this.medicinskaSestraRepository = mRepo;
+        this.klinikaRepository = klinikaRepo;
     }
 
     public static void main(String[] args) {
@@ -42,7 +45,11 @@ public class MedicalCareApplication {
         Set<MedicinskaSestra> lista_sestara = new HashSet<>();
         lista_sestara.add(medicinskaSestra);
         Klinika klinika = Klinika.builder().listaLekara(lista_lekara).listaSestara(lista_sestara).adresa("Fruskogorska").naziv("Velika klinika").opis("Velika").build();
+        medicinskaSestra.setKlinika(klinika);
+       //napuniBazu(klinika);
 
+
+       // napuniBazu(medicinskaSestra);
 
 
         SpringApplication.run(MedicalCareApplication.class, args);
@@ -50,12 +57,12 @@ public class MedicalCareApplication {
 
     }
 
-    public static void napuniBazu(Object objekat, UserRole rola){
+    public static void napuniBazu(Object objekat){
 
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         if (session.isOpen()) {
             session.beginTransaction();
-            session.save(rola);
+           // session.save(rola);
             session.save(objekat);
             session.getTransaction().commit();
             session.close();

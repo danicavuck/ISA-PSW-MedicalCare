@@ -10,6 +10,8 @@ import lombok.*;
 @ToString
 public class ReceptDTO {
     private int id;
-    private String idLeka;
+    private int idLeka;
+    private String kodLeka;
+    private String nazivLeka;
     private int idMedSestre;
 }

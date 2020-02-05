@@ -11,7 +11,7 @@ import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 export class MedicinskaSestraReceptiComponent implements OnInit {
   private postojiModel = false;
   private models : Array<ReceptDTO>;
-  private columnsToDisplay: string[] = ['kodLeka','Status'];
+  private columnsToDisplay: string[] = ['kodLeka','nazivLeka','Status'];
 
   constructor(private router: Router , private http : HttpClient) { }
 
@@ -55,6 +55,8 @@ export class MedicinskaSestraReceptiComponent implements OnInit {
 export interface ReceptDTO{
   id : number;
   idLeka : string;
+  nazivLeka: string;
+  kodLeka : string
   idMedSestre : number
 
 }

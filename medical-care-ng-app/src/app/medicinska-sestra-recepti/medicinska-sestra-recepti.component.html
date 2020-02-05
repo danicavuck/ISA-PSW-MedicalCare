@@ -14,19 +14,29 @@
   <mat-toolbar color="primary" class="navbar">
     <div>Medical Care</div>
     <div>
-      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra']">Pocetna strana</a></span>
+    
+          <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/odsustva']">Novi zahtev za odsustvo</a></span>
+          <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/kalendar']">Kalendar</a></span>
+          <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra']">Pocetna strana</a></span>
+          <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/detaljnije']"><span> <i class="fa fa-user" aria-hidden="true"></i></span> </a></span>
+          
+      
     </div>
   </mat-toolbar>
   <div class="container">
     <div class="jumbotron">
       <div class="text-center">
         <h2 class="mat-display-1">Recepti</h2>
-
+        
 
       <table mat-table [dataSource] = "models" class="mat-elevation-z8" *ngIf = "postojiModel">
         <ng-container matColumnDef="kodLeka">
           <th mat-header-cell *matHeaderCellDef> Kod leka </th>
-          <td mat-cell *matCellDef="let recept"> {{recept.idLeka}} </td>
+          <td mat-cell *matCellDef="let recept"> {{recept.kodLeka}} </td>
+        </ng-container>
+        <ng-container matColumnDef="nazivLeka">
+          <th mat-header-cell *matHeaderCellDef> Naziv leka </th>
+          <td mat-cell *matCellDef="let recept"> {{recept.nazivLeka}} </td>
         </ng-container>
         
         <ng-container matColumnDef="Status">

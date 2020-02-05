@@ -46,12 +46,14 @@ public class AdminKCService {
     private static AdminKlinikeRepository adminKlinikeRepository;
     private static SalaRepository salaRepository;
     private static KartonRepository kartonRepository;
+    private static PacijentRepository pacijentRepository;
+    private static  UserRoleRepository  userRoleRepository;
 
     private static CustomEmailSender customEmailSender;
 
     @Autowired
     public AdminKCService(AdminKCRepository aKCRepository, RegistracijaPacijentaRepository regRepo,
-                          KlinikaRepository kRepo , SifarnikDijagnozaRepository sfRepo,SifarnikLekovaRepository slRepo, LekarRepository lRepo, MedicinskaSestraRepository mRepo,AdminKlinikeRepository aRepo,SalaRepository sRepo, CustomEmailSender cmail,KartonRepository kartonRepo) {
+                          KlinikaRepository kRepo , SifarnikDijagnozaRepository sfRepo,SifarnikLekovaRepository slRepo,UserRoleRepository userRepo, LekarRepository lRepo, MedicinskaSestraRepository mRepo,AdminKlinikeRepository aRepo,SalaRepository sRepo, CustomEmailSender cmail,KartonRepository kartonRepo,PacijentRepository pacRepo) {
         adminKCRepository = aKCRepository;
         registracijaPacijentaRepository = regRepo;
         klinikaRepository = kRepo;
@@ -62,6 +64,8 @@ public class AdminKCService {
         adminKlinikeRepository = aRepo;
         salaRepository = sRepo;
         kartonRepository = kartonRepo;
+        pacijentRepository = pacRepo;
+        userRoleRepository = userRepo;
         customEmailSender = cmail;
     }
 
@@ -310,11 +314,17 @@ public class AdminKCService {
         //kreiranje zdravstvenog kartona pacijenta
         Karton karton = Karton.builder().aktivan(true).pacijent(pacijent).build();
 
-        pacijent.dodajKarton(karton);
-        if (sacuvajUBazuPacijentaIRolu(pacijent, userRole)) {
+        if(pacijent != null) {
+            pacijent.dodajKarton(karton);
+            pacijentRepository.save(pacijent);
+            userRoleRepository.save(userRole);
             return new ResponseEntity<>("Instance created", HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Internal server eror", HttpStatus.INTERNAL_SERVER_ERROR);
+//        if (sacuvajUBazuPacijentaIRolu(pacijent, userRole)) {
+//            return new ResponseEntity<>("Instance created", HttpStatus.CREATED);
+//        }
+//        return new ResponseEntity<>("Internal server eror", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

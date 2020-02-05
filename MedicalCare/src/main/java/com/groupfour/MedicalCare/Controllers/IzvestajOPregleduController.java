@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -37,6 +34,16 @@ public class IzvestajOPregleduController {
         }
         return new ResponseEntity<>("null", HttpStatus.UNAUTHORIZED);
     }
+
+//    @GetMapping("/izvestaj")
+//    public ResponseEntity<?> getIzvestaj(HttpSession session) {
+//        if(authorization.hasPermisson(session, roles))
+//        {
+//            //IzvestajOPregledu izvestaj = IzvestajOPregleduService.getIzvestaj(session);
+//            return new ResponseEntity<>(izvestaj, HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+//    }
 
 
 }

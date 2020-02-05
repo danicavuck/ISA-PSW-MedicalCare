@@ -28,6 +28,10 @@ public class Recept {
     private int idLeka;
     @Column(name = DbColumnConstants.RECEPT_AKTIVAN)
     private boolean aktivan = true;
+    @Column(name = DbColumnConstants.RECEPT_NAZIV_LEKA)
+    private String nazivLeka;
+    @Column(name = DbColumnConstants.RECEPT_KOD_LEKA)
+    private String kodLeka;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = DbColumnConstants.RECEPT_MEDICINSKA_SESTRA)

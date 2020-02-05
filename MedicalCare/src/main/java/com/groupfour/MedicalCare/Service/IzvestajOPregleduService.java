@@ -47,6 +47,7 @@ public class IzvestajOPregleduService {
         Pacijent pacijent = pacijentRepository.findPacijentById(izvestajOPregleduDTO.getIdPacijent());
         Karton karton = kartonRepository.findKartonByPacijent(pacijent);
         int[] id_lekova = izvestajOPregleduDTO.getIdLek();
+        Set<SifarnikLekova> lekovi = new HashSet<SifarnikLekova>();
         Set<Recept> recepti = new HashSet<Recept>();
 
         if (lekar == null) {
@@ -55,8 +56,12 @@ public class IzvestajOPregleduService {
         }
         //pravi se toliko recepata koliko je prepisano lekova pacijentu
         if(pacijent != null){
-            for(int i = 0 ; i < id_lekova.length ; i++){
-                Recept r = Recept.builder().idLeka(id_lekova[i]).lekar(lekar).overeno(false).build();
+            for(int i  = 0 ; i< id_lekova.length ; i++){
+                lekovi.add(sifarnikLekovaRepository.findSifarnikLekovaById(id_lekova[i]));
+            }
+
+            for(SifarnikLekova l : lekovi){
+                Recept r = Recept.builder().idLeka(lekar.getId()).kodLeka(l.getKodLeka()).nazivLeka(l.getNazivLeka()).lekar(lekar).overeno(false).build();
                 recepti.add(r);
                 receptRepository.save(r);
             }
@@ -73,6 +78,8 @@ public class IzvestajOPregleduService {
 
         return new ResponseEntity<>("Nije nadjen pacijent!", HttpStatus.FORBIDDEN);
     }
+
+
 
 
 
