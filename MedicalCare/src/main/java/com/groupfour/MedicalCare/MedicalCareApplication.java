@@ -46,7 +46,7 @@ public class MedicalCareApplication {
         lista_sestara.add(medicinskaSestra);
         Klinika klinika = Klinika.builder().listaLekara(lista_lekara).listaSestara(lista_sestara).adresa("Fruskogorska").naziv("Velika klinika").opis("Velika").build();
         medicinskaSestra.setKlinika(klinika);
-       //napuniBazu(klinika);
+        //napuniBazu(klinika);
 
 
        // napuniBazu(medicinskaSestra);

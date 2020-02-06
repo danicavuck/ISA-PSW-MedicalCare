@@ -77,7 +77,7 @@ public class MedicinskaSestraService {
 
             ArrayList<MedicinskaSestraKalendarDTO> sestraKalendarDTOS = new ArrayList<>();
             MedicinskaSestraKalendarDTO temp = new MedicinskaSestraKalendarDTO();
-
+            //stavi uslov i da je zahtev odobren
             for(OdsustvoMedicinskeSestre odsustvo : odsustva) {
                 if(odsustvo.isAktivno())
                 {

@@ -17,4 +17,25 @@
 
 .btn.dropdown-toggle:focus {
     outline: none !important;
+
+}
+
+.header {
+  padding: 20px;
+  text-align: center;
+  background:#33373d;
+  color: white;
+  font-size: 30px;
+}
+
+.navbar {
+  justify-content: space-between;
+}
+
+.mat-elevation-z8 {
+width: 100%;
+}
+
+span {
+  padding-right: 1rem;
 }
