@@ -223,4 +223,15 @@ public class LekarService {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
+    public static ResponseEntity<?> detaljiOLekaru(HttpSession session) {
+        Lekar lekar = lekarRepository.findLekarById((int) session.getAttribute("id"));
+        if(lekar != null)
+        {
+            LekarIzmenaPodatakaDTO izmenaPodatakaDTO =
+                    LekarIzmenaPodatakaDTO.builder().ime(lekar.getIme()).prezime(lekar.getPrezime()).email(lekar.getEmail()).build();
+            return new ResponseEntity<>(izmenaPodatakaDTO, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
 }

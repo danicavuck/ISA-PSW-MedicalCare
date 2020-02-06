@@ -15,9 +15,21 @@ export class LekarDetaljnijeComponent implements OnInit {
     novaLozinka: ''
   };
   private potvrdaLozinke: '';
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    this.dobaviPodatkeOLekaru();
+  }
 
   ngOnInit() {
+  }
+
+  async dobaviPodatkeOLekaru() {
+    const apiEndpoint = 'http://localhost:8080/lekari/detalji';
+    this.http.get(apiEndpoint, {withCredentials: true}).subscribe(data => {
+      this.model = data as Lekar;
+      console.log('Dobavljeni podaci');
+    }, err => {
+      console.log('Neuspesno dobavljanje podataka o adminu');
+    });
   }
 
   async izmeniPodatke() {

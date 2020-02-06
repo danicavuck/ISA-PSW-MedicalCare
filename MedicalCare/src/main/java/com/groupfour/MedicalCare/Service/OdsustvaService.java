@@ -3,6 +3,7 @@ package com.groupfour.MedicalCare.Service;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.OdsustvaZaAdminaDTO;
 import com.groupfour.MedicalCare.Model.DTO.OdsustvoDTO;
+import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoLekara;
 import com.groupfour.MedicalCare.Repository.AdminKlinikeRepository;
@@ -47,7 +48,7 @@ public class OdsustvaService {
         if(lekar != null) {
             OdsustvoLekara odsustvoLekara = OdsustvoLekara.builder().aktivno(true).pocetakOdsustva(odsustvoDTO.getDatumVreme()[0].atStartOfDay()).krajOdsustva(odsustvoDTO.getDatumVreme()[1].atStartOfDay()).odobren(false).lekar(lekar).build();
             odsustvoLekaraRepository.save(odsustvoLekara);
-            slanjeMejlaAdminuOZahtevu(lekar, odsustvoDTO);
+            slanjeMejlaAdminima(lekar, odsustvoDTO);
             return new ResponseEntity<>("Uspesno dodavanje zahteva za odsustvo", HttpStatus.CREATED);
         }
 
@@ -55,7 +56,7 @@ public class OdsustvaService {
     }
 
     @Async
-    public static void slanjeMejlaAdminuOZahtevu(Lekar lekar, OdsustvoDTO odsustvoDTO) {
+    public static void slanjeMejlaAdminima(Lekar lekar, OdsustvoDTO odsustvoDTO) {
         String pocetakOdsustva =
                 odsustvoDTO.getDatumVreme()[0].format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
         String krajOdsustva =
@@ -64,7 +65,8 @@ public class OdsustvaService {
         String message =
                 "<html><body><h3>Zahtev za odsustvo</h3><p>Postovani,</p><p>Lekar " + lekar.getIme() + " " + lekar.getPrezime() + " zeli da dobije odsustvo u periodu od " + pocetakOdsustva + " do "+ krajOdsustva + "</p><p>Molimo Vas da razmotrite zahtev u dogledno vreme.</p><p>Srdacan pozdrav,</p><p>Medical Care</p></body></html>";
 
-        HashSet<AdminKlinike> adminiKlinike = (HashSet<AdminKlinike>) lekar.getKlinika().getAdminiKlinike();
+        Klinika klinika = lekar.getKlinika();
+        ArrayList<AdminKlinike> adminiKlinike = dobaviAdmineKlinike(klinika);
         String[] adrese = new String[adminiKlinike.size()];
         int i = 0;
         for(AdminKlinike admin : adminiKlinike)
@@ -75,6 +77,16 @@ public class OdsustvaService {
 
         customEmailSender.sendMail(adrese, "Zahtev za odsustvo", message);
 
+    }
+
+    public static ArrayList<AdminKlinike> dobaviAdmineKlinike(Klinika klinika){
+        ArrayList<AdminKlinike> admini = adminKlinikeRepository.findAll();
+        ArrayList<AdminKlinike> odabraniAdmini = new ArrayList<>();
+        for(AdminKlinike admin : admini){
+            if(admin.getKlinika().getId() == klinika.getId())
+                odabraniAdmini.add(admin);
+        }
+        return odabraniAdmini;
     }
 
     public static ResponseEntity<?> vratiZahteveAdminu(HttpSession session)

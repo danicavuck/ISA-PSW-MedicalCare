@@ -71,4 +71,13 @@ public class LekarController {
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
+
+    @GetMapping(value = "/detalji")
+    public ResponseEntity<?> detaljiOLekaru(HttpSession session){
+        if(authorization.hasPermisson(session, new String[] {"lekar"}))
+        {
+            return LekarService.detaljiOLekaru(session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
 }

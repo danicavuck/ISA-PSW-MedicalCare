@@ -97,4 +97,15 @@ public class KlinikaController {
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
+
+    @PostMapping("/prihodi")
+    public ResponseEntity<?> prihodiKlinikeZaOdredjeniPeriod(@RequestBody PrihodDTO prihodDTO, HttpSession session)
+    {
+        if(authorization.hasPermisson(session, new String[] {"adminklinike"}))
+        {
+            return KlinikaService.prihodiKlinike(prihodDTO, session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
 }

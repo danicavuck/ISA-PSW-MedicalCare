@@ -69,6 +69,7 @@ import { DodavanjeOperacijaComponent } from './lekar/dodavanje-operacija/dodavan
 import { OperacijeNaCekanjuComponent } from './admin-klinike/operacije-na-cekanju/operacije-na-cekanju.component';
 import { CalendarComponent } from './sale/calendar/calendar.component';
 import { LekarCalendarComponent } from './lekar/lekar-calendar/lekar-calendar.component';
+import { PrihodComponent } from './admin-klinike/prihod/prihod.component';
 
 
 
@@ -92,6 +93,7 @@ const appRouts: Routes = [
   { path: 'adminklinike/sala', component: IzmenaSaleComponent},
   { path: 'adminklinike/sala/calendar', component: CalendarComponent},
   { path: 'adminklinike/calendar', component: AdminCalendarComponent},
+  { path: 'adminklinike/izvestaj', component: PrihodComponent},
   { path: 'lekar', component: LekarComponent },
   { path: 'lekar/dodavanjepregleda', component : DodavanjePregledaComponent},
   { path: 'lekar/zakazivanje', component : PregledIOperacijeComponent},
@@ -174,6 +176,7 @@ const appRouts: Routes = [
     OperacijeNaCekanjuComponent,
     CalendarComponent,
     LekarCalendarComponent,
+    PrihodComponent,
   ],
   imports: [
     BrowserModule,
