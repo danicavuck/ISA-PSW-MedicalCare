@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pacijent</title>
+</head>
+<body>
+    <div class="text-center">
+        <mat-toolbar color="primary" class="navbar">
+          <div>Medical Care</div>
+          <div>
+            <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/odsustva']">Novi zahtev za odsustvo</a></span>
+            <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/kalendar']">Kalendar</a></span>
+            <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['svirecepti']">Recepti</a></span>
+            <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/detaljnije']"><span> <i class="fa fa-user" aria-hidden="true"></i></span> </a></span>
+          </div>
+          </mat-toolbar>
+    </div>
+    <div class="jumbotron">
+        <h2 class="mat-display-1" style="text-align: center;">Profil Pacijenta</h2>
+        <div style="float:left;width:50%">
+            <p class="mat-body-strong"> Ime: {{pacijent.ime}} </p>
+            <p class="mat-body-strong"> Prezime: {{pacijent.prezime}}</p>
+            <p class="mat-body-strong"> Grad: {{pacijent.grad}}</p>
+            <p class="mat-body-strong"> Drzava: {{pacijent.drzava}}</p>
+        </div>
+        <div style="float:left;width:50%">
+            <p class="mat-body-strong"> Email: {{pacijent.email}} </p>
+            <p class="mat-body-strong"> Adresa: {{pacijent.adresa}}</p>
+            <p class="mat-body-strong"> Broj telefona: {{pacijent.brojTelefona}}</p>
+            <p class="mat-body-strong"> Broj osiguranja: {{pacijent.brojOsiguranja}}</p>
+        </div>
+
+        
+           <button mat-raised-button color="primary" [routerLink]="['/medsestra']" style="margin-top: 5%;">Nazad</button>
+    </div>
+</body>
+</html>

@@ -49,7 +49,7 @@ export class OperacijeNaCekanjuComponent implements OnInit {
   async dodajSaluOperaciji(operacija: Operacija) {
     this.slanje.operacijaId = operacija.id;
     this.slanje.salaId = this.odabranaSala.id;
-    // console.log(this.slanje);
+     //console.log(this.slanje);
     const apiEnpoint = 'http://localhost:8080/operacije';
     this.http.put(apiEnpoint, this.slanje, {responseType: 'json', withCredentials: true}).subscribe(data => {
     console.log('Uspesno dodeljena sala');

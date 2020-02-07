@@ -45,7 +45,7 @@ public class IzvestajOPregleduService {
     public ResponseEntity<?> dodajIzvestajOPregledu(IzvestajOPregleduDTO izvestajOPregleduDTO, HttpSession session) {
         Lekar lekar = lekarRepository.findLekarById((int) session.getAttribute("id"));
         Pacijent pacijent = pacijentRepository.findPacijentById(izvestajOPregleduDTO.getIdPacijent());
-        Karton karton = kartonRepository.findKartonByPacijent(pacijent);
+        Karton karton = kartonRepository.findKartonById(pacijent.getZdravstveniKarton().getId());
         int[] id_lekova = izvestajOPregleduDTO.getIdLek();
         Set<SifarnikLekova> lekovi = new HashSet<SifarnikLekova>();
         Set<Recept> recepti = new HashSet<Recept>();
@@ -61,12 +61,13 @@ public class IzvestajOPregleduService {
             }
 
             for(SifarnikLekova l : lekovi){
-                Recept r = Recept.builder().idLeka(lekar.getId()).kodLeka(l.getKodLeka()).nazivLeka(l.getNazivLeka()).lekar(lekar).overeno(false).build();
+                Recept r = Recept.builder().aktivan(true).idLeka(lekar.getId()).kodLeka(l.getKodLeka()).nazivLeka(l.getNazivLeka()).lekar(lekar).overeno(false).build();
                 recepti.add(r);
                 receptRepository.save(r);
             }
+            System.out.println(izvestajOPregleduDTO.getInformacijeOPregledu());
             SifarnikDijagnoza dijagnoza = sifarnikDijagnozaRepository.findSifarnikDijagnozaById(izvestajOPregleduDTO.getIdDijagnoza());
-            IzvestajOPregledu izvestaj = IzvestajOPregledu.builder().aktivan(true).informacijeOPregledu(izvestajOPregleduDTO.getInformacijeOPregledu()).sifarnikDijagnoza(dijagnoza).recepti(recepti).lekar(lekar).build();
+            IzvestajOPregledu izvestaj = IzvestajOPregledu.builder().aktivan(true).informacijeOPregledu(izvestajOPregleduDTO.getInformacijeOPregledu()).sifarnikDijagnoza(dijagnoza).pacijentId(pacijent.getId()).recepti(recepti).lekar(lekar).build();
             izvestajOPregleduRepository.save(izvestaj);
             //izmene se upisuju u zdravstveni karton pacijenta
             karton.dodajDijagnozu(dijagnoza);

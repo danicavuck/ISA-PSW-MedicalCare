@@ -166,6 +166,8 @@ public class LekarService {
             lekar.setLozinka(PasswordCheck.hash(lekarIzmenaPodatakaDTO.getNovaLozinka()));
     }
 
+
+
     private static boolean trebaIzmenitiLozinku(Lekar lekar, LekarIzmenaPodatakaDTO lekarIzmenaPodatakaDTO) {
         boolean zadovoljavajuce = false;
         if(!lekarIzmenaPodatakaDTO.getNovaLozinka().equals("") && PasswordCheck.verifyHash(lekarIzmenaPodatakaDTO.getStaraLozinka() ,

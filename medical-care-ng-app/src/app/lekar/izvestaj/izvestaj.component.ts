@@ -1,26 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { IzvestajServiceComponent } from 'src/app/services/izvestaj-service/izvestaj-service.component';
 
 @Component({
-  selector: 'app-izvestaj-o-pregledu',
-  templateUrl: './izvestaj-o-pregledu.component.html',
-  styleUrls: ['./izvestaj-o-pregledu.component.css']
+  selector: 'app-izvestaj',
+  templateUrl: './izvestaj.component.html',
+  styleUrls: ['./izvestaj.component.css']
 })
-export class IzvestajOPregleduComponent implements OnInit {
-  
-  private model: IzvestajOPregleduDTO = {
-   idPacijent : 0,
-   informacijeOPregledu : "",
-   idDijagnoza : 0,
-   idLek : []
+export class IzvestajComponent implements OnInit {
+  private model : IzvestajOPregleduDTO = {
+    informacijeOpregledu : '',
+    idLekar : 0,
+    idPacijent : 0,
+    idDijagnoza: 0,
+    idLek : []
+
   }
 
   private dijagnoze: Array<DijagnozaDTO>;
   private lekovi : Array<LekDTO>;
   errorStatus: string = null;
 
-  constructor(private http : HttpClient, private router:Router) { }
+  constructor(private http : HttpClient, private router:Router, private service : IzvestajServiceComponent) { }
 
 
   ngOnInit() {
@@ -29,20 +31,21 @@ export class IzvestajOPregleduComponent implements OnInit {
   }
 
   async onSubmit() {
-   
+      this.model.idLekar = this.service.getLekarID();
+      this.model.idPacijent = this.service.getPacijentID();
       const apiEndpoint = 'http://localhost:8080/izvestaj/dodajIzvestaj';
       if (this.isFormValid()) {
       this.http.post(apiEndpoint, this.model,
         {responseType: 'text',withCredentials:true}).subscribe( data => {
           console.log('Uspesno dodavanje izvestaja o pregledu');
-          console.log(this.model)
           
         }, error => {
-          console.log(this.model)
           this.errorStatus = '';
           this.errorStatus = 'Nije validno popunjena forma';
+          console.log(this.model)
         });
       }else {
+        console.log(this.model)
           console.log('Forma nije validna');
         }
    
@@ -50,7 +53,8 @@ export class IzvestajOPregleduComponent implements OnInit {
     }
     isFormValid() {
       // tslint:disable-next-line: max-line-length
-      if (this.model.informacijeOPregledu !== '' && this.model.idDijagnoza !== null && this.model.idLek !== null) {
+      console.log(this.model)
+      if (this.model.idDijagnoza !== null && this.model.idLek !== null) {
         return true;
       }
   
@@ -69,6 +73,7 @@ export class IzvestajOPregleduComponent implements OnInit {
    });
   
 }
+
 
 async getDijagnoze(){
   const apiEndPoint = 'http://localhost:8080/adminkc/dijagnoze';
@@ -100,11 +105,11 @@ export interface DijagnozaDTO{
 }
 
 export interface IzvestajOPregleduDTO{
-  idPacijent : number
-  informacijeOPregledu : string;
+  informacijeOpregledu : string;
+  idLekar : number;
+  idPacijent : number;
   idDijagnoza : number;
   idLek : Array<number>;
+
 }
-
-
 

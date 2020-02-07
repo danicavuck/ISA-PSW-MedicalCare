@@ -316,6 +316,7 @@ public class AdminKCService {
 
         if(pacijent != null) {
             pacijent.dodajKarton(karton);
+            kartonRepository.save(karton);
             pacijentRepository.save(pacijent);
             userRoleRepository.save(userRole);
             return new ResponseEntity<>("Instance created", HttpStatus.CREATED);

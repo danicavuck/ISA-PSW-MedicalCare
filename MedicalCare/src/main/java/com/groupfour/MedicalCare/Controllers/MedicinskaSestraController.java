@@ -44,7 +44,6 @@ public class MedicinskaSestraController {
 
         if(authorization.hasPermisson(session,role)) {
             receptService.overiRecept(id,session);
-            System.out.println("overen");
             return new ResponseEntity<String>("Recept je overen!", HttpStatus.OK);
 
         }else{

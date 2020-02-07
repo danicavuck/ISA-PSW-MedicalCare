@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
-import { PacijentServiceComponent } from 'e2e/src/app/services/pacijent-service/pacijent-service.component';
+
+import { SestraPacijentServiceComponent } from '../services/sestra-pacijent-service/sestra-pacijent-service.component';
 
 @Component({
   selector: 'app-medicinska-sestra',
@@ -14,7 +15,7 @@ export class MedicinskaSestraComponent implements OnInit {
   private displayColumns: string[] = ['ime', 'prezime', 'email', 'Akcije'];
   private models: Array<Pacijent>;
   private modelsDataSource;
-  constructor(private http: HttpClient,private pacijentService: PacijentServiceComponent) {
+  constructor(private http: HttpClient,private pacijentService: SestraPacijentServiceComponent) {
     this.getPacijenteInitially();
    }
   
@@ -39,7 +40,7 @@ export class MedicinskaSestraComponent implements OnInit {
 
   async onDetaljnije(pacijent: Pacijent) {
     this.pacijentService.setPacijentID(pacijent.id);
-    this.pacijentService.setLekarID(1);
+    this.pacijentService.setSestraID(1);
   }
 
   async pretraziPacijente() {

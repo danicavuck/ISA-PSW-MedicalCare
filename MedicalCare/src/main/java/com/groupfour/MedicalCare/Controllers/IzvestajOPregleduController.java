@@ -26,10 +26,11 @@ public class IzvestajOPregleduController {
         izvestajOPregleduService = iService;
     }
 
-    @PostMapping
+    @RequestMapping(value = "/dodajIzvestaj", method = RequestMethod.POST)
     public ResponseEntity<?> dodavanjeIzvestaja(@RequestBody IzvestajOPregleduDTO izvestajOPregleduDTO, HttpSession session){
         if(authorization.hasPermisson(session, roles))
         {
+            System.out.println(izvestajOPregleduDTO.getInformacijeOPregledu());
             return izvestajOPregleduService.dodajIzvestajOPregledu(izvestajOPregleduDTO,session);
         }
         return new ResponseEntity<>("null", HttpStatus.UNAUTHORIZED);

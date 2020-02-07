@@ -27,9 +27,11 @@ public class PregledController {
     @GetMapping
     public ResponseEntity<?> dobaviSvePregledeZaKliniku(HttpSession session) {
         String[] adminKlinike = {"adminklinike"};
-        if(authorization.hasPermisson(session, adminKlinike))
-        {
+        String[] lekar = {"lekar"};
+        if (authorization.hasPermisson(session, adminKlinike)) {
             return PregledService.dobaviSvePregledeZaKliniku(session);
+        } else if (authorization.hasPermisson(session, lekar)){
+            return PregledService.dobaviSvePregledeZaKlinikuMedSestra(session);
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }

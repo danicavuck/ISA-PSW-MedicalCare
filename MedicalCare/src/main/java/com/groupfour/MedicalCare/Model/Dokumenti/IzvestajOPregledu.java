@@ -29,6 +29,9 @@ public class IzvestajOPregledu {
     @Column(name = DbColumnConstants.IZVESTAJ_O_PREGLEDU_AKTIVAN)
     private boolean aktivan = true;
 
+    @Column(name = DbColumnConstants.IZVESTAJ_O_PREGLEDU_PACIJENT_ID)
+    private int pacijentId;
+
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = DbTableConstants.IZVESTAJ_RECEPT,

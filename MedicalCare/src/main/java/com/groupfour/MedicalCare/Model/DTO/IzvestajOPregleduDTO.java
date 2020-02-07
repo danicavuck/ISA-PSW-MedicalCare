@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @ToString
 public class IzvestajOPregleduDTO {
     private String informacijeOPregledu;
+    private int idLekar;
     private int idPacijent;
     private int idDijagnoza;
     private int[] idLek;

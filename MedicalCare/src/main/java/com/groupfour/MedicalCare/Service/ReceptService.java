@@ -48,6 +48,7 @@ public class ReceptService {
         MedicinskaSestra medicinskaSestra = medicinskaSestraRepository.findMedicinskaSestraById((int) session.getAttribute("id"));
 
         if(medicinskaSestra != null){
+
             try {
                 Recept recept = receptRepository.getOne(id);
                 recept.setOvereno(true);
