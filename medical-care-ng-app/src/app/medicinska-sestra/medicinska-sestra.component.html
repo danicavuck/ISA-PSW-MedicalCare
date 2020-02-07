@@ -9,19 +9,11 @@
 </head>
 <body>
 <div class="text-center">
-  <mat-toolbar color="primary" class="navbar">
-    <div>Medical Care</div>
-    <div>
-      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/odsustva']">Novi zahtev za odsustvo</a></span>
-      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/kalendar']">Kalendar</a></span>
-      <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['svirecepti']">Recepti</a></span>
-      
-    </div>
-  </mat-toolbar>
-  <h2 class="mat-display-1">Pacijenti klinike</h2>
+    <app-med-sestra-navbar></app-med-sestra-navbar>
+  <h2 class="mat-display-1" style="margin-top: 20px;">Pacijenti klinike</h2>
 
   <form name="form" #f="ngForm" class="my-form" novalidate (ngSubmit)="pretraziPacijente()">
-    <mat-form-field class="f  orm-input1">
+    <mat-form-field class="f  orm-input1" style="width: 40%;">
         <mat-label>Ime i prezime pacijenta</mat-label>
         <input class="input" type="text" id="naziv" matInput name="naziv" placeholder="Ime i Prezime"
             [(ngModel)]="pacijentPretraga" required>
@@ -32,7 +24,7 @@
     </button>
 
     <div class="col">
-        <mat-form-field class="form-input2">
+        <mat-form-field class="form-input2" style="width: 50%;">
             <mat-label>Filter</mat-label>
             <input (keyup)="applyFilter($event.target.value)" matInput>
         </mat-form-field>
@@ -66,7 +58,10 @@
     <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
 </table>
-<mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator> 
+<mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator>
+<div>
+    <button mat-raised-button class="pull pull-left" color="primary" (click)="odjava()" style="margin-left: 10px;" [routerLink]="['/login']">Odjava</button>
+</div> 
 </div>
 </body>
 </html>

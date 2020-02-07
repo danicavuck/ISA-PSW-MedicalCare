@@ -15,8 +15,12 @@ import { TipPregledaService } from 'src/app/services/tip-pregleda.service';
 })
 
 export class KlinikaDetaljnijeComponent implements OnInit {
-  private latitude = 45.2671;
-  private longitude = 19.8335;
+  private latitude = 0;
+  private longitude = 0;
+  private lokacija: Lokacija = {
+    longitude: 0,
+    latitude: 0
+  };
 
   private displayColumns: string[] = ['nazivSale', 'Akcije'];
   private lekariColumns: string[] = ['ime', 'prezime', 'prosecnaOcena', 'email', 'Akcije'];
@@ -63,6 +67,7 @@ export class KlinikaDetaljnijeComponent implements OnInit {
     this.getSaleInitialy();
     this.getPregledeInitialy();
     this.getTipovePregledaInitialy();
+    this.dobaviLokaciju();
    }
 
   ngOnInit() {
@@ -238,10 +243,32 @@ export class KlinikaDetaljnijeComponent implements OnInit {
       this.salaService.setSala(sala);
   }
 
+  async dobaviLokaciju() {
+    const apiEndpoint = 'http://localhost:8080/klinika/lokacija';
+    this.http.get(apiEndpoint, {withCredentials: true}).subscribe(data => {
+        this.lokacija = data as Lokacija;
+        this.longitude = this.lokacija.longitude;
+        this.latitude = this.lokacija.latitude;
+    }, err => {
+      console.log('Neuspesno dobavljanje lokacije klinike');
+    });
+  }
+
   async onMapClick(event) {
     console.log(event);
     this.latitude = event.coords.lat;
     this.longitude = event.coords.lng;
+    this.lokacija.latitude = this.latitude;
+    this.lokacija.longitude = this.longitude;
+    const apiEndpoint = 'http://localhost:8080/klinika/lokacija';
+
+  //   this.http.put(apiEndpoint, this.lokacija, {withCredentials: true}).subscribe(data => {
+  //     console.log(this.lokacija);
+  //     console.log('Uspesno setovanje lokacije');
+  // }, err => {
+  //   console.log('Neuspesno setovanje lokacije');
+  // });
+
   }
 }
 
@@ -282,5 +309,10 @@ export interface Pregled {
 export interface TipPregleda {
   tipPregleda: string;
   id: number;
+}
+
+export interface Lokacija {
+  longitude: number;
+  latitude: number;
 }
 

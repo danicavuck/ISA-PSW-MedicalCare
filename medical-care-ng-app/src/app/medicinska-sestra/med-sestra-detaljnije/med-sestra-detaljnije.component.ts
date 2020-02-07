@@ -14,9 +14,20 @@ export class MedSestraDetaljnijeComponent implements OnInit {
     staraLozinka: '',
     novaLozinka: ''
   };
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.dobavljanjePodataka();
+   }
 
   ngOnInit() {
+  }
+
+  async dobavljanjePodataka() {
+    const apiEndpoint = 'http://localhost:8080/medsestra/detalji';
+    this.http.get(apiEndpoint, {withCredentials: true}).subscribe(data => {
+      this.model = data as MedicinskaSestra;
+    }, err => {
+      console.log('Neuspesno dobavljanje podataka o medicinksoj sestri');
+    });
   }
 
   async izmeniPodatke() {

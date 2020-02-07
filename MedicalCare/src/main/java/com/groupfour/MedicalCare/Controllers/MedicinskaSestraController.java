@@ -71,4 +71,13 @@ public class MedicinskaSestraController {
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
+
+    @GetMapping("/detalji")
+    public ResponseEntity<?> dobaviDetaljeOMedicinksojSestri(HttpSession session){
+        if(authorization.hasPermisson(session, role))
+        {
+            return MedicinskaSestraService.detaljiOMedicinskojSestri(session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
 }

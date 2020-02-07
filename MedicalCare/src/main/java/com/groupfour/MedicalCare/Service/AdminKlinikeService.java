@@ -64,4 +64,15 @@ public class AdminKlinikeService {
         }
         return zadovoljavajuce;
     }
+
+    public static ResponseEntity<?> detaljiOAdminu(HttpSession session){
+        AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
+        if(adminKlinike != null)
+        {
+            AdminKlinikeDTO adminKlinikeDTO =
+                    AdminKlinikeDTO.builder().email(adminKlinike.getEmail()).ime(adminKlinike.getIme()).prezime(adminKlinike.getPrezime()).build();
+            return new ResponseEntity<>(adminKlinikeDTO, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
 }

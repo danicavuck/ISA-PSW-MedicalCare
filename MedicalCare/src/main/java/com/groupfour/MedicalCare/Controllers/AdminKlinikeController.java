@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,6 +29,15 @@ public class AdminKlinikeController {
         if(authorization.hasPermisson(session, role))
         {
             return AdminKlinikeService.azurirajPodatkeAdmina(adminKlinikeDTO, session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
+    @GetMapping("/detalji")
+    public ResponseEntity<?> dobavljanjeDetaljaOAdminu(HttpSession session){
+        if(authorization.hasPermisson(session, role))
+        {
+            return AdminKlinikeService.detaljiOAdminu(session);
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }

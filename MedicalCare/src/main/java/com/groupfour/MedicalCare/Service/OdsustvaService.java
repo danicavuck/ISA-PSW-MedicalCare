@@ -3,6 +3,7 @@ package com.groupfour.MedicalCare.Service;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.OdsustvaZaAdminaDTO;
 import com.groupfour.MedicalCare.Model.DTO.OdsustvoDTO;
+import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoLekara;
 import com.groupfour.MedicalCare.Repository.AdminKlinikeRepository;
@@ -12,11 +13,15 @@ import com.groupfour.MedicalCare.Utill.CustomEmailSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -47,7 +52,7 @@ public class OdsustvaService {
         if(lekar != null) {
             OdsustvoLekara odsustvoLekara = OdsustvoLekara.builder().aktivno(true).pocetakOdsustva(odsustvoDTO.getDatumVreme()[0].atStartOfDay()).krajOdsustva(odsustvoDTO.getDatumVreme()[1].atStartOfDay()).odobren(false).lekar(lekar).build();
             odsustvoLekaraRepository.save(odsustvoLekara);
-            slanjeMejlaAdminuOZahtevu(lekar, odsustvoDTO);
+            slanjeMejlaAdminima(lekar, odsustvoDTO);
             return new ResponseEntity<>("Uspesno dodavanje zahteva za odsustvo", HttpStatus.CREATED);
         }
 
@@ -55,7 +60,7 @@ public class OdsustvaService {
     }
 
     @Async
-    public static void slanjeMejlaAdminuOZahtevu(Lekar lekar, OdsustvoDTO odsustvoDTO) {
+    public static void slanjeMejlaAdminima(Lekar lekar, OdsustvoDTO odsustvoDTO) {
         String pocetakOdsustva =
                 odsustvoDTO.getDatumVreme()[0].format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
         String krajOdsustva =
@@ -64,7 +69,8 @@ public class OdsustvaService {
         String message =
                 "<html><body><h3>Zahtev za odsustvo</h3><p>Postovani,</p><p>Lekar " + lekar.getIme() + " " + lekar.getPrezime() + " zeli da dobije odsustvo u periodu od " + pocetakOdsustva + " do "+ krajOdsustva + "</p><p>Molimo Vas da razmotrite zahtev u dogledno vreme.</p><p>Srdacan pozdrav,</p><p>Medical Care</p></body></html>";
 
-        HashSet<AdminKlinike> adminiKlinike = (HashSet<AdminKlinike>) lekar.getKlinika().getAdminiKlinike();
+        Klinika klinika = lekar.getKlinika();
+        ArrayList<AdminKlinike> adminiKlinike = dobaviAdmineKlinike(klinika);
         String[] adrese = new String[adminiKlinike.size()];
         int i = 0;
         for(AdminKlinike admin : adminiKlinike)
@@ -77,6 +83,18 @@ public class OdsustvaService {
 
     }
 
+    public static ArrayList<AdminKlinike> dobaviAdmineKlinike(Klinika klinika){
+        ArrayList<AdminKlinike> admini = adminKlinikeRepository.findAll();
+        ArrayList<AdminKlinike> odabraniAdmini = new ArrayList<>();
+        for(AdminKlinike admin : admini){
+            if(admin.getKlinika().getId() == klinika.getId())
+                odabraniAdmini.add(admin);
+        }
+        return odabraniAdmini;
+    }
+
+    @Transactional
+    @Lock(value = LockModeType.PESSIMISTIC_READ)
     public static ResponseEntity<?> vratiZahteveAdminu(HttpSession session)
     {
         AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
@@ -116,7 +134,8 @@ public class OdsustvaService {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-
+    @Transactional
+    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     public static ResponseEntity<?> obrisiZahtevZaOdsustvoLekaraZaKliniku(OdsustvaZaAdminaDTO odsustvaZaAdminaDTO,
                                                                           HttpSession session) {
         int klinikaId = vratiIDKlinike(session);
@@ -146,6 +165,8 @@ public class OdsustvaService {
         customEmailSender.sendMail(new String[]{lekar.getEmail()}, "Odbijen zahtev za odsustvom", formatiranaPoruka);
     }
 
+    @Transactional
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public static ResponseEntity<?> potvrdiZahtevZaOdsustvoLekaraZaKliniku(OdsustvaZaAdminaDTO odsustvaZaAdminaDTO,
                                                                            HttpSession session){
         int klinikaId = vratiIDKlinike(session);
@@ -155,6 +176,7 @@ public class OdsustvaService {
             for(OdsustvoLekara odsustvo : odsustvaLekara) {
                 if(odsustvo.getId() == odsustvaZaAdminaDTO.getIdOdsustva() && odsustvo.getLekar().getKlinika().getId() == klinikaId) {
                     odsustvo.setAktivno(false);
+                    odsustvo.setOdobren(true);
                     posaljiPozitivniMejlLekaru(odsustvaZaAdminaDTO, odsustvo.getLekar());
                     odsustvoLekaraRepository.save(odsustvo);
                     return new ResponseEntity<>("Uspesno brisanje", HttpStatus.NO_CONTENT);

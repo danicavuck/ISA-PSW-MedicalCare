@@ -8,6 +8,7 @@ import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
+import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Repository.*;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -18,8 +19,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class KlinikaService {
@@ -29,17 +33,20 @@ public class KlinikaService {
     private static AdminKlinikeRepository adminKlinikeRepository;
     private static AdminKCRepository adminKCRepository;
     private static SalaRepository salaRepository;
+    private static PregledRepository pregledRepository;
     private static Logger logger = LoggerFactory.getLogger(KlinikaService.class);
 
     @Autowired
     public KlinikaService(KlinikaRepository kRepository, LekarRepository lRepo,
-                          AdminKlinikeRepository aklinikeRepository,AdminKCRepository akcRepo,MedicinskaSestraRepository msRepo,SalaRepository sRepo) {
+                          AdminKlinikeRepository aklinikeRepository,AdminKCRepository akcRepo,
+                          MedicinskaSestraRepository msRepo,SalaRepository sRepo, PregledRepository pRepository) {
         klinikaRepository = kRepository;
         lekarRepository = lRepo;
         adminKlinikeRepository = aklinikeRepository;
         adminKCRepository = akcRepo;
         medicinskaSestraRepository = msRepo;
         salaRepository = sRepo;
+        pregledRepository = pRepository;
     }
 
 
@@ -180,5 +187,68 @@ public class KlinikaService {
         return mapper.map(sala, SalaSveDTO.class);
     }
 
+    public static ResponseEntity<?> prihodiKlinike(PrihodDTO prihodDTO, HttpSession session){
+        Klinika klinika = dobaviKlinikuIzSesije(session);
+        if(klinika != null)
+        {
+            ArrayList<Pregled> preglediKlinike = dobaviPregledeKlinike(klinika);
+            KlinikaPrihodiDTO klinikaPrihodiDTO = sumaCenaZaPeriod(preglediKlinike, prihodDTO);
+            return new ResponseEntity<>(klinikaPrihodiDTO, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
 
+    public static Klinika dobaviKlinikuIzSesije(HttpSession session){
+        AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
+        return adminKlinike.getKlinika();
+    }
+
+    public static ArrayList<Pregled> dobaviPregledeKlinike(Klinika klinika){
+        ArrayList<Pregled> pregledi = pregledRepository.findAll();
+        ArrayList<Pregled> odabraniPregledi = new ArrayList<>();
+        for(Pregled pregled : pregledi){
+            if(pregled.getSala().getKlinika().getId() == klinika.getId())
+                odabraniPregledi.add(pregled);
+        }
+        return odabraniPregledi;
+    }
+
+    public static KlinikaPrihodiDTO sumaCenaZaPeriod(ArrayList<Pregled> pregledi, PrihodDTO prihodDTO){
+        LocalDate pocetakIntervala = prihodDTO.getDatumVreme()[0];
+        LocalDate krajIntervala = prihodDTO.getDatumVreme()[1];
+        int suma = 0;
+        int brojPregleda = 0;
+        for(Pregled pregled : pregledi){
+            if((pregled.getTerminPregleda().toLocalDate().isAfter(pocetakIntervala) || pregled.getTerminPregleda().toLocalDate().isEqual(pocetakIntervala)) && (pregled.getTerminPregleda().toLocalDate().isBefore(krajIntervala) || pregled.getTerminPregleda().toLocalDate().isEqual(krajIntervala))) {
+                suma += pregled.getCena();
+                brojPregleda++;
+            }
+        }
+        return KlinikaPrihodiDTO.builder().profit(suma).brojPregleda(brojPregleda).build();
+    }
+
+    public static ResponseEntity<?> lokacijaKlinike(HttpSession session) {
+        if(session.getAttribute("role").equals("adminklinike"))
+        {
+            AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
+            Klinika klinika = adminKlinike.getKlinika();
+            KlinikaLokacijaDTO klinikaDTO =
+                    KlinikaLokacijaDTO.builder().longitude(klinika.getLongitude()).latitude(klinika.getLatitude()).build();
+            return new ResponseEntity<>(klinikaDTO, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    public static ResponseEntity<?> azurirajLokacijuKlinike(HttpSession session, KlinikaLokacijaDTO klinikaDTO){
+        AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
+        Klinika klinika = adminKlinike.getKlinika();
+        if(klinika != null)
+        {
+            klinika.setLongitude(klinikaDTO.getLongitude());
+            klinika.setLatitude(klinikaDTO.getLatitude());
+            klinikaRepository.save(klinika);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
 }
