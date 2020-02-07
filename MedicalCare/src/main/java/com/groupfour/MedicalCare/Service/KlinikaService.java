@@ -192,8 +192,8 @@ public class KlinikaService {
         if(klinika != null)
         {
             ArrayList<Pregled> preglediKlinike = dobaviPregledeKlinike(klinika);
-            int prihodZaOdredjeniPeriod = sumaCenaZaPeriod(preglediKlinike, prihodDTO);
-            return new ResponseEntity<>(prihodZaOdredjeniPeriod, HttpStatus.OK);
+            KlinikaPrihodiDTO klinikaPrihodiDTO = sumaCenaZaPeriod(preglediKlinike, prihodDTO);
+            return new ResponseEntity<>(klinikaPrihodiDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
@@ -213,16 +213,42 @@ public class KlinikaService {
         return odabraniPregledi;
     }
 
-    public static int sumaCenaZaPeriod(ArrayList<Pregled> pregledi, PrihodDTO prihodDTO){
+    public static KlinikaPrihodiDTO sumaCenaZaPeriod(ArrayList<Pregled> pregledi, PrihodDTO prihodDTO){
         LocalDate pocetakIntervala = prihodDTO.getDatumVreme()[0];
         LocalDate krajIntervala = prihodDTO.getDatumVreme()[1];
         int suma = 0;
-
+        int brojPregleda = 0;
         for(Pregled pregled : pregledi){
             if((pregled.getTerminPregleda().toLocalDate().isAfter(pocetakIntervala) || pregled.getTerminPregleda().toLocalDate().isEqual(pocetakIntervala)) && (pregled.getTerminPregleda().toLocalDate().isBefore(krajIntervala) || pregled.getTerminPregleda().toLocalDate().isEqual(krajIntervala))) {
                 suma += pregled.getCena();
+                brojPregleda++;
             }
         }
-        return suma;
+        return KlinikaPrihodiDTO.builder().profit(suma).brojPregleda(brojPregleda).build();
+    }
+
+    public static ResponseEntity<?> lokacijaKlinike(HttpSession session) {
+        if(session.getAttribute("role").equals("adminklinike"))
+        {
+            AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
+            Klinika klinika = adminKlinike.getKlinika();
+            KlinikaLokacijaDTO klinikaDTO =
+                    KlinikaLokacijaDTO.builder().longitude(klinika.getLongitude()).latitude(klinika.getLatitude()).build();
+            return new ResponseEntity<>(klinikaDTO, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    public static ResponseEntity<?> azurirajLokacijuKlinike(HttpSession session, KlinikaLokacijaDTO klinikaDTO){
+        AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
+        Klinika klinika = adminKlinike.getKlinika();
+        if(klinika != null)
+        {
+            klinika.setLongitude(klinikaDTO.getLongitude());
+            klinika.setLatitude(klinikaDTO.getLatitude());
+            klinikaRepository.save(klinika);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 }

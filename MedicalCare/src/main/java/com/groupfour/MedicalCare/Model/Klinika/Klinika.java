@@ -34,6 +34,10 @@ public class Klinika {
     private String opis;
     @Column(name = DbColumnConstants.KLINIKA_PROSECNA_OCENA)
     private float prosecnaOcena;
+    @Column(name = DbColumnConstants.KLINIKA_LONGITUDE)
+    private double longitude;
+    @Column(name = DbColumnConstants.KLINIKA_LATITUDE)
+    private double latitude;
 
     @OneToMany(mappedBy = "klinika", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("klinika")

@@ -9,7 +9,10 @@ import { MatSnackBar } from '@angular/material';
 })
 export class PrihodComponent implements OnInit {
   private dobijenOdgovor = false;
-  private profit = 0;
+  private uvid: Uvid = {
+    profit: 0,
+    brojPregleda: 0
+  };
   private prihod: Prihod = {
     datumVreme: [new Date()]
   };
@@ -28,10 +31,10 @@ export class PrihodComponent implements OnInit {
     const apiEndpoint = 'http://localhost:8080/klinika/prihodi';
     this.inkrementDatuma();
     this.http.post(apiEndpoint, this.prihod, {withCredentials: true}).subscribe(data => {
-      this.profit = data as number;
+      this.uvid = data as Uvid;
       this.dobijenOdgovor = true;
-      this.snackBar.open('Prihod klinike za odabrani period je ' + this.profit + ' RSD', 'X', {duration: 15000});
-      console.log(this.profit);
+      // tslint:disable-next-line: max-line-length
+      this.snackBar.open('Prihod klinike za odabrani period je ' + this.uvid.profit + ' RSD za ukupno ' + this.uvid.brojPregleda + ' pregleda' , 'X', {duration: 15000});
     }, err => {
       console.log('Neuspesno slanje zahteva za prihod');
     });
@@ -46,4 +49,9 @@ export class PrihodComponent implements OnInit {
 
 export interface Prihod {
   datumVreme: Array<Date>;
+}
+
+export interface Uvid {
+  profit: number;
+  brojPregleda: number;
 }

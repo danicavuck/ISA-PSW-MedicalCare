@@ -108,4 +108,21 @@ public class KlinikaController {
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
+    @GetMapping("/lokacija")
+    public ResponseEntity<?> dobaviLokacijuKlinike(HttpSession session){
+        if(authorization.hasPermisson(session, new String[] {"adminklinike"})) {
+            return KlinikaService.lokacijaKlinike(session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
+    @PutMapping("/lokacija")
+    public ResponseEntity<?> azurirajLokacijuKlinike(HttpSession session, KlinikaLokacijaDTO klinikaLokacijaDTO){
+        if(authorization.hasPermisson(session, new String[] {"adminklinike"}))
+        {
+            return KlinikaService.azurirajLokacijuKlinike(session, klinikaLokacijaDTO);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
 }

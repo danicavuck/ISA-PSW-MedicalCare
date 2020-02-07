@@ -13,10 +13,13 @@ import com.groupfour.MedicalCare.Utill.CustomEmailSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -152,6 +155,8 @@ public class OperacijaService {
         return operacijaDTO;
     }
 
+    @Transactional
+    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     public static ResponseEntity<?> azurirajOperaciju(DodavanjeSaleDTO dodavanjeSaleDTO, HttpSession session){
         AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
         Operacija operacija = operacijaRepository.findOperacijaById(dodavanjeSaleDTO.getOperacijaId());

@@ -13,11 +13,15 @@ import com.groupfour.MedicalCare.Utill.CustomEmailSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -89,6 +93,8 @@ public class OdsustvaService {
         return odabraniAdmini;
     }
 
+    @Transactional
+    @Lock(value = LockModeType.PESSIMISTIC_READ)
     public static ResponseEntity<?> vratiZahteveAdminu(HttpSession session)
     {
         AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
@@ -128,7 +134,8 @@ public class OdsustvaService {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-
+    @Transactional
+    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     public static ResponseEntity<?> obrisiZahtevZaOdsustvoLekaraZaKliniku(OdsustvaZaAdminaDTO odsustvaZaAdminaDTO,
                                                                           HttpSession session) {
         int klinikaId = vratiIDKlinike(session);
@@ -158,6 +165,8 @@ public class OdsustvaService {
         customEmailSender.sendMail(new String[]{lekar.getEmail()}, "Odbijen zahtev za odsustvom", formatiranaPoruka);
     }
 
+    @Transactional
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public static ResponseEntity<?> potvrdiZahtevZaOdsustvoLekaraZaKliniku(OdsustvaZaAdminaDTO odsustvaZaAdminaDTO,
                                                                            HttpSession session){
         int klinikaId = vratiIDKlinike(session);
