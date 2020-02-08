@@ -12,6 +12,8 @@ import { Component, OnInit, Injectable } from '@angular/core';
 export class IzvestajServiceComponent implements OnInit {
 private pacijentID : number;
 private lekarID : number;
+private tipPregleda : string;
+private izvestajId : number;
 
   constructor() { }
 
@@ -30,7 +32,17 @@ private lekarID : number;
   public getLekarID() {
     return this.lekarID;
   }
-
-
+  public getTip(){
+    return this.tipPregleda;
+  }
+  public setTip(tipPregle : string){
+    this.tipPregleda = tipPregle;
+  }
+  public getIzvestajId(){
+    return this.izvestajId;
+  }
+  public setIzvestajId(id:number){
+    this.izvestajId = id;
+  }
 
 }

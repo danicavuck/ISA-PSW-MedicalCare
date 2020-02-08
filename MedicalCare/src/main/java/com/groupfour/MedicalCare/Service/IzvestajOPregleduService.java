@@ -1,5 +1,7 @@
 package com.groupfour.MedicalCare.Service;
 
+import com.groupfour.MedicalCare.Model.DTO.IzvestajDTO;
+import com.groupfour.MedicalCare.Model.DTO.IzvestajIzmenaDTO;
 import com.groupfour.MedicalCare.Model.DTO.IzvestajOPregleduDTO;
 import com.groupfour.MedicalCare.Model.Dokumenti.*;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
@@ -44,6 +46,8 @@ public class IzvestajOPregleduService {
 
     public ResponseEntity<?> dodajIzvestajOPregledu(IzvestajOPregleduDTO izvestajOPregleduDTO, HttpSession session) {
         Lekar lekar = lekarRepository.findLekarById((int) session.getAttribute("id"));
+        IzvestajOPregleduDTO izvestajPreg = izvestajOPregleduDTO;
+        System.out.println(izvestajPreg.getIdPacijent() +"lalalllalalal");
         Pacijent pacijent = pacijentRepository.findPacijentById(izvestajOPregleduDTO.getIdPacijent());
         Karton karton = kartonRepository.findKartonById(pacijent.getZdravstveniKarton().getId());
         int[] id_lekova = izvestajOPregleduDTO.getIdLek();
@@ -65,9 +69,9 @@ public class IzvestajOPregleduService {
                 recepti.add(r);
                 receptRepository.save(r);
             }
-            System.out.println(izvestajOPregleduDTO.getInformacijeOPregledu());
+
             SifarnikDijagnoza dijagnoza = sifarnikDijagnozaRepository.findSifarnikDijagnozaById(izvestajOPregleduDTO.getIdDijagnoza());
-            IzvestajOPregledu izvestaj = IzvestajOPregledu.builder().aktivan(true).informacijeOPregledu(izvestajOPregleduDTO.getInformacijeOPregledu()).sifarnikDijagnoza(dijagnoza).pacijentId(pacijent.getId()).recepti(recepti).lekar(lekar).build();
+            IzvestajOPregledu izvestaj = IzvestajOPregledu.builder().aktivan(true).informacijeOPregledu(izvestajOPregleduDTO.getInformacije()).sifarnikDijagnoza(dijagnoza).pacijentId(pacijent.getId()).recepti(recepti).lekar(lekar).build();
             izvestajOPregleduRepository.save(izvestaj);
             //izmene se upisuju u zdravstveni karton pacijenta
             karton.dodajDijagnozu(dijagnoza);
@@ -80,8 +84,70 @@ public class IzvestajOPregleduService {
         return new ResponseEntity<>("Nije nadjen pacijent!", HttpStatus.FORBIDDEN);
     }
 
+    public static ResponseEntity<?> azurirajIzvestaj(IzvestajIzmenaDTO izvestajIzmenaDTO, HttpSession session){
+        Lekar lekar = lekarRepository.findLekarById((int) session.getAttribute("id"));
+
+        if (lekar == null) {
+            logger.error("Nije pronadjen lekar");
+            return new ResponseEntity<>("Nije nadjen lekar", HttpStatus.UNAUTHORIZED);
+        }
+
+        IzvestajOPregledu izvestajOPregledu = izvestajOPregleduRepository.findIzvestajOPregleduById(izvestajIzmenaDTO.getId());
+        if(izvestajOPregledu != null)
+        {
+          SifarnikDijagnoza dijagnoza = sifarnikDijagnozaRepository.findSifarnikDijagnozaById(izvestajIzmenaDTO.getIdDijagnoza());
+          Set<Recept> recepti = new HashSet<Recept>();
+          for(int i : izvestajIzmenaDTO.getIdLek()){
+             SifarnikLekova lek = sifarnikLekovaRepository.findSifarnikLekovaById(i);
+             Recept recept = Recept.builder().aktivan(true).idLeka(lek.getId()).kodLeka(lek.getKodLeka()).nazivLeka(lek.getNazivLeka()).lekar(lekar).build();
+             receptRepository.save(recept);
+             recepti.add(recept);
+
+          }
+
+          izvestajOPregledu.setInformacijeOPregledu(izvestajIzmenaDTO.getInformacijeOPregledu());
+          izvestajOPregledu.setSifarnikDijagnoza(dijagnoza);
+          izvestajOPregledu.setRecepti(recepti);
+
+          izvestajOPregleduRepository.save(izvestajOPregledu);
+          return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+
+    public static ResponseEntity<?> dobaviSveIzvestajeZaLekara(HttpSession session) {
+        Lekar lekar = lekarRepository.findLekarById((int) session.getAttribute("id"));
+
+        if (lekar == null) {
+            logger.error("Nije pronadjen lekar");
+            return new ResponseEntity<>("Nije nadjen lekar", HttpStatus.UNAUTHORIZED);
+        }
+
+        List<IzvestajOPregledu> izvestaji = izvestajOPregleduRepository.findAll();
+        ArrayList<IzvestajDTO> izvestajiDTO = new ArrayList<>();
+
+        if(izvestaji != null){
+            for (IzvestajOPregledu i : izvestaji) {
+                if(i.getLekar().getId() == lekar.getId() && i.isAktivan()){
+                    izvestajiDTO.add(mapirajIzvestajDTO(i));
+                }
+
+            }
+            return new ResponseEntity<>(izvestajiDTO, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    public static IzvestajDTO mapirajIzvestajDTO(IzvestajOPregledu izvestajOPregledu) {
+        Pacijent pacijent = pacijentRepository.findPacijentById(izvestajOPregledu.getPacijentId());
+
+        IzvestajDTO izvestajDTO = IzvestajDTO.builder().id(izvestajOPregledu.getId()).idPacijent(izvestajOPregledu.getPacijentId()).imePacijenta(pacijent.getIme()).prezimePacijenta(pacijent.getPrezime()).build();
+            return izvestajDTO;
+        }
+
+    }
 
 
 
 
-}

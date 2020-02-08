@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Controllers;
 
+import com.groupfour.MedicalCare.Model.DTO.IzvestajIzmenaDTO;
 import com.groupfour.MedicalCare.Model.DTO.IzvestajOPregleduDTO;
 import com.groupfour.MedicalCare.Model.Dokumenti.IzvestajOPregledu;
 import com.groupfour.MedicalCare.Service.IzvestajOPregleduService;
@@ -30,21 +31,30 @@ public class IzvestajOPregleduController {
     public ResponseEntity<?> dodavanjeIzvestaja(@RequestBody IzvestajOPregleduDTO izvestajOPregleduDTO, HttpSession session){
         if(authorization.hasPermisson(session, roles))
         {
-            System.out.println(izvestajOPregleduDTO.getInformacijeOPregledu());
+
             return izvestajOPregleduService.dodajIzvestajOPregledu(izvestajOPregleduDTO,session);
         }
         return new ResponseEntity<>("null", HttpStatus.UNAUTHORIZED);
     }
 
-//    @GetMapping("/izvestaj")
-//    public ResponseEntity<?> getIzvestaj(HttpSession session) {
-//        if(authorization.hasPermisson(session, roles))
-//        {
-//            //IzvestajOPregledu izvestaj = IzvestajOPregleduService.getIzvestaj(session);
-//            return new ResponseEntity<>(izvestaj, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-//    }
+    @PutMapping
+    public ResponseEntity<?> azurirajPodatkeSale(@RequestBody IzvestajIzmenaDTO izvestajIzmenaDTO, HttpSession session){
+        if(authorization.hasPermisson(session, roles))
+        {
+            return IzvestajOPregleduService.azurirajIzvestaj(izvestajIzmenaDTO, session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getIzvestaj(HttpSession session) {
+        if(authorization.hasPermisson(session, roles))
+        {
+
+            return IzvestajOPregleduService.dobaviSveIzvestajeZaLekara(session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
 
 
 }

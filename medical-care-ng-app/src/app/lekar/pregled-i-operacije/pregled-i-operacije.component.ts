@@ -11,13 +11,18 @@ import { IzvestajServiceComponent } from 'src/app/services/izvestaj-service/izve
 })
 export class PregledIOperacijeComponent implements OnInit {
   private preglediColumns: string[] = ['Broj Sale', 'Tip pregleda', 'Pocetak pregleda', 'Kraj pregleda', 'Lekar', 'Cena', 'Akcije'];
-  private preglediDataSource;
-
+  private preglediDataSource; 
+  private izvestajiColumns : string[] = ['Ime pacijenta','Prezime pacijenta','Akcije']
+  private izvestajiDataSource;
+  private izvestaji : Array<IzvestajDTO>;
   private pregledi: Array<PregledDTO>;
+  @ViewChild(MatSort, {static: false}) izvestajiSort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) izvestajiPaginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) preglediSort: MatSort;
   @ViewChild(MatPaginator, {static: false}) preglediPaginator: MatPaginator;
   constructor(private http: HttpClient, private router:Router, private service:IzvestajServiceComponent) { 
     this.getPregledeInitialy();
+    this.getIzvestajeInitialy();
   }
 
   ngOnInit() {
@@ -37,27 +42,38 @@ export class PregledIOperacijeComponent implements OnInit {
       });
   }
   async getIzvestajeInitialy() {
-    const apiEndpoint = 'http://localhost:8080/izvestaji';
+    const apiEndpoint = 'http://localhost:8080/izvestaj';
     this.http.get(apiEndpoint,
       {responseType: 'json', withCredentials: true}).subscribe((data) => {
-        this.pregledi = data as Array<PregledDTO>;
-        this.preglediDataSource = new MatTableDataSource(this.pregledi);
-        this.preglediDataSource.sort = this.preglediSort;
-        this.preglediDataSource.paginator = this.preglediPaginator;
+        this.izvestaji = data as Array<IzvestajDTO>;
+        console.log(data)
+        this.izvestajiDataSource = new MatTableDataSource(this.izvestaji);
+        this.izvestajiDataSource.sort = this.izvestajiSort;
+        //this.izvestajiDataSource.paginator = this.izvestajiPaginator;
       }, err => {
-        console.log('Greska pri pribavljanju pregleda! ');
+        console.log('Greska pri pribavljanju izvestaja! ');
         console.log(err);
       });
   }
 
   async zapocniPregled(pregled:PregledDTO) {
     this.service.setLekarID(pregled.lekar);
-    console.log(pregled.pacijent)
+    console.log(pregled.pacijent);
+    this.service.setTip(pregled.tipPregleda);
     this.service.setPacijentID(pregled.pacijent)
     this.router.navigateByUrl('/lekar/izvestaj')
   }
 
+  async editIzvestaj(izvestaj : IzvestajDTO){
+    this.service.setIzvestajId(izvestaj.id);
+    this.router.navigateByUrl('lekar/zakazivanje/izmenaIzvestaja')
+  }
+
+
 }
+
+
+
 export interface PregledDTO {
   pacijent : number;
   datumVreme: Date;
@@ -70,4 +86,12 @@ export interface PregledDTO {
   lekarImeIPrezime: string;
   pocetakTermina: string;
   krajTermina: string;
+}
+
+
+export interface IzvestajDTO{
+  id : number;
+  imePacijenta : string;
+  prezimePacijenta : string;
+  idPacijent : number;
 }

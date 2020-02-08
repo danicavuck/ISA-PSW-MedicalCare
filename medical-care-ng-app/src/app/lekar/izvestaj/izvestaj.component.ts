@@ -10,7 +10,7 @@ import { IzvestajServiceComponent } from 'src/app/services/izvestaj-service/izve
 })
 export class IzvestajComponent implements OnInit {
   private model : IzvestajOPregleduDTO = {
-    informacijeOpregledu : '',
+    informacije : '',
     idLekar : 0,
     idPacijent : 0,
     idDijagnoza: 0,
@@ -38,7 +38,7 @@ export class IzvestajComponent implements OnInit {
       this.http.post(apiEndpoint, this.model,
         {responseType: 'text',withCredentials:true}).subscribe( data => {
           console.log('Uspesno dodavanje izvestaja o pregledu');
-          
+          console.log(this.model);
         }, error => {
           this.errorStatus = '';
           this.errorStatus = 'Nije validno popunjena forma';
@@ -105,7 +105,7 @@ export interface DijagnozaDTO{
 }
 
 export interface IzvestajOPregleduDTO{
-  informacijeOpregledu : string;
+  informacije : string;
   idLekar : number;
   idPacijent : number;
   idDijagnoza : number;

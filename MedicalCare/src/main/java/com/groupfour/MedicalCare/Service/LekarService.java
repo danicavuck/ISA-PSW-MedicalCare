@@ -81,6 +81,7 @@ public class LekarService {
         return modelMapper.map(lekar, LekarDTO.class);
     }
 
+
     public static ResponseEntity<?> brisanjeLekara(LekarDTO lekarDTO){
         Lekar lekar = lekarRepository.findLekarById(lekarDTO.getId());
         if(lekar != null){

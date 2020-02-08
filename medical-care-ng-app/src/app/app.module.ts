@@ -74,6 +74,7 @@ import { SestraPacijentServiceComponent } from './services/sestra-pacijent-servi
 import { SestraPacijentComponent } from './medicinska-sestra/sestra-pacijent/sestra-pacijent.component';
 import { IzvestajServiceComponent } from './services/izvestaj-service/izvestaj-service.component';
 import { IzvestajComponent } from './lekar/izvestaj/izvestaj.component';
+import { IzmenaIzvestajaComponent } from './lekar/izvestaj/izmena-izvestaja/izmena-izvestaja.component';
 
 
 
@@ -100,6 +101,7 @@ const appRouts: Routes = [
   { path: 'lekar', component: LekarComponent },
   { path: 'lekar/dodavanjepregleda', component : DodavanjePregledaComponent},
   { path: 'lekar/zakazivanje', component : PregledIOperacijeComponent},
+  { path: 'lekar/zakazivanje/izmenaIzvestaja',component : IzmenaIzvestajaComponent},
   { path: 'lekar/operacije', component : DodavanjeOperacijaComponent},
   { path: 'lekar/odsustva', component : OdsustvaIOdmorComponent},
   { path: 'lekar/kalendar', component : LekarCalendarComponent},
@@ -186,7 +188,8 @@ const appRouts: Routes = [
     SestraPacijentServiceComponent,
     SestraPacijentComponent,
     IzvestajServiceComponent,
-    IzvestajComponent
+    IzvestajComponent,
+    IzmenaIzvestajaComponent
   ],
   imports: [
     BrowserModule,

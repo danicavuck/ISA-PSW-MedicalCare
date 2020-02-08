@@ -59,29 +59,36 @@
           <div>
             <mat-divider style="margin: 30px 0 10px 0;"></mat-divider>
             <div class="mat-h1">Izvestaji o pregledima</div>
-            <table mat-table [dataSource]="sale" class="mat-elevation-z8">
-                <ng-container matColumnDef="nazivSale">
-                    <mat-header-cell *matHeaderCellDef>Naziv Sale</mat-header-cell>
-                    <mat-cell *matCellDef="let sala"> {{sala.nazivSale}} </mat-cell>
+            <table mat-table [dataSource]="izvestajiDataSource" class="mat-elevation-z8">
+
+                <ng-container matColumnDef="Ime pacijenta">
+                    <mat-header-cell *matHeaderCellDef>Ime pacijenta</mat-header-cell>
+                    <mat-cell *matCellDef="let izvestaj"> {{izvestaj.imePacijenta}} </mat-cell>
                 </ng-container>
+
+                <ng-container matColumnDef="Prezime pacijenta">
+                    <mat-header-cell *matHeaderCellDef>Prezime pacijenta</mat-header-cell>
+                    <mat-cell *matCellDef="let izvestaj"> {{izvestaj.prezimePacijenta}} </mat-cell>
+                </ng-container>
+
+                <!-- <ng-container matColumnDef="Tip Pregleda">
+                    <mat-header-cell *matHeaderCellDef>Tip Pregleda</mat-header-cell>
+                    <mat-cell *matCellDef="let izvestaj"> {{izvestaj.tipPregleda}} </mat-cell>
+                </ng-container>
+ -->
 
                 <ng-container matColumnDef="Akcije">
                     <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
-                    <mat-cell *matCellDef="let sala" style="padding-left: 10%;">
-                        <button mat-mini-fab color="primary" matTooltip="Kalendar zauzeca" style="margin-right: 5px;" [routerLink]="['/adminklinike/sala/calendar']" (click)="editSala(sala)">
-                            <i class="fa fa-info" aria-hidden="true"></i>
-                        </button>
-                        <button mat-mini-fab color="primary" (click)="editSala(sala)" matTooltip="Izmena sale" style="margin-right: 2px;" [routerLink]="['/adminklinike/sala']">
+                    <mat-cell *matCellDef="let izvestaj" style="padding-left: 10%;">
+                        <button mat-mini-fab color="primary" (click)="editIzvestaj(izvestaj)" matTooltip="Izmena izvestaja" style="margin-right: 2px;" [routerLink]="['/adminklinike/sala']">
                             <i class="fa fa-edit" aria-hidden="true"></i>
                         </button>
-                        <button mat-mini-fab color="warn" (click)="openDialog(sala)" matTooltip="Obrisi salu">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>
-                    </mat-cell>
+                      </mat-cell>
                 </ng-container>
-                <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+                <mat-header-row *matHeaderRowDef="izvestajiColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: izvestajiColumns;"></mat-row>
             </table>
+            <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator>
         </div>
     </div>
 </body>
