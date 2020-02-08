@@ -143,6 +143,19 @@ public class MedicinskaSestraService {
         }
         return false;
     }
+
+    public static ResponseEntity<?> detaljiOMedicinskojSestri(HttpSession session){
+        MedicinskaSestra medicinskaSestra =
+                medicinskaSestraRepository.findMedicinskaSestraById((int) session.getAttribute("id"));
+        if(medicinskaSestra != null)
+        {
+            MedSestraIzmenaPodatakaDTO medSestraDTO =
+                    MedSestraIzmenaPodatakaDTO.builder().ime(medicinskaSestra.getIme()).prezime(medicinskaSestra.getPrezime()).email(medicinskaSestra.getEmail()).build();
+
+            return new ResponseEntity<>(medSestraDTO, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
 }
 
 

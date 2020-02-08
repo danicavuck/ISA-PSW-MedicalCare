@@ -16,4 +16,5 @@ public class IzvestajOPregleduDTO {
     private int idPacijent;
     private int idDijagnoza;
     private int[] idLek;
+    private int idPregled;
 }

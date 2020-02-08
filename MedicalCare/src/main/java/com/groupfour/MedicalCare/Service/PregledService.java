@@ -18,14 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -198,7 +193,7 @@ public class PregledService {
             preglediNaCekanjuRepository.save(pregledNaCekanju);
 
             try{
-                posaljiMejlAdminu(lekar, pregledNaCekanju);
+                posaljiMejlAdminima(lekar, pregledNaCekanju);
             } catch (MailException exception){
                 logger.info("Neuspesno slanje mejla:" + exception.getMessage());
             }
@@ -231,18 +226,19 @@ public class PregledService {
     }
 
     @Async
-    public static void posaljiMejlAdminu(Lekar lekar, PreglediNaCekanju pregledNaCekanju) throws MailException {
-        AdminKlinike adminKlinike = nadjiAdminaKlinikePrekoKlinike(lekar.getKlinika());
-        if(adminKlinike == null)
-        {
-            logger.error("Nije pronadjen admin klinike preko klinike");
-            return;
-        }
+    public static void posaljiMejlAdminima(Lekar lekar, PreglediNaCekanju pregledNaCekanju) throws MailException {
+        ArrayList<AdminKlinike> adminiKlinike = nadjiAdminaKlinikePrekoKlinike(lekar.getKlinika());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
         String message =
                 "<h3>Sala za pregled</h3><p>Postovani,</p><p>Lekar " + lekar.getIme() + " " + lekar.getPrezime() + " " +
                         "zeli da zakaze pregled pacijentu za datum " + formatter.format(pregledNaCekanju.getTerminPregleda()) + "h</p><p>Molimo Vas da dodelite salu za pregled</p></br><p>Srdacan pozdrav,</p></p>Medical Care</p>";
-        String[] adminEmail = {adminKlinike.getEmail()};
+        String[] adminEmail = new String[adminiKlinike.size()];
+        int i = 0;
+        for(AdminKlinike adminKlinike : adminiKlinike)
+        {
+            adminEmail[i] = adminKlinike.getEmail();
+            i++;
+        }
         customEmailSender.sendMail(adminEmail, "Novi zahtev za pregled", message);
         logger.info("Sending email from: " +  emailAddress);
     }
@@ -261,15 +257,16 @@ public class PregledService {
         return new ResponseEntity<>(pregledDTOS, HttpStatus.NOT_FOUND);
     }
 
-    public static AdminKlinike nadjiAdminaKlinikePrekoKlinike(Klinika klinika)
+    public static ArrayList<AdminKlinike> nadjiAdminaKlinikePrekoKlinike(Klinika klinika)
     {
         ArrayList<AdminKlinike> adminiKlinike = adminKlinikeRepository.findAll();
+        ArrayList<AdminKlinike> odabraniAdmini = new ArrayList<>();
         for(AdminKlinike admin : adminiKlinike)
         {
             if(admin.getKlinika().getId() == klinika.getId())
-                return admin;
+                odabraniAdmini.add(admin);
         }
-        return null;
+        return odabraniAdmini;
     }
 
     public static ResponseEntity<?> obrisiPregled(PregledDTO pregledDTO){

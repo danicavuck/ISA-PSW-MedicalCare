@@ -59,7 +59,6 @@ export class PregledIOperacijeComponent implements OnInit {
   async zapocniPregled(pregled:PregledDTO) {
     this.service.setLekarID(pregled.lekar);
     console.log(pregled.pacijent);
-    this.service.setTip(pregled.tipPregleda);
     this.service.setPacijentID(pregled.pacijent)
     this.router.navigateByUrl('/lekar/izvestaj')
   }

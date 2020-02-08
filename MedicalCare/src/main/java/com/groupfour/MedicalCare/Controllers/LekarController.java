@@ -64,10 +64,19 @@ public class LekarController {
     }
 
     @GetMapping(value = "/zauzece")
-    public ResponseEntity<?> dobaviPregledeIOperacijeZaRadniKalendar(HttpSession session){
+    public ResponseEntity<?> informacijeZaRadniKalendar(HttpSession session){
         if(authorization.hasPermisson(session, new String[] {"lekar"}))
         {
             return LekarService.preglediIOperacijeZaRadniKalendar(session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
+    @GetMapping(value = "/detalji")
+    public ResponseEntity<?> detaljiOLekaru(HttpSession session){
+        if(authorization.hasPermisson(session, new String[] {"lekar"}))
+        {
+            return LekarService.detaljiOLekaru(session);
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }

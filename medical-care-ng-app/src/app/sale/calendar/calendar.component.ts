@@ -45,6 +45,7 @@ export class CalendarComponent implements OnInit {
 
 export interface PreglediOperacije {
   start: Date;
+  end: Date;
   title: string;
 }
 

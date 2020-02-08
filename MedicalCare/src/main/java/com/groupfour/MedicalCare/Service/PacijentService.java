@@ -219,19 +219,33 @@ public class PacijentService{
     }
 
     // I ovde vazi da se ne proverava da li je lekar.klinika.id == pacijent.klinika.id
-    public static ResponseEntity<?> dobaviPacijentaZaImeIPrezime(String imeIPrezime) {
+    public static ResponseEntity<?> dobaviPacijentaZaImeIPrezime(String kriterijum) {
         ArrayList<Pacijent> pacijenti = new ArrayList<>();
-        imeIPrezime = imeIPrezime.trim();
-        String ime = "", prezime = "";
-        String[] ime_prezime = imeIPrezime.split(" ");
-        ime = ime_prezime[0];
-        prezime = ime_prezime[1];
+        kriterijum = kriterijum.trim();
+        try
+        {
+            String ime = "", prezime = "";
+            String[] ime_prezime = kriterijum.split(" ");
+            ime = ime_prezime[0];
+            prezime = ime_prezime[1];
 
-        pacijenti = pacijentRepository.findPacijentByImeAndPrezime(ime, prezime);
-        if(pacijenti.size() != 0) {
+            pacijenti = pacijentRepository.findPacijentByImeAndPrezime(ime, prezime);
+            if(pacijenti.size() != 0) {
+                return new ResponseEntity<>(pacijenti, HttpStatus.OK);
+            }
+        } catch (Exception e)
+        {
+            pacijenti = pronadjiPacijentaPoBrojuOsiguranja(kriterijum);
             return new ResponseEntity<>(pacijenti, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    public static ArrayList<Pacijent> pronadjiPacijentaPoBrojuOsiguranja(String brojOsiguranja) {
+        ArrayList<Pacijent> pacijenti = new ArrayList<>();
+        Pacijent pacijent = pacijentRepository.findPacijentByBrojOsiguranja(brojOsiguranja);
+        pacijenti.add(pacijent);
+        return pacijenti;
     }
 }

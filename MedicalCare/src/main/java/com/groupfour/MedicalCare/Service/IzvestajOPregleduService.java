@@ -31,16 +31,18 @@ public class IzvestajOPregleduService {
     private static PacijentRepository pacijentRepository;
     private static KartonRepository kartonRepository;
     private static ReceptRepository receptRepository;
+    private static PregledRepository pregledRepository;
     private static Logger logger = LoggerFactory.getLogger(Lekar.class);
 
     @Autowired
-    public IzvestajOPregleduService(SifarnikDijagnozaRepository sdRepo,SifarnikLekovaRepository slRepo,LekarRepository lRepo,PacijentRepository pRepo,KartonRepository kRepo,IzvestajOPregleduRepository izRepo,ReceptRepository receptRepo){
+    public IzvestajOPregleduService(SifarnikDijagnozaRepository sdRepo,PregledRepository pregRepo,SifarnikLekovaRepository slRepo,LekarRepository lRepo,PacijentRepository pRepo,KartonRepository kRepo,IzvestajOPregleduRepository izRepo,ReceptRepository receptRepo){
         sifarnikDijagnozaRepository = sdRepo;
         sifarnikLekovaRepository = slRepo;
         lekarRepository = lRepo;
         pacijentRepository = pRepo;
         kartonRepository = kRepo;
         izvestajOPregleduRepository = izRepo;
+        pregledRepository = pregRepo;
         receptRepository = receptRepo;
     }
 
@@ -73,6 +75,7 @@ public class IzvestajOPregleduService {
             SifarnikDijagnoza dijagnoza = sifarnikDijagnozaRepository.findSifarnikDijagnozaById(izvestajOPregleduDTO.getIdDijagnoza());
             IzvestajOPregledu izvestaj = IzvestajOPregledu.builder().aktivan(true).informacijeOPregledu(izvestajOPregleduDTO.getInformacije()).sifarnikDijagnoza(dijagnoza).pacijentId(pacijent.getId()).recepti(recepti).lekar(lekar).build();
             izvestajOPregleduRepository.save(izvestaj);
+
             //izmene se upisuju u zdravstveni karton pacijenta
             karton.dodajDijagnozu(dijagnoza);
             karton.dodajIzvestaj(izvestaj);

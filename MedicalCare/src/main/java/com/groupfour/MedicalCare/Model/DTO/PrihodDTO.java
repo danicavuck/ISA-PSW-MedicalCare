@@ -3,7 +3,7 @@ package com.groupfour.MedicalCare.Model.DTO;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Component
 @Getter
@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @ToString
-public class LekarKalendarDTO {
-    private LocalDateTime start;
-    private LocalDateTime end;
-    private String title;
+public class PrihodDTO {
+    private LocalDate[] datumVreme;
 }

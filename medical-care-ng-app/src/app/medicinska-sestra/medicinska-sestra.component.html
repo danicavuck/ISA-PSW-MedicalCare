@@ -17,7 +17,7 @@
       <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['svirecepti']">Recepti</a></span>
       <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/medsestra/detaljnije']"><span> <i class="fa fa-user" aria-hidden="true"></i></span> </a></span>
 
-      
+
     </div>
   </mat-toolbar>
   <h2 class="mat-display-1">Pacijenti klinike</h2>
@@ -60,7 +60,7 @@
     <ng-container matColumnDef="Akcije">
         <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
         <mat-cell *matCellDef="let pacijent" style="padding-left: 10%;">
-            <button mat-mini-fab color="primary" (click)="onDetaljnije(pacijent)" routerLink="/medsestra/pacijent" matTooltip="Vise informacija o pacijentu">
+            <button mat-mini-fab color="primary" (click)="onDetaljnije(pacijent)" routerLink="/lekar/pacijent" matTooltip="Vise informacija o pacijentu">
                 <i class="fa fa-info" aria-hidden="true"></i>
             </button>
         </mat-cell>
@@ -69,8 +69,6 @@
     <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
 </table>
 <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator> 
-<button mat-raised-button color='primary' class="pull-left" style="margin: 0 0 30px 20px;" [routerLink]="['/login']" (click)="odjaviSe()">Odjava</button>
-
 </div>
 </body>
 </html>

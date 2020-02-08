@@ -73,10 +73,10 @@ export class SaleComponent implements OnInit {
     };
     const apiEndpoint = 'http://localhost:8080/sale';
     this.http.delete(apiEndpoint, options).subscribe((data) => {
-      console.log('Uspenso brisanje klinike');
+      this.snackBar.open('Uspesno obrisana sala', 'X', {duration: 2000});
       this.getSaleInitialy();
     }, err => {
-      console.log(err);
+      this.snackBar.open('Salu nije moguce obrisati ako postoje zakazani pregledi', 'X', {duration: 7000});
     });
   }
 
@@ -86,7 +86,6 @@ export class SaleComponent implements OnInit {
     odgovor.afterClosed().subscribe(result => {
       if (result === 'true') {
         this.obrisiSalu(sala);
-        this.snackBar.open('Sala izbrisana', 'X', {duration: 2000});
       }
     });
 

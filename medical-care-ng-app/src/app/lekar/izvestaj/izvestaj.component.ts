@@ -14,7 +14,8 @@ export class IzvestajComponent implements OnInit {
     idLekar : 0,
     idPacijent : 0,
     idDijagnoza: 0,
-    idLek : []
+    idLek : [],
+
 
   }
 
@@ -110,6 +111,6 @@ export interface IzvestajOPregleduDTO{
   idPacijent : number;
   idDijagnoza : number;
   idLek : Array<number>;
-
+ 
 }
 

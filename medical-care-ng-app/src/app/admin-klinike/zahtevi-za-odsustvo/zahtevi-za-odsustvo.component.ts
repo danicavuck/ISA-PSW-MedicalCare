@@ -40,7 +40,7 @@ export class ZahteviZaOdsustvoComponent implements OnInit {
     const apiEndpoint = 'http://localhost:8080/odsustva/odobravanje';
     this.http.post(apiEndpoint, zahtev, {withCredentials: true}).subscribe(data => {
       console.log('Zahtev odobren');
-      this.ngOnInit();
+      this.getZahteveInitially();
     }, err => {
       console.log('Neuspeno odobravanje');
     });

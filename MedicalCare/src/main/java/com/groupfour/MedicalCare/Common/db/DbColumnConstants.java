@@ -1,5 +1,7 @@
 package com.groupfour.MedicalCare.Common.db;
 
+import javax.persistence.Column;
+
 public final class DbColumnConstants {
     // pacijent
     // karton se dodaje iz pacijenta, ne obratno
@@ -47,6 +49,8 @@ public final class DbColumnConstants {
     public static final String KLINIKA_ADRESA = "adresa";
     public static final String KLINIKA_OPIS = "opis";
     public static final String KLINIKA_PROSECNA_OCENA = "prosecna_ocena";
+    public static final String KLINIKA_LONGITUDE = "longitude";
+    public static final String KLINIKA_LATITUDE = "latitude";
 
     // Lekar
     // Recept se dodaje iz lekara
