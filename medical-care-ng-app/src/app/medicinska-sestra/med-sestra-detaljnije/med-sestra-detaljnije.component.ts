@@ -12,7 +12,7 @@ export class MedSestraDetaljnijeComponent implements OnInit {
     prezime: '',
     email: '',
     staraLozinka: '',
-    novaLozinka: ''
+    novaLozinka: ""
   };
   constructor(private http: HttpClient) {
     this.dobavljanjePodataka();
@@ -36,6 +36,7 @@ export class MedSestraDetaljnijeComponent implements OnInit {
       console.log('Uspesno izmenjeni podaci');
     }, err => {
       console.log('Neuspesno izmenjeni podaci');
+      console.log(this.model)
     });
   }
 }

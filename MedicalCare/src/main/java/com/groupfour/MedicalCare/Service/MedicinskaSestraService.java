@@ -128,6 +128,7 @@ public class MedicinskaSestraService {
             if(!medSestraIzmenaPodatakaDTO.getPrezime().equals(""))
                 medicinskaSestra.setPrezime(medSestraIzmenaPodatakaDTO.getPrezime());
             if(trebaIzmenitiLozinku(medicinskaSestra, medSestraIzmenaPodatakaDTO))
+                System.out.println("doslo");
                 medicinskaSestra.setLozinka(PasswordCheck.hash(medSestraIzmenaPodatakaDTO.getNovaLozinka()));
 
             medicinskaSestraRepository.save(medicinskaSestra);

@@ -37,7 +37,7 @@ public class ReceptService {
         lekarRepository = lRepo;
     }
 
-    public ResponseEntity<?> getAllActive(HttpSession session) {
+    public List getAllActive(HttpSession session) {
         MedicinskaSestra medicinskaSestra = medicinskaSestraRepository.findMedicinskaSestraById((int) session.getAttribute("id"));
 
         if(medicinskaSestra == null ){
@@ -50,12 +50,13 @@ public class ReceptService {
 
         for (int i = 0; i < all.size(); i++) {
             int idKlinike = all.get(i).getLekar().getKlinika().getId();
-            if (all.get(i).isAktivan() && !all.get(i).isOvereno() && medicinskaSestra.getKlinika().getId() == idKlinike){
+
+            if (all.get(i).isAktivan() && !all.get(i).isOvereno() &&  medicinskaSestra.getKlinika().getId() == idKlinike){
                 temp.add(mapiranjeRecepta(all.get(i)));
             }
         }
 
-        return new ResponseEntity<>(temp, HttpStatus.OK);
+        return temp;
 
     }
 

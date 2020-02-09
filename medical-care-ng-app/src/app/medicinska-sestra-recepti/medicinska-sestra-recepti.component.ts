@@ -33,8 +33,7 @@ export class MedicinskaSestraReceptiComponent implements OnInit {
         this.recepti = data as Array<ReceptDTO>;
         this.receptiDataSource = new MatTableDataSource(this.recepti);
         this.receptiDataSource.sort = this.receptiSort;
-        console.log(this.recepti)
-        //this.receptiDataSource.paginator = this.receptiPaginator;
+        this.receptiDataSource.paginator = this.receptiPaginator;
       }, err => {
         console.log('Greska pri pribavljanju recepata! ');
         console.log(err);
@@ -43,10 +42,8 @@ export class MedicinskaSestraReceptiComponent implements OnInit {
   
   async overiRecept(model:ReceptDTO){
     const url = 'http://localhost:8080/medsestra/overiRecept ';
-    
-    console.log('prihvacen')
-    
-    
+
+        
     this.http.put(url,model.id,{withCredentials : true})
     .subscribe((data) => {
       this.ngOnInit();
