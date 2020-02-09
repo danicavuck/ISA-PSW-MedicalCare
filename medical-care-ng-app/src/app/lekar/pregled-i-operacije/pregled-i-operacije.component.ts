@@ -12,7 +12,7 @@ import { IzvestajServiceComponent } from 'src/app/services/izvestaj-service/izve
 export class PregledIOperacijeComponent implements OnInit {
   private preglediColumns: string[] = ['Broj Sale', 'Tip pregleda', 'Pocetak pregleda', 'Kraj pregleda', 'Lekar', 'Cena', 'Akcije'];
   private preglediDataSource; 
-  private izvestajiColumns : string[] = ['Ime pacijenta','Prezime pacijenta','Akcije']
+  private izvestajiColumns : string[] = ['Ime pacijenta','Prezime pacijenta','Email pacijenta','Akcije']
   private izvestajiDataSource;
   private izvestaji : Array<IzvestajDTO>;
   private pregledi: Array<PregledDTO>;
@@ -22,7 +22,7 @@ export class PregledIOperacijeComponent implements OnInit {
   @ViewChild(MatPaginator, {static: false}) preglediPaginator: MatPaginator;
   constructor(private http: HttpClient, private router:Router, private service:IzvestajServiceComponent) { 
     this.getPregledeInitialy();
-    this.getIzvestajeInitialy();
+    
   }
 
   ngOnInit() {
@@ -41,22 +41,10 @@ export class PregledIOperacijeComponent implements OnInit {
         console.log(err);
       });
   }
-  async getIzvestajeInitialy() {
-    const apiEndpoint = 'http://localhost:8080/izvestaj';
-    this.http.get(apiEndpoint,
-      {responseType: 'json', withCredentials: true}).subscribe((data) => {
-        this.izvestaji = data as Array<IzvestajDTO>;
-        console.log(data)
-        this.izvestajiDataSource = new MatTableDataSource(this.izvestaji);
-        this.izvestajiDataSource.sort = this.izvestajiSort;
-        //this.izvestajiDataSource.paginator = this.izvestajiPaginator;
-      }, err => {
-        console.log('Greska pri pribavljanju izvestaja! ');
-        console.log(err);
-      });
-  }
+ 
 
   async zapocniPregled(pregled:PregledDTO) {
+   
     this.service.setLekarID(pregled.lekar);
     console.log(pregled.pacijent);
     this.service.setPacijentID(pregled.pacijent)
@@ -92,5 +80,6 @@ export interface IzvestajDTO{
   id : number;
   imePacijenta : string;
   prezimePacijenta : string;
+  emailPacijenta : string;
   idPacijent : number;
 }

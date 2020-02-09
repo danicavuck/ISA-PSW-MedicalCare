@@ -47,10 +47,10 @@ public class ReceptService {
         //int idKlinike = medicinskaSestra.getKlinika().getId();
         List<ReceptDTO> temp = new ArrayList<>();
         List<Recept> all = receptRepository.findAll();
-        System.out.println(all.size());
+
         for (int i = 0; i < all.size(); i++) {
-            // idKlinike == all.get(i).getLekar().getId()
-            if (all.get(i).isAktivan() && !all.get(i).isOvereno()){
+            int idKlinike = all.get(i).getLekar().getKlinika().getId();
+            if (all.get(i).isAktivan() && !all.get(i).isOvereno() && medicinskaSestra.getKlinika().getId() == idKlinike){
                 temp.add(mapiranjeRecepta(all.get(i)));
             }
         }

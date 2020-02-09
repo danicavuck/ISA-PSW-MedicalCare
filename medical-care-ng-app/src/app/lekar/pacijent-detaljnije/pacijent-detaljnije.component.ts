@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PacijentServiceComponent } from 'src/app/services/pacijent-service/pacijent-service.component';
 import { HttpClient } from '@angular/common/http';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { IzvestajServiceComponent } from 'src/app/services/izvestaj-service/izvestaj-service.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pacijent-detaljnije',
@@ -14,6 +16,11 @@ export class PacijentDetaljnijeComponent implements OnInit {
   private preglediDataSource;
   private pacijentID = 0;
   private lekarID = 0;
+  private izvestajiColumns : string[] = ['Ime pacijenta','Prezime pacijenta','Email pacijenta','Akcije']
+  @ViewChild(MatSort, {static: false}) izvestajiSort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) izvestajiPaginator: MatPaginator;
+  private izvestajiDataSource;
+  private izvestaji : Array<IzvestajDTO>;
   private pacijent: Pacijent = {
     id: 0,
     ime: '',
@@ -26,11 +33,12 @@ export class PacijentDetaljnijeComponent implements OnInit {
     brojOsiguranja: ''
   };
   private preglediPacijenta: Array<Pregledi>;
-  constructor(private pacijentService: PacijentServiceComponent, private http: HttpClient) {
+  constructor(private router:Router,private pacijentService: PacijentServiceComponent, private http: HttpClient,private service:IzvestajServiceComponent) {
     this.pacijentID = pacijentService.getPacijentID();
     this.lekarID = pacijentService.getLekarID();
     this.getPacijentData();
     this.getPreglediData();
+    this.getIzvestajeInitialy();
   }
 
   ngOnInit() {
@@ -46,6 +54,27 @@ export class PacijentDetaljnijeComponent implements OnInit {
       });
     }
   }
+  async getIzvestajeInitialy() {
+    if (this.pacijentID !== 0 && this.pacijentID !== undefined){
+    const apiEndpoint = 'http://localhost:8080/izvestaj/dobavi/ ' + this.pacijentID;
+    this.http.get(apiEndpoint,
+      {responseType: 'json', withCredentials: true}).subscribe((data) => {
+        this.izvestaji = data as Array<IzvestajDTO>;
+        this.izvestajiDataSource = new MatTableDataSource(this.izvestaji);
+        this.izvestajiDataSource.sort = this.izvestajiSort;
+        this.izvestajiDataSource.paginator = this.izvestajiPaginator;
+      }, err => {
+        console.log('Greska pri pribavljanju izvestaja! ');
+        console.log(err);
+      });
+    }
+  }
+
+  async editIzvestaj(izvestaj : IzvestajDTO){
+    this.service.setIzvestajId(izvestaj.id);
+    this.router.navigateByUrl('lekar/zakazivanje/izmenaIzvestaja')
+  }
+
 
   async getPreglediData() {
     if (this.pacijentID !== 0 && this.pacijentID !== undefined) {
@@ -84,4 +113,12 @@ export interface Pregledi {
   lekarImeIPrezime: string;
   pocetakTermina: string;
   krajTermina: string;
+}
+
+export interface IzvestajDTO{
+  id : number;
+  imePacijenta : string;
+  prezimePacijenta : string;
+  emailPacijenta : string;
+  idPacijent : number;
 }

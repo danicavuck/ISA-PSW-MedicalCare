@@ -12,11 +12,13 @@ import { Component, OnInit, Injectable } from '@angular/core';
 export class SestraPacijentServiceComponent implements OnInit {
   private pacijentID: number;
   private sestraID: number;
+  private izvestajID : number;
 
   constructor() { }
 
   ngOnInit() {
   }
+  
 
   public setPacijentID(pacID: number) {
     this.pacijentID = pacID;
@@ -30,4 +32,11 @@ export class SestraPacijentServiceComponent implements OnInit {
   public getSestraID() {
     return this.sestraID;
   }
+  public setIzvestajID(sID: number) {
+    this.izvestajID = sID;
+  }
+  public getIzvestajID() {
+    return this.izvestajID;
+  }
+  
 }

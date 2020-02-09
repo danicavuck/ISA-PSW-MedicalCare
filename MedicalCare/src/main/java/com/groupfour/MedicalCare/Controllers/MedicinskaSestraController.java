@@ -31,11 +31,14 @@ public class MedicinskaSestraController {
     this.receptService = rService;}
 
     @RequestMapping(value = "/recepti", method = RequestMethod.GET)
-    public ResponseEntity<?> getRecepti() {
+    public ResponseEntity<?> getRecepti(HttpSession session) {
 
-        List<ReceptDTO> temp = receptService.getAllActive();
+        if (authorization.hasPermisson(session, role)) {
 
-        return new ResponseEntity<>(temp, HttpStatus.OK);
+            return new ResponseEntity<>(receptService.getAllActive(session), HttpStatus.OK);
+        }else{
+            return  new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+        }
     }
 
 

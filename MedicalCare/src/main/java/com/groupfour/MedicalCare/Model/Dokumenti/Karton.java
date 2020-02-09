@@ -18,6 +18,7 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = DbTableConstants.KARTON)
+@JsonIgnoreProperties({"pacijent","izvestajiOPregledima","istorijaBolesti"})
 public class Karton {
 
     @Id

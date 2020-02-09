@@ -14,6 +14,7 @@ public class IzvestajDTO {
     private int id;
     private String imePacijenta;
     private String prezimePacijenta;
+    private String emailPacijenta;
     private int idPacijent;
 
 }

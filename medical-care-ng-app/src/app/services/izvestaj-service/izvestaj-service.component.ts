@@ -14,6 +14,7 @@ private pacijentID : number;
 private lekarID : number;
 private pregledID : number;
 private izvestajId : number;
+private tipPregleda: string;
 
   constructor() { }
 
@@ -44,5 +45,11 @@ private izvestajId : number;
   public setIzvestajId(id:number){
     this.izvestajId = id;
   }
+  public getTipPregleda(){
+    return this.tipPregleda;
+  }
 
+  public setTipPregleda(tip : string){
+    this.tipPregleda = tip;
+  }
 }

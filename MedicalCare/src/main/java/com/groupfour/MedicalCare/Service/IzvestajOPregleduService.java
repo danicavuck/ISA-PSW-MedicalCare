@@ -5,6 +5,7 @@ import com.groupfour.MedicalCare.Model.DTO.IzvestajIzmenaDTO;
 import com.groupfour.MedicalCare.Model.DTO.IzvestajOPregleduDTO;
 import com.groupfour.MedicalCare.Model.Dokumenti.*;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
+import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Repository.*;
 
@@ -32,11 +33,13 @@ public class IzvestajOPregleduService {
     private static KartonRepository kartonRepository;
     private static ReceptRepository receptRepository;
     private static PregledRepository pregledRepository;
+    private static MedicinskaSestraRepository medicinskaSestraRepository;
     private static Logger logger = LoggerFactory.getLogger(Lekar.class);
 
     @Autowired
-    public IzvestajOPregleduService(SifarnikDijagnozaRepository sdRepo,PregledRepository pregRepo,SifarnikLekovaRepository slRepo,LekarRepository lRepo,PacijentRepository pRepo,KartonRepository kRepo,IzvestajOPregleduRepository izRepo,ReceptRepository receptRepo){
+    public IzvestajOPregleduService(MedicinskaSestraRepository msRepo,SifarnikDijagnozaRepository sdRepo,PregledRepository pregRepo,SifarnikLekovaRepository slRepo,LekarRepository lRepo,PacijentRepository pRepo,KartonRepository kRepo,IzvestajOPregleduRepository izRepo,ReceptRepository receptRepo){
         sifarnikDijagnozaRepository = sdRepo;
+        medicinskaSestraRepository = msRepo;
         sifarnikLekovaRepository = slRepo;
         lekarRepository = lRepo;
         pacijentRepository = pRepo;
@@ -108,7 +111,7 @@ public class IzvestajOPregleduService {
 
           }
 
-          izvestajOPregledu.setInformacijeOPregledu(izvestajIzmenaDTO.getInformacijeOPregledu());
+          izvestajOPregledu.setInformacijeOPregledu(izvestajIzmenaDTO.getInformacije());
           izvestajOPregledu.setSifarnikDijagnoza(dijagnoza);
           izvestajOPregledu.setRecepti(recepti);
 
@@ -119,15 +122,18 @@ public class IzvestajOPregleduService {
     }
 
 
-    public static ResponseEntity<?> dobaviSveIzvestajeZaLekara(HttpSession session) {
+    public static ResponseEntity<?> dobaviSveIzvestajeZaPacijenta(HttpSession session,int idPacijent) {
         Lekar lekar = lekarRepository.findLekarById((int) session.getAttribute("id"));
-
+        Pacijent pacijent = pacijentRepository.findPacijentById(idPacijent);
+        Karton kPacij = pacijent.getZdravstveniKarton();
+        Karton karton = kartonRepository.findKartonById(kPacij.getId());
         if (lekar == null) {
             logger.error("Nije pronadjen lekar");
             return new ResponseEntity<>("Nije nadjen lekar", HttpStatus.UNAUTHORIZED);
         }
 
-        List<IzvestajOPregledu> izvestaji = izvestajOPregleduRepository.findAll();
+        //List<IzvestajOPregledu> izvestaji = izvestajOPregleduRepository.findAll();
+        Set<IzvestajOPregledu> izvestaji = karton.getIzvestajiOPregledima();
         ArrayList<IzvestajDTO> izvestajiDTO = new ArrayList<>();
 
         if(izvestaji != null){
@@ -145,7 +151,7 @@ public class IzvestajOPregleduService {
     public static IzvestajDTO mapirajIzvestajDTO(IzvestajOPregledu izvestajOPregledu) {
         Pacijent pacijent = pacijentRepository.findPacijentById(izvestajOPregledu.getPacijentId());
 
-        IzvestajDTO izvestajDTO = IzvestajDTO.builder().id(izvestajOPregledu.getId()).idPacijent(izvestajOPregledu.getPacijentId()).imePacijenta(pacijent.getIme()).prezimePacijenta(pacijent.getPrezime()).build();
+        IzvestajDTO izvestajDTO = IzvestajDTO.builder().id(izvestajOPregledu.getId()).idPacijent(izvestajOPregledu.getPacijentId()).imePacijenta(pacijent.getIme()).prezimePacijenta(pacijent.getPrezime()).emailPacijenta(pacijent.getEmail()).build();
             return izvestajDTO;
         }
 

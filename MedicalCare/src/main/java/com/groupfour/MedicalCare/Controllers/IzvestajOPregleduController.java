@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/izvestaj")
 public class IzvestajOPregleduController {
     private Authorization authorization;
-    private String[] roles = {"lekar"};
+    private String[] roles = {"lekar", "med_sestra"};
     private static IzvestajOPregleduService izvestajOPregleduService;
 
     @Autowired
@@ -46,12 +46,13 @@ public class IzvestajOPregleduController {
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
-    @GetMapping
-    public ResponseEntity<?> getIzvestaj(HttpSession session) {
-        if(authorization.hasPermisson(session, roles))
+    @GetMapping(value = "dobavi/{pacijentId}")
+    public ResponseEntity<?> dobavliIzvestajeZaPacijenta(@PathVariable(value = "pacijentId") Integer pacijentId,
+                                                        HttpSession session) {
+        if(authorization.hasPermisson(session, new String[] {"lekar"}))
         {
 
-            return IzvestajOPregleduService.dobaviSveIzvestajeZaLekara(session);
+            return IzvestajOPregleduService.dobaviSveIzvestajeZaPacijenta(session,pacijentId);
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }

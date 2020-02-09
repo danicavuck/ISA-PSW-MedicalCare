@@ -10,14 +10,14 @@ import { HttpClient } from '@angular/common/http';
 export class IzmenaIzvestajaComponent implements OnInit {
   model : IzvestajIzmenaDTO = {
     id : 0,
-    informacijeOpregledu : '',
+    informacije : '',
     idDijagnoza : 0,
     idLek : []
   }
   lekovi : Array<LekDTO>;
   dijagnoze : Array<DijagnozaDTO>;
 
-
+  errorStatus: string = null;
   constructor(private service : IzvestajServiceComponent,private http: HttpClient) {
     this.getDijagnoze();
     this.getLekove();
@@ -30,15 +30,29 @@ export class IzmenaIzvestajaComponent implements OnInit {
   async onSubmit() {
   
     const apiEndpoint = 'http://localhost:8080/izvestaj';
+    if (this.isFormValid()) {
     this.http.put(apiEndpoint, this.model,
       {responseType: 'text',withCredentials:true}).subscribe( data => {
         console.log('Uspesna izmena izvestaja o pregledu');
-        console.log(this.model);
       }, error => {
+        this.errorStatus = '';
+        this.errorStatus = 'Nije validno popunjena forma';
         console.log(this.model)
       });
+    }else {
+      console.log(this.model)
+        console.log('Forma nije validna');
+      }
     }
-    
+    isFormValid() {
+      // tslint:disable-next-line: max-line-length
+      console.log(this.model)
+      if (this.model.informacije != "" && this.model.idDijagnoza !== null && this.model.idLek !== null) {
+        return true;
+      }
+  
+      return false;
+    }
   
 
   async getLekove(){
@@ -87,7 +101,7 @@ export interface DijagnozaDTO{
 
 export interface IzvestajIzmenaDTO{
   id : number;
-  informacijeOpregledu : string;
+  informacije : string;
   idDijagnoza : number;
   idLek : Array<number>;
 

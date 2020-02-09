@@ -21,11 +21,13 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import javax.persistence.OptimisticLockException;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -84,6 +86,7 @@ public class AdminKCService {
     }
 
     @Transactional(readOnly = false)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void prihvatiZahtev(RegistracijaPacijentaDTO registracijaPacijentaDTO, HttpSession session) {
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
         if(adminKlinickogCentra == null){
@@ -104,7 +107,8 @@ public class AdminKCService {
         }
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void odbijZahtev(RegistracijaPacijentaDTO registracijaPacijentaDTO, HttpSession session) {
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
 
