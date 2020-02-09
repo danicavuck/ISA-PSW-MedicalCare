@@ -82,6 +82,7 @@ public class LekarService {
         return modelMapper.map(lekar, LekarDTO.class);
     }
 
+
     public static ResponseEntity<?> brisanjeLekara(LekarDTO lekarDTO){
         Lekar lekar = lekarRepository.findLekarById(lekarDTO.getId());
         if(lekar != null){
@@ -166,6 +167,8 @@ public class LekarService {
         if(trebaIzmenitiLozinku(lekar, lekarIzmenaPodatakaDTO))
             lekar.setLozinka(PasswordCheck.hash(lekarIzmenaPodatakaDTO.getNovaLozinka()));
     }
+
+
 
     private static boolean trebaIzmenitiLozinku(Lekar lekar, LekarIzmenaPodatakaDTO lekarIzmenaPodatakaDTO) {
         boolean zadovoljavajuce = false;

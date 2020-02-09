@@ -1,1 +1,62 @@
-<p>pregled-i-operacije works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pregled pacijenata</title>
+</head>
+<body>
+    <app-lekar-navbar></app-lekar-navbar>
+    <div class="jumbotron">
+        <div style="text-align: center;">
+            <div class="mat-h1">Zakazani pregledi</div>
+            <table mat-table [dataSource]="preglediDataSource" class="mat-elevation-z8">
+                <ng-container matColumnDef="Broj Sale">
+                    <mat-header-cell *matHeaderCellDef>Broj Sale</mat-header-cell>
+                    <mat-cell *matCellDef="let pregled"> {{pregled.sala}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Tip pregleda">
+                    <mat-header-cell *matHeaderCellDef>Tip pregleda</mat-header-cell>
+                    <mat-cell *matCellDef="let pregled"> {{pregled.tipPregleda}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Pocetak pregleda">
+                    <mat-header-cell *matHeaderCellDef>Pocetak pregleda</mat-header-cell>
+                    <mat-cell *matCellDef="let pregled"> {{pregled.pocetakTermina}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Kraj pregleda">
+                    <mat-header-cell *matHeaderCellDef>Kraj pregelda</mat-header-cell>
+                    <mat-cell *matCellDef="let pregled"> {{pregled.krajTermina}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Lekar">
+                    <mat-header-cell *matHeaderCellDef>Lekar</mat-header-cell>
+                    <mat-cell *matCellDef="let pregled"> {{pregled.lekarImeIPrezime}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Cena">
+                    <mat-header-cell *matHeaderCellDef>Cena</mat-header-cell>
+                    <mat-cell *matCellDef="let pregled"> {{pregled.cena}} RSD </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Akcije">
+                    <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
+                    <mat-cell *matCellDef="let pregled" style="padding-left: 10%;">
+                        <button mat-raised-button color="primary" (click)="zapocniPregled(pregled)" matTooltip="Zapocni pregled">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="preglediColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: preglediColumns;"></mat-row>
+            </table>
+            <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator>
+          </div>
+
+         
+    </div>
+</body>
+</html>

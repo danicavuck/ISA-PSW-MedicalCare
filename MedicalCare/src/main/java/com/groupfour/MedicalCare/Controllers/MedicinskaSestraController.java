@@ -31,11 +31,14 @@ public class MedicinskaSestraController {
     this.receptService = rService;}
 
     @RequestMapping(value = "/recepti", method = RequestMethod.GET)
-    public ResponseEntity<?> getRecepti() {
+    public ResponseEntity<?> getRecepti(HttpSession session) {
 
-        List<ReceptDTO> temp = receptService.getAllActive();
+        if (authorization.hasPermisson(session, role)) {
 
-        return new ResponseEntity<>(temp, HttpStatus.OK);
+            return new ResponseEntity<>(receptService.getAllActive(session), HttpStatus.OK);
+        }else{
+            return  new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+        }
     }
 
 
@@ -44,7 +47,6 @@ public class MedicinskaSestraController {
 
         if(authorization.hasPermisson(session,role)) {
             receptService.overiRecept(id,session);
-            System.out.println("overen");
             return new ResponseEntity<String>("Recept je overen!", HttpStatus.OK);
 
         }else{
@@ -63,7 +65,7 @@ public class MedicinskaSestraController {
 
 
 
-    @PutMapping
+    @RequestMapping(value = "/azurirajPodatke",method = RequestMethod.PUT)
     public ResponseEntity<?> azuriranjePodatakaMedicinskeSestre(@RequestBody MedSestraIzmenaPodatakaDTO medSestraIzmenaPodatakaDTO, HttpSession session) {
         if(authorization.hasPermisson(session, role))
         {
@@ -71,12 +73,19 @@ public class MedicinskaSestraController {
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
-
     @GetMapping("/detalji")
     public ResponseEntity<?> dobaviDetaljeOMedicinksojSestri(HttpSession session){
         if(authorization.hasPermisson(session, role))
         {
             return MedicinskaSestraService.detaljiOMedicinskojSestri(session);
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+    @GetMapping(value = "/odsusva")
+    public ResponseEntity<?> getOdsusvaZaRadniKalendar(HttpSession session){
+        if(authorization.hasPermisson(session,role))
+        {
+            return MedicinskaSestraService.odsustvaZaRadniKalendar(session);
         }
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }

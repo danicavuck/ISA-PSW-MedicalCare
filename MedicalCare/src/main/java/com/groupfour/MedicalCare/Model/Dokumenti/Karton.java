@@ -18,6 +18,7 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = DbTableConstants.KARTON)
+@JsonIgnoreProperties({"pacijent","izvestajiOPregledima","istorijaBolesti"})
 public class Karton {
 
     @Id
@@ -29,7 +30,7 @@ public class Karton {
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "zdravstveniKarton", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JsonIgnoreProperties("zdravstveniKarton")
-    private Pacijent pacijet;
+    private Pacijent pacijent;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
@@ -46,4 +47,17 @@ public class Karton {
             inverseJoinColumns = @JoinColumn(name = DbColumnConstants.SIFARNIK_DIJAGNOZA_ID)
     )
     private Set<SifarnikDijagnoza> istorijaBolesti = new HashSet<>();
+
+
+    public void dodajDijagnozu(SifarnikDijagnoza dijagnoza){
+        istorijaBolesti.add(dijagnoza);
+    }
+
+    public void dodajIzvestaj(IzvestajOPregledu izvestajOPregledu){
+        izvestajiOPregledima.add(izvestajOPregledu);
+    }
+
+
+
+
 }

@@ -3,6 +3,7 @@ package com.groupfour.MedicalCare.Service;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinickogCentra;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.*;
+import com.groupfour.MedicalCare.Model.Dokumenti.Karton;
 import com.groupfour.MedicalCare.Model.Dokumenti.SifarnikDijagnoza;
 import com.groupfour.MedicalCare.Model.Dokumenti.SifarnikLekova;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
@@ -20,11 +21,13 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import javax.persistence.OptimisticLockException;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -44,12 +47,15 @@ public class AdminKCService {
     private static MedicinskaSestraRepository medicinskaSestraRepository;
     private static AdminKlinikeRepository adminKlinikeRepository;
     private static SalaRepository salaRepository;
+    private static KartonRepository kartonRepository;
+    private static PacijentRepository pacijentRepository;
+    private static  UserRoleRepository  userRoleRepository;
 
     private static CustomEmailSender customEmailSender;
 
     @Autowired
     public AdminKCService(AdminKCRepository aKCRepository, RegistracijaPacijentaRepository regRepo,
-                          KlinikaRepository kRepo , SifarnikDijagnozaRepository sfRepo,SifarnikLekovaRepository slRepo, LekarRepository lRepo, MedicinskaSestraRepository mRepo,AdminKlinikeRepository aRepo,SalaRepository sRepo, CustomEmailSender cmail) {
+                          KlinikaRepository kRepo , SifarnikDijagnozaRepository sfRepo,SifarnikLekovaRepository slRepo,UserRoleRepository userRepo, LekarRepository lRepo, MedicinskaSestraRepository mRepo,AdminKlinikeRepository aRepo,SalaRepository sRepo, CustomEmailSender cmail,KartonRepository kartonRepo,PacijentRepository pacRepo) {
         adminKCRepository = aKCRepository;
         registracijaPacijentaRepository = regRepo;
         klinikaRepository = kRepo;
@@ -59,6 +65,9 @@ public class AdminKCService {
         medicinskaSestraRepository = mRepo;
         adminKlinikeRepository = aRepo;
         salaRepository = sRepo;
+        kartonRepository = kartonRepo;
+        pacijentRepository = pacRepo;
+        userRoleRepository = userRepo;
         customEmailSender = cmail;
     }
 
@@ -77,6 +86,7 @@ public class AdminKCService {
     }
 
     @Transactional(readOnly = false)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void prihvatiZahtev(RegistracijaPacijentaDTO registracijaPacijentaDTO, HttpSession session) {
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
         if(adminKlinickogCentra == null){
@@ -97,7 +107,8 @@ public class AdminKCService {
         }
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void odbijZahtev(RegistracijaPacijentaDTO registracijaPacijentaDTO, HttpSession session) {
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
 
@@ -241,6 +252,7 @@ public class AdminKCService {
         SifarnikLekova temp = sifarnikLekovaRepository.findByKodLeka(lekDTO.getKodLeka());
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
 
+
         if(adminKlinickogCentra == null){
             logger.error("Nije pronadjen admin klinickog centra");
             return new ResponseEntity<>("Nije nadjen admin klinickog centra",HttpStatus.UNAUTHORIZED);
@@ -262,8 +274,9 @@ public class AdminKCService {
 
     public List<SifarnikDijagnoza> getDijagnoze(HttpSession session) {
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
+        Lekar lekar = lekarRepository.findLekarById((int)session.getAttribute("id"));
 
-        if(adminKlinickogCentra == null){
+        if(adminKlinickogCentra == null && lekar == null){
             logger.error("Nije pronadjen admin klinickog centra");
             return null;
         }
@@ -281,8 +294,9 @@ public class AdminKCService {
     }
     public List<SifarnikLekova> getLekovi(HttpSession session) {
         AdminKlinickogCentra adminKlinickogCentra = adminKCRepository.findAdminKlinickogCentraById((int)session.getAttribute("id"));
+        Lekar lekar = lekarRepository.findLekarById((int)session.getAttribute("id"));
 
-        if(adminKlinickogCentra == null){
+        if(adminKlinickogCentra == null && lekar == null){
             logger.error("Nije pronadjen admin klinickog centra");
             return null;
         }
@@ -301,10 +315,21 @@ public class AdminKCService {
     public static ResponseEntity<String> napraviNoviNalogPacijentu(PacijentDTO pacijentDTO) {
         Pacijent pacijent = napraviNovogPacijenta(pacijentDTO);
         UserRole userRole = UserRole.builder().user_email(pacijentDTO.getEmail()).role("pacijent").build();
-        if (sacuvajUBazuPacijentaIRolu(pacijent, userRole)) {
+        //kreiranje zdravstvenog kartona pacijenta
+        Karton karton = Karton.builder().aktivan(true).pacijent(pacijent).build();
+
+        if(pacijent != null) {
+            pacijent.dodajKarton(karton);
+            kartonRepository.save(karton);
+            pacijentRepository.save(pacijent);
+            userRoleRepository.save(userRole);
             return new ResponseEntity<>("Instance created", HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Internal server eror", HttpStatus.INTERNAL_SERVER_ERROR);
+//        if (sacuvajUBazuPacijentaIRolu(pacijent, userRole)) {
+//            return new ResponseEntity<>("Instance created", HttpStatus.CREATED);
+//        }
+//        return new ResponseEntity<>("Internal server eror", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

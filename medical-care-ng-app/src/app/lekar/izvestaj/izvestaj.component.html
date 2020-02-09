@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Popunjavanje izvestaja o pregledu</title>
+</head>
+
+<body>
+  <app-lekar-navbar></app-lekar-navbar>
+  <div class="container col-xs-12 col-md-8 col-md-offset-3">
+    <div class="jumbotron">
+      <div class="text-center">
+        <div class="mat-display-1">Popunjavanje izvestaja o pregledu</div>
+      </div>
+      <div class="alert alert-danger"  *ngIf="errorStatus" style="text-align: center">
+        <div class="mat-display-1">{{errorStatus}}</div>
+      </div>
+      <form name="form" class="my-form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()">
+
+        <mat-form-field class="full-width">
+          <mat-label>Informacije o pregledu</mat-label>
+          <input class="input" type="text" id="informacije" name="informacije" [(ngModel)]="model.informacije" matInput required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" >          
+          <mat-label style="margin-bottom: 30px;">Dijagnoza</mat-label>
+          <mat-select required name="dijagnoza" [(ngModel)]="model.idDijagnoza"  >
+              <mat-option *ngFor="let dijagnoza of dijagnoze" value={{dijagnoza.id}}>
+                  {{dijagnoza.nazivBolesti}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+     
+        <mat-form-field class="full-width" >
+          <mat-label style="margin-bottom: 30px;">Lekovi</mat-label>
+          <mat-select required name="lek" [(ngModel)]="model.idLek" multiple  >
+              <mat-option *ngFor="let lek of lekovi" value={{lek.id}}>
+                  {{lek.nazivLeka}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button type="submit" mat-raised-button color="primary" class="pull-left" [disabled]="!f.valid">
+          <i class="fa fa-user-plus"></i>
+          <span> Predaj izvestaj</span>
+        </button>
+      </form>
+      
+       <div style="padding-top: 2cm;">
+        <mat-label style="margin-bottom: 30px; margin-bottom: 30px; padding-bottom: 2cm;">Zakazi dodatni pregled</mat-label>
+        <mat-label style="margin-bottom: 30px; margin-bottom: 30px;margin-left: 30px; padding-bottom: 2cm;">Zakazi dodatnu operaciju</mat-label>
+       </div>
+       <div>  
+         <button routerLink = "/lekar/dodavanjepregleda" style ="margin-bottom: 2cm;margin-top: 30px;margin-left:50px; margin-right: 2cm;"type = "button" mat-fab color="primary">
+          <i class="fa fa-plus"></i>
+        </button>
+         <button routerLink = "/lekar/operacije" style ="margin-bottom: 2cm;margin-top: 30px;margin-left: 75px;"type = "button" mat-fab color="primary">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+   
+
+
+        <button type="button" mat-stroked-button class="pull-right" routerLink="/lekar">Nazad</button>
+      
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>
+
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="jumbotron" style="text-align: center;">
+        <h2 class="mat-display-1">Azuriranje podataka izvestaja</h2>
+        <form name="form" class="my-form" #f="ngForm" novalidate class="login-form" (ngSubmit)="onSubmit()">
+
+            <mat-form-field class="full-width">
+              <mat-label>Informacije o pregledu</mat-label>
+              <input class="input" type="text" id="informacije" name="informacije" [(ngModel)]="model.informacije" matInput required>
+            </mat-form-field>
+    
+            <mat-form-field class="full-width" >          
+              <mat-label style="margin-bottom: 30px;">Dijagnoza</mat-label>
+              <mat-select required name="dijagnoza" [(ngModel)]="model.idDijagnoza"  >
+                  <mat-option *ngFor="let dijagnoza of dijagnoze" value={{dijagnoza.id}}>
+                      {{dijagnoza.nazivBolesti}}
+                  </mat-option>
+              </mat-select>
+            </mat-form-field>
+         
+            <mat-form-field class="full-width" >
+              <mat-label style="margin-bottom: 30px;">Lekovi</mat-label>
+              <mat-select required name="lek" [(ngModel)]="model.idLek" multiple  >
+                  <mat-option *ngFor="let lek of lekovi" value={{lek.id}}>
+                      {{lek.nazivLeka}}
+                  </mat-option>
+              </mat-select>
+            </mat-form-field>
+         
+                <button mat-flat-button color="accent" class="pull pull-left" [routerLink]="['/lekar']"> Nazad</button>
+
+                <button type="submit" mat-raised-button color="primary" class="pull pull-right">
+                    <i class="fa fa-plus"></i>
+                    <span> Izmena podataka</span>
+                </button>
+        </form>
+    </div>
+</body>
+</html>

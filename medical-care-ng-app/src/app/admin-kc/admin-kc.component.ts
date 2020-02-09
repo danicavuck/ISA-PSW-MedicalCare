@@ -44,6 +44,7 @@ export class AdminKcComponent implements OnInit {
    .subscribe((data) => {
      this.postojiModel = true;
      this.models = data as Array<RegistracijaPacijentaDTO>;
+     console.log(this.models);
    },err => {
      console.log('greska pri izlistavanju zahteva');
      console.log(err);

@@ -43,7 +43,7 @@ public class PacijentController {
     @GetMapping(value = "/klinika")
     public ResponseEntity<?> dobaviPacijenteZaKliniku(HttpSession session)
     {
-        if(authorization.hasPermisson(session, new String[] {"lekar", "med_sestra"}))
+        if(authorization.hasPermisson(session, new String[] {"lekar"}))
         {
             return PacijentService.dobaviPacijenteZaLekara(session);
         }

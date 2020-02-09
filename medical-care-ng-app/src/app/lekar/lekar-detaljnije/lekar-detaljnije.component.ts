@@ -38,6 +38,7 @@ export class LekarDetaljnijeComponent implements OnInit {
       console.log('Uspesno izmenjeni podaci');
     }, err => {
       console.log('Neuspesno izmenjeni podaci');
+      console.log(err);
     });
   }
 

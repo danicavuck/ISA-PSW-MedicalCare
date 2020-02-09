@@ -8,6 +8,16 @@
   <title>Registracija klinike</title>
 </head>
   <body>
+    <mat-toolbar color="primary" class="navbar">
+  <div>Medical Care</div>
+  <div>
+    <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/registracija-admina']">Registruj admina klinike</a></span>
+    <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/adminkc/sifarnik-dijagnoza']">Sifarnik dijagnoza</a></span>
+    <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/adminkc/sifarnik-lekova']">Sifarnik lekova</a></span>
+    <span><a style="text-decoration: none; color: aliceblue;" [routerLink]="['/adminkc']">Pocetna strana</a></span>
+
+  </div>
+</mat-toolbar>
     <div class="container col-xs-12 col-md-8 col-md-offset-3">
       <div class="jumbotron">
         <div class="text-center">
@@ -72,10 +82,10 @@
   
           <button type="submit" mat-raised-button color="primary" class="pull-left" [disabled]="!f.valid">
             <i class="fa fa-user-plus"></i>
-            <span> Dodaj admina klinike</span>
+            <span> Dodaj kliniku</span>
           </button>
   
-          <button type="button" mat-stroked-button class="pull-right" routerLink="/adminklinike">Nazad</button>
+          <button type="button" mat-stroked-button class="pull-right" routerLink="/adminkc">Nazad</button>
         </form>
       </div>
     </div>

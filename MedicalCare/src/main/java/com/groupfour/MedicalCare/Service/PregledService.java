@@ -5,6 +5,7 @@ import com.groupfour.MedicalCare.Model.DTO.PregledDTO;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
+import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Pregled.PreglediNaCekanju;
@@ -38,6 +39,7 @@ public class PregledService {
     private static AdminKlinikeRepository adminKlinikeRepository;
     private static PacijentRepository pacijentRepository;
     private static CustomEmailSender customEmailSender;
+
     private static Logger logger = LoggerFactory.getLogger(PregledService.class);
 
     @Autowired
@@ -89,10 +91,45 @@ public class PregledService {
         return idKlinike;
     }
 
+    public static ResponseEntity<?> dobaviSvePregledeZaKlinikuMedSestra(HttpSession session) {
+        int klinikaId = dobaviIdKlinikeMedSestra(session);
+        ArrayList<Pregled> pregledi = pregledRepository.findAll();
+        ArrayList<PregledDTO> preglediDTO = new ArrayList<>();
+
+        if(klinikaId != -1)
+        {
+            for (Pregled p : pregledi) {
+                if(p.getSala().getKlinika().getId() == klinikaId && p.isAktivan())
+                    preglediDTO.add(mapirajPregledDTO(p));
+            }
+            return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+
+    public static int dobaviIdKlinikeMedSestra(HttpSession session){
+        int idKlinike = -1;
+        Lekar lekar = lekarRepository.findLekarById((int) session.getAttribute("id"));
+        if(lekar != null){
+            try{
+                return  lekar.getKlinika().getId();
+            }catch (Exception e){
+                logger.error("Medicinska sestra nema kliiku");
+                return idKlinike;
+            }
+
+        }
+        logger.info("Medicinska sestra nije pronadjena");
+        return idKlinike;
+    }
+
+
+
     public static PregledDTO mapirajPregledDTO(Pregled pregled) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
         PregledDTO pregledDTO =
-                PregledDTO.builder().trajanjePregleda(pregled.getTrajanjePregleda()).cena(pregled.getCena()).popust(pregled.getPopust()).sala(pregled.getSala().getNazivSale()).tipPregleda(pregled.getTipPregleda().getTipPregleda()).id(pregled.getId()).salaId(pregled.getSala().getId()).build();
+                PregledDTO.builder().trajanjePregleda(pregled.getTrajanjePregleda()).pacijent(pregled.getPacijent().getId()).cena(pregled.getCena()).popust(pregled.getPopust()).sala(pregled.getSala().getNazivSale()).tipPregleda(pregled.getTipPregleda().getTipPregleda()).id(pregled.getId()).salaId(pregled.getSala().getId()).build();
         Set<Lekar> lekari = pregled.getLekari();
 
         logger.info("Lekari pocetak termina kraj termina i ostalo:\n"+ lekari.toString());

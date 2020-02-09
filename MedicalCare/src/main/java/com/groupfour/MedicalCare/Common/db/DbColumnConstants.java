@@ -119,7 +119,8 @@ public final class DbColumnConstants {
     public static final String IZVESTAJ_O_PREGLEDU_INFORMACIJE = "informacije";
     public static final String IZVESTAJ_O_PREGLEDU_AKTIVAN = "aktivan";
     public static final String IZVESTAJ_O_PREGLEDU_DIJAGNOZA = "dijagnoza_id";
-    public static final String IZVESTAJ_O_PREGLEDU_LEK = "sifarnik_lekova_id";
+    public static final String IZVESTAJ_O_PREGLEDU_PACIJENT_ID = "pacijent_id";
+    public static final String IZVESTAJ_O_PREGLEDU_LEKAR = "lekar_id";
 
     // Pregled na cekanju
     public static final String PREGLED_LEKAR = "lekar_id";
@@ -127,6 +128,8 @@ public final class DbColumnConstants {
     // Recept
     public static final String RECEPT_ID = "recept_id";
     public static final String RECEPT_ID_LEKA = "id_leka";
+    public static final String RECEPT_KOD_LEKA = "kod_leka";
+    public static final String RECEPT_NAZIV_LEKA = "naziv_leka";
     public static final String RECEPT_OVEREN = "overen";
     public static final String RECEPT_AKTIVAN = "recept_aktivan";
     public static final String RECEPT_MEDICINSKA_SESTRA = "med_sestra_id";

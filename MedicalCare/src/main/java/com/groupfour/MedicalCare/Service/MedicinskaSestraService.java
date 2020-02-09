@@ -1,5 +1,6 @@
 package com.groupfour.MedicalCare.Service;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
+import com.groupfour.MedicalCare.Model.DTO.MedicinskaSestraKalendarDTO;
 import com.groupfour.MedicalCare.Model.DTO.OdsustvoDTO;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import com.groupfour.MedicalCare.Model.Zahtevi.OdsustvoMedicinskeSestre;
@@ -20,7 +21,10 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class MedicinskaSestraService {
@@ -30,6 +34,8 @@ public class MedicinskaSestraService {
     private static MedicinskaSestraRepository medicinskaSestraRepository;
 
     private static OdsustvoMedicinskeSestreRepository odsustvoMedicinskeSestreRepository;
+
+
 
     private static CustomEmailSender customEmailSender;
 
@@ -56,6 +62,37 @@ public class MedicinskaSestraService {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
+
+    public static ResponseEntity<?> odsustvaZaRadniKalendar(HttpSession session) {
+        MedicinskaSestra sestra = medicinskaSestraRepository.findMedicinskaSestraById(((int) session.getAttribute("id")));
+        if(sestra != null)
+        {
+            List<OdsustvoMedicinskeSestre> odsustvaAll = odsustvoMedicinskeSestreRepository.findAll();
+            List<OdsustvoMedicinskeSestre> odsustva = new ArrayList<OdsustvoMedicinskeSestre>();
+            for(OdsustvoMedicinskeSestre o : odsustvaAll){
+                if(o.getMedicinskaSestra().getId() == sestra.getId()){
+                    odsustva.add(o);
+                }
+            }
+
+            ArrayList<MedicinskaSestraKalendarDTO> sestraKalendarDTOS = new ArrayList<>();
+            MedicinskaSestraKalendarDTO temp = new MedicinskaSestraKalendarDTO();
+            //stavi uslov i da je zahtev odobren
+            for(OdsustvoMedicinskeSestre odsustvo : odsustva) {
+                if(odsustvo.isAktivno())
+                {
+                    temp.setStart(odsustvo.getPocetakOdsustva());
+                    temp.setEnd(odsustvo.getKrajOdsustva());
+                    temp.setTitle("Odsustvovanje");
+                    sestraKalendarDTOS.add(temp);
+                }
+            }
+
+            return new ResponseEntity<>(sestraKalendarDTOS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
     public static void slanjeMejlaAdminuOZahtevu(MedicinskaSestra medicinskaSestra, OdsustvoDTO odsustvoDTO) {
         String pocetakOdsustva =
                 odsustvoDTO.getDatumVreme()[0].format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
@@ -65,7 +102,7 @@ public class MedicinskaSestraService {
         String message =
                 "<html><body><h3>Zahtev za odsustvo</h3><p>Postovani,</p><p>Lekar " + medicinskaSestra.getIme() + " " + medicinskaSestra.getPrezime() + " zeli da dobije odsustvo u periodu od " + pocetakOdsustva + " do " + krajOdsustva + "</p><p>Molimo Vas da razmotrite zahtev u dogledno vreme.</p><p>Srdacan pozdrav,</p><p>Medical Care</p></body></html>";
 
-        HashSet<AdminKlinike> adminiKlinike = (HashSet<AdminKlinike>) medicinskaSestra.getKlinika().getAdminiKlinike();
+        Set<AdminKlinike> adminiKlinike = medicinskaSestra.getKlinika().getAdminiKlinike();
         String[] adrese = new String[adminiKlinike.size()];
         int i = 0;
         for (AdminKlinike admin : adminiKlinike) {
@@ -91,6 +128,7 @@ public class MedicinskaSestraService {
             if(!medSestraIzmenaPodatakaDTO.getPrezime().equals(""))
                 medicinskaSestra.setPrezime(medSestraIzmenaPodatakaDTO.getPrezime());
             if(trebaIzmenitiLozinku(medicinskaSestra, medSestraIzmenaPodatakaDTO))
+                System.out.println("doslo");
                 medicinskaSestra.setLozinka(PasswordCheck.hash(medSestraIzmenaPodatakaDTO.getNovaLozinka()));
 
             medicinskaSestraRepository.save(medicinskaSestra);

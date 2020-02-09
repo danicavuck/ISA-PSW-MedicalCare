@@ -9,4 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface SifarnikDijagnozaRepository extends JpaRepository<SifarnikDijagnoza,Integer> {
     SifarnikDijagnoza findByKodBolesti(String kod);
+
+    SifarnikDijagnoza findSifarnikDijagnozaById(int id);
 }
