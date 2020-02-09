@@ -263,4 +263,8 @@ public class PreglediNaCekanjuService {
         }
         logger.error("Pacijent i/ili Lekar nisu pronadjeni");
     }
+
+    public static void helloWorld() {
+        logger.info("Hello world");
+    }
 }
