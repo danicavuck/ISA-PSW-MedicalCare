@@ -22,7 +22,7 @@ export class DefinisanjePregledaComponent implements OnInit {
     datumVreme: new Date(),
     tipPregleda: '',
     trajanjePregleda: 0,
-    sala: 0,
+    salaId: 0,
     lekar: 0,
     cena: 0
   };
@@ -89,6 +89,7 @@ export class DefinisanjePregledaComponent implements OnInit {
         this.snackBar.open('Termin pregleda i radno vreme lekara nisu kompatibilni', 'X', {duration: 5000});
         console.log(err);
       });
+    // console.log(this.pregled);
   }
 
   async uvecanjeSatnice(pregled) {
@@ -118,7 +119,7 @@ export interface Pregled {
   datumVreme: Date;
   tipPregleda: string;
   trajanjePregleda: number;
-  sala: number;
+  salaId: number;
   lekar: number;
   cena: number;
 }

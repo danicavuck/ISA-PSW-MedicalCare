@@ -42,7 +42,7 @@
             <div style="text-align: center; margin-top: 10%;">
                 <mat-divider style="margin: 10px 0 10px 0;"></mat-divider>
                 <div class="mat-h1">Lekari</div>
-                <table mat-table [dataSource]="lekariDataSource" class="mat-elevation-z8" matSort>
+                <table mat-table [dataSource]="lekari" class="mat-elevation-z8" matSort>
                     <ng-container matColumnDef="ime">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Ime</mat-header-cell>
                         <mat-cell *matCellDef="let lekar"> {{lekar.ime}} </mat-cell>
@@ -108,7 +108,7 @@
                 <div style="text-align: center;" style="margin-top: 10%;">
                     <mat-divider style="margin: 10px 0 10px 0;"></mat-divider>
                     <div class="mat-h1">Pregledi / Cenovnik</div>
-                    <table mat-table [dataSource]="preglediDataSource" class="mat-elevation-z8">
+                    <table mat-table [dataSource]="pregledi" class="mat-elevation-z8">
                         <ng-container matColumnDef="Broj Sale">
                             <mat-header-cell *matHeaderCellDef>Broj Sale</mat-header-cell>
                             <mat-cell *matCellDef="let pregled"> {{pregled.sala}} </mat-cell>
@@ -150,7 +150,6 @@
                         <mat-header-row *matHeaderRowDef="preglediColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: preglediColumns;"></mat-row>
                     </table>
-                    <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"></mat-paginator>
                     <button mat-raised-button color="primary" style="width: 100%; margin-top: 5px;" [routerLink]="['/adminklinike/pregledinacekanju']">Pregledi na cekanju</button>
                     <button mat-raised-button color="primary" style="width: 100%; margin-top: 5px;" [routerLink]="['/adminklinike/operacijenacekanju']">Operacije na cekanju</button>
                 </div>

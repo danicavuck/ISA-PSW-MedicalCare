@@ -147,7 +147,6 @@ export class KlinikaDetaljnijeComponent implements OnInit {
       console.log(err);
     });
 
-    console.log(this.klinika);
   }
 
   async obrisiSalu(sala) {
@@ -255,20 +254,14 @@ export class KlinikaDetaljnijeComponent implements OnInit {
   }
 
   async onMapClick(event) {
-    console.log(event);
     this.latitude = event.coords.lat;
     this.longitude = event.coords.lng;
     this.lokacija.latitude = this.latitude;
     this.lokacija.longitude = this.longitude;
     const apiEndpoint = 'http://localhost:8080/klinika/lokacija';
 
-  //   this.http.put(apiEndpoint, this.lokacija, {withCredentials: true}).subscribe(data => {
-  //     console.log(this.lokacija);
-  //     console.log('Uspesno setovanje lokacije');
-  // }, err => {
-  //   console.log('Neuspesno setovanje lokacije');
-  // });
-
+    this.http.put(apiEndpoint, this.lokacija, {withCredentials: true}).subscribe(data => {
+  });
   }
 }
 
