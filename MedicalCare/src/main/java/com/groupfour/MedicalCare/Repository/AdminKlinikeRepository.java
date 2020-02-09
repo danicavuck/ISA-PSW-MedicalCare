@@ -2,7 +2,6 @@ package com.groupfour.MedicalCare.Repository;
 
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;

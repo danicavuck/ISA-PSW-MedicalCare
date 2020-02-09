@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockModeType;
 import javax.persistence.OptimisticLockException;
+import javax.persistence.PessimisticLockException;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -71,6 +72,7 @@ public class AdminKCService {
         customEmailSender = cmail;
     }
 
+
     public AdminKlinickogCentra getByEmail(String email, String lozinka) {
         AdminKlinickogCentra adminKC = adminKCRepository.findAdminKlinickogCentraByEmail(email);
 
@@ -102,7 +104,7 @@ public class AdminKCService {
             napraviNoviNalogPacijentu(pacijentDTO);
             registracijaPacijentaRepository.save(registracijaPacijenta);
 
-        } catch (OptimisticLockException e) {
+        } catch (PessimisticLockException e) {
             System.out.println("exception");
         }
     }
@@ -123,7 +125,7 @@ public class AdminKCService {
             registracijaPacijenta.setRazlogOdbijanja(registracijaPacijentaDTO.getPoruka());
             posaljiMejlKorisniku(registracijaPacijentaDTO,0);
             registracijaPacijentaRepository.save(registracijaPacijenta);
-        } catch (OptimisticLockException e) {
+        } catch (PessimisticLockException e) {
             System.out.println("exception");
             // osvesi sajt
         }

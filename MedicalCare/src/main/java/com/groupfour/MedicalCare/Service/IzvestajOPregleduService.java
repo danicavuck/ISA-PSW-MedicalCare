@@ -5,10 +5,8 @@ import com.groupfour.MedicalCare.Model.DTO.IzvestajIzmenaDTO;
 import com.groupfour.MedicalCare.Model.DTO.IzvestajOPregleduDTO;
 import com.groupfour.MedicalCare.Model.Dokumenti.*;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
-import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Repository.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service

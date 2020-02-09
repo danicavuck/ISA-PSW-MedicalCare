@@ -1,6 +1,5 @@
 package com.groupfour.MedicalCare.Controllers;
 
-import com.groupfour.MedicalCare.Model.DTO.PacijentDTO;
 import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
 import com.groupfour.MedicalCare.Repository.PacijentRepository;
 import com.groupfour.MedicalCare.Service.RegisterService;

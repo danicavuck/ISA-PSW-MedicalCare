@@ -3,7 +3,6 @@ package com.groupfour.MedicalCare.Service;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinickogCentra;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.PacijentDetailsDTO;
-import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;

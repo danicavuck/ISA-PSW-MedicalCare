@@ -1,12 +1,9 @@
 package com.groupfour.MedicalCare.Controllers;
-import com.groupfour.MedicalCare.Model.DTO.OdsustvoDTO;
-import com.groupfour.MedicalCare.Model.DTO.ReceptDTO;
-import com.groupfour.MedicalCare.Model.Dokumenti.Recept;
-import com.groupfour.MedicalCare.Service.MedicinskaSestraService;
-import com.groupfour.MedicalCare.Service.OdsustvaService;
-import com.groupfour.MedicalCare.Service.ReceptService;
+
 import com.groupfour.MedicalCare.Model.DTO.MedSestraIzmenaPodatakaDTO;
+import com.groupfour.MedicalCare.Model.DTO.OdsustvoDTO;
 import com.groupfour.MedicalCare.Service.MedicinskaSestraService;
+import com.groupfour.MedicalCare.Service.ReceptService;
 import com.groupfour.MedicalCare.Utill.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @CrossOrigin(allowCredentials = "true")

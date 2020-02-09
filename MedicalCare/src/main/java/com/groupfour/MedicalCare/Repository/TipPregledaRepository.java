@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Transactional
 public interface TipPregledaRepository extends JpaRepository<TipPregleda, Integer> {

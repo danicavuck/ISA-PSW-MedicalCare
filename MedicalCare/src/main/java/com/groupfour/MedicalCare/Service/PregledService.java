@@ -5,7 +5,6 @@ import com.groupfour.MedicalCare.Model.DTO.PregledDTO;
 import com.groupfour.MedicalCare.Model.Klinika.Klinika;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
-import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Pregled.PreglediNaCekanju;
@@ -129,14 +128,19 @@ public class PregledService {
     public static PregledDTO mapirajPregledDTO(Pregled pregled) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
         PregledDTO pregledDTO =
-                PregledDTO.builder().trajanjePregleda(pregled.getTrajanjePregleda()).pacijent(pregled.getPacijent().getId()).cena(pregled.getCena()).popust(pregled.getPopust()).sala(pregled.getSala().getNazivSale()).tipPregleda(pregled.getTipPregleda().getTipPregleda()).id(pregled.getId()).salaId(pregled.getSala().getId()).build();
+                PregledDTO.builder().trajanjePregleda(pregled.getTrajanjePregleda()).cena(pregled.getCena()).popust(pregled.getPopust()).sala(pregled.getSala().getNazivSale()).tipPregleda(pregled.getTipPregleda().getTipPregleda()).id(pregled.getId()).salaId(pregled.getSala().getId()).build();
+        try{
+            pregledDTO.setPacijent(pregled.getPacijent().getId());
+        } catch (Exception e)
+        {
+            logger.info("Pregled i dalje nema pacijenta, funkcionalnost studenta 1");
+        }
         Set<Lekar> lekari = pregled.getLekari();
 
         logger.info("Lekari pocetak termina kraj termina i ostalo:\n"+ lekari.toString());
 
-        while (lekari.iterator().hasNext())
+        for(Lekar lekar : lekari)
         {
-            Lekar lekar = lekari.iterator().next();
             LocalDateTime pocetakTermina = pregled.getTerminPregleda();
             long trajanje = pregled.getTrajanjePregleda();
             LocalDateTime krajPregleda = pocetakTermina.plusMinutes(trajanje);
@@ -171,7 +175,10 @@ public class PregledService {
                 lekarRepository.save(lekar);
                 return new ResponseEntity<>("Uspesno dodavanje pregleda", HttpStatus.CREATED);
             }
-
+            logger.info("Lekar pocetak radnog vremena " + lekar.getPocetakRadnogVremena());
+            logger.info("Lekar kraj radnog vremena " + lekar.getKrajRadnogVremena());
+            logger.info("Pocetak termina " + pocetakTermina);
+            logger.info("Kraj termina " + krajTermina);
         }
         return new ResponseEntity<>("Nije moguce dodati pregled datom lekaru", HttpStatus.FORBIDDEN);
     }

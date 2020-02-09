@@ -47,7 +47,7 @@
             <div class="form-group">
               <mat-form-field class="full-width">
                 <mat-label style="margin-bottom: 30px;">Sala</mat-label>
-                  <mat-select [(ngModel)]="pregled.sala" required name="sala">
+                  <mat-select [(ngModel)]="pregled.salaId" required name="sala">
                       <mat-option *ngFor="let sala of sale" value={{sala.id}}>
                           {{sala.nazivSale}}
                       </mat-option>

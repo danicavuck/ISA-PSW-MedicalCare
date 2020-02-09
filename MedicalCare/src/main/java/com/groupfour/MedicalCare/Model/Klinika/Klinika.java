@@ -20,7 +20,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = DbTableConstants.KLINIKA)
-@JsonIgnoreProperties({"adminiKlinike", "listaLekara", "spisakSala"})
+@JsonIgnoreProperties({"adminiKlinike", "listaLekara", "spisakSala","listaSestara"})
 public class Klinika {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,6 +85,8 @@ public class Klinika {
         sala.setKlinika(this);
     }
     public void dodajAdmina(AdminKlinike admin) {
+        if(this.adminiKlinike == null)
+            this.adminiKlinike = new HashSet<>();
         this.adminiKlinike.add(admin);
         admin.setKlinika(this);
     }

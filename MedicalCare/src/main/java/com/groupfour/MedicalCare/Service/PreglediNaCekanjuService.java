@@ -1,18 +1,14 @@
 package com.groupfour.MedicalCare.Service;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.groupfour.MedicalCare.Common.db.DbColumnConstants;
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
 import com.groupfour.MedicalCare.Model.DTO.PregledDTO;
 import com.groupfour.MedicalCare.Model.DTO.PregledNaCekanjuDTO;
-import com.groupfour.MedicalCare.Model.Dokumenti.IzvestajOPregledu;
 import com.groupfour.MedicalCare.Model.Klinika.Sala;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Pregled.Operacija;
 import com.groupfour.MedicalCare.Model.Pregled.Pregled;
 import com.groupfour.MedicalCare.Model.Pregled.PreglediNaCekanju;
-import com.groupfour.MedicalCare.Model.Pregled.TipPregleda;
 import com.groupfour.MedicalCare.Repository.*;
 import com.groupfour.MedicalCare.Utill.CustomEmailSender;
 import org.slf4j.Logger;
@@ -25,14 +21,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
+import javax.persistence.LockModeType;
+import javax.persistence.PessimisticLockException;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class PreglediNaCekanjuService {
@@ -106,12 +100,15 @@ public class PreglediNaCekanjuService {
         PreglediNaCekanju pregledNaCekanju =
                 preglediNaCekanjuRepository.getPregledNaCekanjuById(pregledNaCekanjuDTO.getId());
         Sala sala = salaRepository.findByNazivSale(pregledNaCekanjuDTO.getNazivSale());
-        if(salaJeSlobodnaZaTermin(sala, pregledNaCekanju.getTerminPregleda(), pregledNaCekanju.getTrajanjePregleda()))
+        if(pregledNaCekanju != null)
         {
-            return dodeliSaluPregledu(pregledNaCekanjuDTO);
+            if(salaJeSlobodnaZaTermin(sala, pregledNaCekanju.getTerminPregleda(), pregledNaCekanju.getTrajanjePregleda()))
+            {
+                return dodeliSaluPregledu(pregledNaCekanjuDTO);
+            }
+            return zakaziPregledZaPrviSlobodniTermin();
         }
-        //return zakaziPregledZaPrviSlobodniTermin(sala, pregledNaCekanju);
-        return zakaziPregledZaPrviSlobodniTermin();
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @Scheduled(fixedDelay = OneDayToMilliseconds, initialDelay = OneDayToMilliseconds)
@@ -196,8 +193,14 @@ public class PreglediNaCekanjuService {
     @Transactional
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     public static ResponseEntity<?> dodeliSaluPregledu(PregledNaCekanjuDTO pregledNaCekanjuDTO){
-        PreglediNaCekanju pregledNaCekanju =
-                preglediNaCekanjuRepository.getPregledNaCekanjuById(pregledNaCekanjuDTO.getId());
+        PreglediNaCekanju pregledNaCekanju = null;
+        try {
+            pregledNaCekanju =
+                    preglediNaCekanjuRepository.getPregledNaCekanjuById(pregledNaCekanjuDTO.getId());
+        } catch (PessimisticLockException exception){
+            logger.error("Neuspesno dobavljanje pregleda na cekanju");
+            return new ResponseEntity<>(null, HttpStatus.PRECONDITION_FAILED);
+        }
         Sala sala = salaRepository.findByNazivSale(pregledNaCekanjuDTO.getNazivSale());
         if(pregledNaCekanju != null && sala != null) {
             pregledNaCekanju.setSala(sala);
@@ -241,7 +244,6 @@ public class PreglediNaCekanjuService {
         return true;
     }
 
-    // Trebaju mi informacije o Lekaru i Pacijentu koji zakazuje pregled
     public static void posaljiMejlLekaruIPacijentu(PreglediNaCekanju preglediNaCekanju){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
         String terminPregleda = formatter.format(preglediNaCekanju.getTerminPregleda());

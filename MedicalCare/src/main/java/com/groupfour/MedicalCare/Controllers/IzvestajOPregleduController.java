@@ -2,7 +2,6 @@ package com.groupfour.MedicalCare.Controllers;
 
 import com.groupfour.MedicalCare.Model.DTO.IzvestajIzmenaDTO;
 import com.groupfour.MedicalCare.Model.DTO.IzvestajOPregleduDTO;
-import com.groupfour.MedicalCare.Model.Dokumenti.IzvestajOPregledu;
 import com.groupfour.MedicalCare.Service.IzvestajOPregleduService;
 import com.groupfour.MedicalCare.Utill.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,0 +1,13 @@
+DROP TABLE admin_klinike;
+CREATE TABLE admin_klinike (
+   id_admin INT NOT NULL AUTO_INCREMENT,
+   email VARCHAR(50),
+   lozinka VARCHAR(50),
+   ime VARCHAR(50),
+   prezime VARCHAR(50),
+   aktivan BOOLEAN,
+   prvo_logovanje BOOLEAN,
+   klinika INT
+);
+
+INSERT INTO admin_klinike values (1,'petar@gmail.com', '123123', 'Petar', 'Kovacevic', TRUE, FALSE, 1);

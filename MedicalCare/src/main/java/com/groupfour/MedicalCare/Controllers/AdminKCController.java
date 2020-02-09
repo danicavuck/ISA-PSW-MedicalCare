@@ -1,7 +1,6 @@
 package com.groupfour.MedicalCare.Controllers;
 
 import com.groupfour.MedicalCare.Model.DTO.*;
-import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
 import com.groupfour.MedicalCare.Service.AdminKCService;
 import com.groupfour.MedicalCare.Service.RegistracijaPacijentaService;
 import com.groupfour.MedicalCare.Utill.Authorization;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @CrossOrigin(allowCredentials = "true")

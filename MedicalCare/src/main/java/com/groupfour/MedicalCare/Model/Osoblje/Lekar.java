@@ -94,6 +94,8 @@ public class Lekar {
 
 
     public void dodajPregled(Pregled pregled) {
+        if(this.setPregleda == null)
+            this.setPregleda = new HashSet<>();
         this.setPregleda.add(pregled);
         pregled.dodajLekara(this);
     }

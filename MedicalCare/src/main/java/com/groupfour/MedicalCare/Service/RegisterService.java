@@ -1,8 +1,5 @@
 package com.groupfour.MedicalCare.Service;
 
-import com.groupfour.MedicalCare.Model.DTO.PacijentDTO;
-import com.groupfour.MedicalCare.Model.DTO.UserRole;
-import com.groupfour.MedicalCare.Model.Pacijent.Pacijent;
 import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
 import com.groupfour.MedicalCare.Repository.PacijentRepository;
 import com.groupfour.MedicalCare.Utill.EmailUniqueness;

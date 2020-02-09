@@ -21,6 +21,7 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity<UserRole> login(@RequestBody LoginDTO loginDTO, HttpSession session) {
+        System.out.println("->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         return LoginService.loginPacijent(loginDTO, session);
     }
 

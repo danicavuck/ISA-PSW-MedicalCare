@@ -2,7 +2,6 @@ package com.groupfour.MedicalCare.Controllers;
 
 import com.groupfour.MedicalCare.Model.DTO.DodavanjeSaleDTO;
 import com.groupfour.MedicalCare.Model.DTO.OperacijaDTO;
-import com.groupfour.MedicalCare.Model.Pregled.Operacija;
 import com.groupfour.MedicalCare.Service.OperacijaService;
 import com.groupfour.MedicalCare.Utill.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;

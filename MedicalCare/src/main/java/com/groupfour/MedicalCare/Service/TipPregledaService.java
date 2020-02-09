@@ -1,7 +1,6 @@
 package com.groupfour.MedicalCare.Service;
 
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
-import com.groupfour.MedicalCare.Model.DTO.PregledDTO;
 import com.groupfour.MedicalCare.Model.DTO.TipPregledaDTO;
 import com.groupfour.MedicalCare.Model.Osoblje.Lekar;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;

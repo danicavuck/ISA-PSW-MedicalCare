@@ -13,7 +13,6 @@ import com.groupfour.MedicalCare.Utill.CustomEmailSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +21,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockModeType;
+import javax.persistence.PessimisticLockException;
 import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 @Service
 public class OdsustvaService {
@@ -97,7 +96,13 @@ public class OdsustvaService {
     @Lock(value = LockModeType.PESSIMISTIC_READ)
     public static ResponseEntity<?> vratiZahteveAdminu(HttpSession session)
     {
-        AdminKlinike adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
+        AdminKlinike adminKlinike = null;
+        try {
+            adminKlinike = adminKlinikeRepository.findAdminKlinikeById((int) session.getAttribute("id"));
+        } catch (PessimisticLockException exception) {
+            logger.error("Neuspesno dobavljanje admina klinike");
+            exception.printStackTrace();
+        }
         if(adminKlinike != null)
         {
             int klinikaId = 0;

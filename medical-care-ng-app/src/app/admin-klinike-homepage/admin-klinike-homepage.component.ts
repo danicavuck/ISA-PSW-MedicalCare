@@ -25,8 +25,6 @@ export class AdminKlinikeHomepageComponent implements OnInit {
 
   async onDetaljnije(klinika) {
     this.klinika = klinika;
-    console.log('Prosledjena klinika: ');
-    console.log(this.klinika);
     this.dataService.setData(this.klinika);
   }
 
@@ -36,7 +34,6 @@ export class AdminKlinikeHomepageComponent implements OnInit {
     this.http.get(apiEndpoint,
       {responseType: 'json', withCredentials: true}).subscribe((data) => {
         this.models = data as Array<KlinikaDTO>;
-        console.log(this.models);
       }, err => {
         console.log('Greska admin_klinike: ');
         console.log(err);

@@ -117,7 +117,8 @@ public class KlinikaController {
     }
 
     @PutMapping("/lokacija")
-    public ResponseEntity<?> azurirajLokacijuKlinike(HttpSession session, KlinikaLokacijaDTO klinikaLokacijaDTO){
+    public ResponseEntity<?> azurirajLokacijuKlinike(@RequestBody KlinikaLokacijaDTO klinikaLokacijaDTO,
+                                                     HttpSession session){
         if(authorization.hasPermisson(session, new String[] {"adminklinike"}))
         {
             return KlinikaService.azurirajLokacijuKlinike(session, klinikaLokacijaDTO);

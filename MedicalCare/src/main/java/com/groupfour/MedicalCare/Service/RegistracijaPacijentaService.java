@@ -4,11 +4,10 @@ import com.groupfour.MedicalCare.Model.Administrator.AdminKlinickogCentra;
 import com.groupfour.MedicalCare.Model.Zahtevi.RegistracijaPacijenta;
 import com.groupfour.MedicalCare.Repository.AdminKCRepository;
 import com.groupfour.MedicalCare.Repository.RegistracijaPacijentaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;

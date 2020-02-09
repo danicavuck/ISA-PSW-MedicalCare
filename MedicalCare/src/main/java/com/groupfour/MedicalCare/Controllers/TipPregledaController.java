@@ -1,7 +1,6 @@
 package com.groupfour.MedicalCare.Controllers;
 
 import com.groupfour.MedicalCare.Model.DTO.TipPregledaDTO;
-import com.groupfour.MedicalCare.Model.Pregled.TipPregleda;
 import com.groupfour.MedicalCare.Service.TipPregledaService;
 import com.groupfour.MedicalCare.Utill.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 
 @Controller
 @CrossOrigin(allowCredentials = "true")

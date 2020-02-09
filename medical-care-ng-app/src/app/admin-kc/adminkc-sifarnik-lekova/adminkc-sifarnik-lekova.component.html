@@ -39,13 +39,13 @@
         <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
       </table>
       <div class="container">
-        <button class="btn btn-primary maximum-scale" mat-raised-button color="primary" style="width:20cm;border: 3cm;" (click)="dodajDijagnozu()" >Dodaj novi lek</button>
+        <button class="btn btn-primary maximum-scale" mat-raised-button color="primary" id = "dLek" style="width:20cm;border: 3cm;" (click)="dodajDijagnozu()" >Dodaj novi lek</button>
       </div>
       </div>
     </div>
     </div>
     <div class="container">
-      <button class="btn btn-primary pull-right" mat-raised-button color="primary" [routerLink]="['/login']">Odjavite se</button>
+      <button id = "odjavi" class="btn btn-primary pull-right" mat-raised-button color="primary" [routerLink]="['/login']">Odjavite se</button>
     </div>
 
 

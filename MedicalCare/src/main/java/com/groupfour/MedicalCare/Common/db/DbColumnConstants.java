@@ -1,7 +1,5 @@
 package com.groupfour.MedicalCare.Common.db;
 
-import javax.persistence.Column;
-
 public final class DbColumnConstants {
     // pacijent
     // karton se dodaje iz pacijenta, ne obratno

@@ -36,7 +36,7 @@
           <ng-container matColumnDef="Akcije">
               <mat-header-cell *matHeaderCellDef>Akcije</mat-header-cell>
               <mat-cell *matCellDef="let klinika" style="padding-left: 10%;">
-                  <button mat-mini-fab color="primary" (click)="onDetaljnije(klinika)" routerLink="/adminklinike/klinika" matTooltip="Vise informacija o klinici">
+                  <button mat-mini-fab color="primary" (click)="onDetaljnije(klinika)" routerLink="/adminklinike/klinika" matTooltip="Vise informacija o klinici" id="detaljnije">
                       <i class="fa fa-info" aria-hidden="true"></i>
                   </button>
               </mat-cell>

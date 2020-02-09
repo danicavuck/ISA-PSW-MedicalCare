@@ -1,5 +1,7 @@
 package com.groupfour.MedicalCare.Service;
+
 import com.groupfour.MedicalCare.Model.Administrator.AdminKlinike;
+import com.groupfour.MedicalCare.Model.DTO.MedSestraIzmenaPodatakaDTO;
 import com.groupfour.MedicalCare.Model.DTO.MedicinskaSestraKalendarDTO;
 import com.groupfour.MedicalCare.Model.DTO.OdsustvoDTO;
 import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
@@ -8,10 +10,6 @@ import com.groupfour.MedicalCare.Repository.MedicinskaSestraRepository;
 import com.groupfour.MedicalCare.Repository.OdsustvoMedicinskeSestreRepository;
 import com.groupfour.MedicalCare.Repository.ReceptRepository;
 import com.groupfour.MedicalCare.Utill.CustomEmailSender;
-
-import com.groupfour.MedicalCare.Model.DTO.MedSestraIzmenaPodatakaDTO;
-import com.groupfour.MedicalCare.Model.Osoblje.MedicinskaSestra;
-import com.groupfour.MedicalCare.Repository.MedicinskaSestraRepository;
 import com.groupfour.MedicalCare.Utill.PasswordCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -128,7 +125,6 @@ public class MedicinskaSestraService {
             if(!medSestraIzmenaPodatakaDTO.getPrezime().equals(""))
                 medicinskaSestra.setPrezime(medSestraIzmenaPodatakaDTO.getPrezime());
             if(trebaIzmenitiLozinku(medicinskaSestra, medSestraIzmenaPodatakaDTO))
-                System.out.println("doslo");
                 medicinskaSestra.setLozinka(PasswordCheck.hash(medSestraIzmenaPodatakaDTO.getNovaLozinka()));
 
             medicinskaSestraRepository.save(medicinskaSestra);
